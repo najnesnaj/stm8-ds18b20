@@ -468,7 +468,16 @@ float DS18B20_ReadTemperature(void)
 {
 	unsigned char temp = 0;
 	float t = 0;
-
+/*
+ *
+ *  
+ *  0x44 is the command to calculate the temperature and save it in the scratchpad.  This takes up to 750 milliseconds.
+ *
+ *  0xBE is the command to send the contents of of the scratchpad.
+ *
+ *  What you are sending is "Everybody: Send your Scratchpad".  This only works if you only have one device.  
+ *
+ */
 	DS18B20_Init();
 	DS18B20_WriteByte(0xcc);
 	DS18B20_WriteByte(0x44);
