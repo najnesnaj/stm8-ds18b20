@@ -44,12 +44,12 @@ CABS                                00000000    00000000 =           0. bytes (A
      00000083  l_HOME                          
      00000100  l_IRAM                          
      00000100  l_SSEG                          
-     00000BF7  l_CODE                          
+     000011DA  l_CODE                          
      00008000  s_HOME                          
      00008083  s_GSINIT                        
      0000809D  s_GSFINAL                       
      000080A0  s_CODE                          
-     00008C97  s_INITIALIZER                   
+     0000927A  s_INITIALIZER                   
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 2.
 Hexadecimal  [32-Bits]
@@ -112,7 +112,7 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CODE                                000080A0    00000BF7 =        3063. bytes (REL,CON)
+CODE                                000080A0    000011DA =        4570. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -141,15 +141,24 @@ CODE                                000080A0    00000BF7 =        3063. bytes (R
      00008472  __tm1637ClkLow                     ds18b20
      0000847A  __tm1637DioHigh                    ds18b20
      00008482  __tm1637DioLow                     ds18b20
-     0000848A  _main                              ds18b20
-     00008647  _segmentMap                        ds18b20
-     00008658  ___fssub                           _fssub
-     00008680  ___fsgt                            _fsgt
-     00008787  __mulint                           _mulint
-     000087DD  ___fsadd                           _fsadd
-     00008B69  ___sint2fs                         _sint2fs
-     00008B7A  ___slong2fs                        _slong2fs
-     00008BB1  ___ulong2fs                        _ulong2fs
+     0000848A  __delay_us                         ds18b20
+     0000849F  __delay_ms                         ds18b20
+     000084B6  _DS18B20_Init                      ds18b20
+     0000850D  _DS18B20_WriteByte                 ds18b20
+     00008552  _DS18B20_ReadByte                  ds18b20
+     000085B0  _DS18B20_ReadTemperature           ds18b20
+     00008634  _main                              ds18b20
+     0000877B  _segmentMap                        ds18b20
+     0000878C  ___fssub                           _fssub
+     000087B4  ___fsmul                           _fsmul
+     00008AEA  ___fsgt                            _fsgt
+     00008BF1  __mulint                           _mulint
+     00008C47  ___fsadd                           _fsadd
+     00008FD3  ___sint2fs                         _sint2fs
+     00008FE4  ___uchar2fs                        _uchar2fs
+     00008FF4  __mullong                          _mullong
+     0000915D  ___slong2fs                        _slong2fs
+     00009194  ___ulong2fs                        _ulong2fs
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 9.
 
@@ -161,10 +170,13 @@ ds18b20.rel                               [  ]
 Libraries Linked                          [ object file ]
 
 /usr/bin/../share/sdcc/lib/stm8/stm8.lib  [ _fssub.rel ]
+/usr/bin/../share/sdcc/lib/stm8/stm8.lib  [ _fsmul.rel ]
 /usr/bin/../share/sdcc/lib/stm8/stm8.lib  [ _fsgt.rel ]
 /usr/bin/../share/sdcc/lib/stm8/stm8.lib  [ _mulint.rel ]
 /usr/bin/../share/sdcc/lib/stm8/stm8.lib  [ _fsadd.rel ]
 /usr/bin/../share/sdcc/lib/stm8/stm8.lib  [ _sint2fs.rel ]
+/usr/bin/../share/sdcc/lib/stm8/stm8.lib  [ _uchar2fs.rel ]
+/usr/bin/../share/sdcc/lib/stm8/stm8.lib  [ _mullong.rel ]
 /usr/bin/../share/sdcc/lib/stm8/stm8.lib  [ _slong2fs.rel ]
 /usr/bin/../share/sdcc/lib/stm8/stm8.lib  [ _ulong2fs.rel ]
 

@@ -1,13 +1,31 @@
+/*
+ *
+ * DS18B20 one wire temp --- PA3 stm8
+ *
+ */
+
+
+
 #include "stm8.h"
 #include <string.h>
 #define SET(x, y)   (x) |= (y)
 #define UNSET(x, y) (x) &= ~(y)
 #define READ(x, y)  ((x) & (y))
-#define MLX90614_ADDR	0x5a
 #define I2C_READ        1
 #define I2C_WRITE       0
 
 
+
+//http://www.cnblogs.com/chenlidong/articles/1823542.html
+#define DS18B20_DQ_OUT          PA_DDR |= (1<<3)   //??
+#define DS18B20_DQ_IN           PA_DDR &= ~(1<<3)   //??
+#define DS18B20_DQ_HIGH         PA_ODR |= (1<<3)   //??
+#define DS18B20_DQ_LOW          PA_ODR &= ~(1<<3)    //??
+#define DS18B20_DQ_PULL_UP      PA_CR1 |= (1<<3)   //??
+#define DS18B20_DQ_FLOATING     PA_CR1 &=  ~(1<<3)  //??
+#define DS18B20_DQ_PUSH_PULL    PA_CR1 |= (1<<3)   //??
+#define DS18B20_DQ_OPEN_DRAIN   PA_CR1 &= ~(1<<3)   //??
+#define DS18B20_DQ_VALUE        PA_IDR       //DQ?
 
 
 
@@ -370,19 +388,110 @@ void _tm1637DioLow(void)
 }
 
 
+void _delay_us(unsigned int i)
+{
+	i *= 3; 
+	while(--i);
+}
+
+void _delay_ms(unsigned int i)
+{
+	while(i--)
+	{
+		_delay_us(1000);
+	}
+}
 
 
+
+void DS18B20_Init(void)
+{
+	DS18B20_DQ_OUT;   
+	DS18B20_DQ_PUSH_PULL;    
+	DS18B20_DQ_HIGH;   
+	_delay_us(10);
+	DS18B20_DQ_LOW;   
+	_delay_us(600);     //????
+
+	DS18B20_DQ_IN;   
+	DS18B20_DQ_PULL_UP;    
+	_delay_us(100);     
+	while(DS18B20_DQ_VALUE == 1);
+	_delay_us(400);
+}
+
+
+void DS18B20_WriteByte(unsigned char _data)
+{
+	unsigned char i = 0;
+
+	DS18B20_DQ_OUT;
+	for (i = 0; i < 8; i++)
+	{
+		DS18B20_DQ_LOW;
+		_delay_us(2);
+		if (_data & 0x01)
+		{
+			DS18B20_DQ_HIGH;
+		}
+		_data >>= 1;
+		_delay_us(60);
+		DS18B20_DQ_HIGH;
+	}
+}
+
+unsigned char DS18B20_ReadByte(void)
+{
+	unsigned char i = 0, _data = 0;
+
+	for (i = 0; i < 8; i++)
+	{
+		DS18B20_DQ_OUT;
+		DS18B20_DQ_LOW;
+		_delay_us(5);
+		_data >>= 1;
+		DS18B20_DQ_HIGH;
+		DS18B20_DQ_IN;
+		if (DS18B20_DQ_VALUE)
+		{
+			_data |= 0x80;
+		}
+		DS18B20_DQ_OUT; 
+		DS18B20_DQ_HIGH;
+		_delay_us(60);
+	}
+
+	return _data;
+}
+
+float DS18B20_ReadTemperature(void)
+{
+	unsigned char temp = 0;
+	float t = 0;
+
+	DS18B20_Init();
+	DS18B20_WriteByte(0xcc);
+	DS18B20_WriteByte(0x44);
+
+	DS18B20_Init();
+	DS18B20_WriteByte(0xcc);
+	DS18B20_WriteByte(0xbe);
+
+	temp = DS18B20_ReadByte();
+	t = (((temp & 0xf0) >> 4) + (temp & 0x07) * 0.125); 
+	temp = DS18B20_ReadByte();
+	t += ((temp & 0x0f) << 4);
+
+	return t;
+}
 
 
 
 
 int main () {
-	char p1,p2;
 	int eerste, tweede, derde, vierde;
 	long utemp;
 	float objTemp;
-	UCHAR  x;
-	volatile int reg;
 	InitializeSystemClock();
 
 	//display on PD2 PD3
@@ -392,29 +501,13 @@ int main () {
 	tm1637Init();
 
 	InitializeUART();
-	InitializeI2C();
+	//	InitializeI2C();
 
 
 	while (1) {
 
-		i2c_set_start_ack ();
-		i2c_send_address (MLX90614_ADDR, I2C_WRITE);
-		i2c_send_reg(0x07); // object temperature		
-		//register for ambiant temperature	i2c_send_reg(0x06);		
-		i2c_set_start_ack ();
-		i2c_send_address (MLX90614_ADDR, I2C_READ);
-		reg = I2C_SR1;
-		reg = I2C_SR3;
 
-		i2c_set_nak();
-
-		i2c_read (&x);
-		p1=x;
-		i2c_read (&x);
-		p2=x;
-		i2c_set_stop ();
-
-		objTemp = ((((p2&0x007f)<<8)+p1)*2)-27315; //subtract kelvin for celcius
+		objTemp = DS18B20_ReadTemperature(); 
 		eerste=0;tweede=0;derde=0;vierde=0;
 		//make measurement suitable for display
 		while (objTemp > 1000) {

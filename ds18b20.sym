@@ -7,13 +7,22 @@ Symbol Table
     .__.ABS.                                                    =  000000 G
     .__.CPU.                                                    =  000000 L
     .__.H$L.                                                    =  000001 L
+  8 _DS18B20_Init                                                  000416 GR
+  8 _DS18B20_ReadByte                                              0004B2 GR
+  8 _DS18B20_ReadTemperature                                       000510 GR
+  8 _DS18B20_WriteByte                                             00046D GR
   8 _InitializeI2C                                                 0001D8 GR
   8 _InitializeSystemClock                                         000008 GR
   8 _InitializeUART                                                000208 GR
   8 _UARTPrintF                                                    0000E0 GR
+    ___fsadd                                                       ****** GX
     ___fsgt                                                        ****** GX
+    ___fsmul                                                       ****** GX
     ___fssub                                                       ****** GX
     ___sint2fs                                                     ****** GX
+    ___uchar2fs                                                    ****** GX
+  8 __delay_ms                                                     0003FF GR
+  8 __delay_us                                                     0003EA GR
   5 __interrupt_vect                                               000000 R
     __mulint                                                       ****** GX
   6 __sdcc_gs_init_startup                                         000000 R
@@ -37,9 +46,9 @@ Symbol Table
   8 _i2c_set_nak                                                   0000AE GR
   8 _i2c_set_start_ack                                             000139 GR
   8 _i2c_set_stop                                                  0000B6 GR
-  8 _main                                                          0003EA GR
+  8 _main                                                          000594 GR
   8 _print_byte_hex                                                000147 GR
-  8 _segmentMap                                                    0005A7 GR
+  8 _segmentMap                                                    0006DB GR
   8 _tm1637DisplayDecimal                                          000288 GR
   8 _tm1637Init                                                    000281 GR
   8 _tm1637SetBrightness                                           000326 GR
@@ -49,9 +58,14 @@ Symbol Table
     s_GSINIT                                                       ****** GX
     s_INITIALIZED                                                  ****** GX
     s_INITIALIZER                                                  ****** GX
-
-
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 2.
+Hexadecimal [24-Bits]
+
+Symbol Table
+
+
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 3.
 Hexadecimal [24-Bits]
 
 Area Table
@@ -64,7 +78,7 @@ Area Table
    5 HOME                                       size     83   flags    0
    6 GSINIT                                     size     1A   flags    0
    7 GSFINAL                                    size      3   flags    0
-   8 CODE                                       size    5B8   flags    0
+   8 CODE                                       size    6EC   flags    0
    9 INITIALIZER                                size      0   flags    0
    A CABS                                       size      0   flags    8
 
