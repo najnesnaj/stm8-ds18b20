@@ -1,0 +1,70 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 1.
+Hexadecimal [24-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =  002710 L
+    .__.ABS.                                                    =  000000 G
+    .__.CPU.                                                    =  000000 L
+    .__.H$L.                                                    =  000001 L
+  8 _InitializeI2C                                                 0001D8 GR
+  8 _InitializeSystemClock                                         000008 GR
+  8 _InitializeUART                                                000208 GR
+  8 _UARTPrintF                                                    0000E0 GR
+    ___fsgt                                                        ****** GX
+    ___fssub                                                       ****** GX
+    ___sint2fs                                                     ****** GX
+  5 __interrupt_vect                                               000000 R
+    __mulint                                                       ****** GX
+  6 __sdcc_gs_init_startup                                         000000 R
+  6 __sdcc_init_data                                               000000 R
+  5 __sdcc_program_startup                                         000080 R
+  3 __start__stack                                                 000000 R
+  8 __tm1637ClkHigh                                                0003CA GR
+  8 __tm1637ClkLow                                                 0003D2 GR
+  8 __tm1637DioHigh                                                0003DA GR
+  8 __tm1637DioLow                                                 0003E2 GR
+  8 __tm1637ReadResult                                             000371 GR
+  8 __tm1637Start                                                  000338 GR
+  8 __tm1637Stop                                                   00034A GR
+  8 __tm1637WriteByte                                              00038C GR
+  8 _delay                                                         000052 GR
+  8 _delayTenMicro                                                 000000 GR
+  8 _i2c_read                                                      00009D GR
+  8 _i2c_read_register                                             000195 GR
+  8 _i2c_send_address                                              0000F7 GR
+  8 _i2c_send_reg                                                  0000BE GR
+  8 _i2c_set_nak                                                   0000AE GR
+  8 _i2c_set_start_ack                                             000139 GR
+  8 _i2c_set_stop                                                  0000B6 GR
+  8 _main                                                          0003EA GR
+  8 _print_byte_hex                                                000147 GR
+  8 _segmentMap                                                    0005A7 GR
+  8 _tm1637DisplayDecimal                                          000288 GR
+  8 _tm1637Init                                                    000281 GR
+  8 _tm1637SetBrightness                                           000326 GR
+    l_DATA                                                         ****** GX
+    l_INITIALIZER                                                  ****** GX
+    s_DATA                                                         ****** GX
+    s_GSINIT                                                       ****** GX
+    s_INITIALIZED                                                  ****** GX
+    s_INITIALIZER                                                  ****** GX
+
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 2.
+Hexadecimal [24-Bits]
+
+Area Table
+
+   0 _CODE                                      size      0   flags    0
+   1 DATA                                       size      0   flags    0
+   2 INITIALIZED                                size      0   flags    0
+   3 SSEG                                       size      1   flags    0
+   4 DABS                                       size      0   flags    8
+   5 HOME                                       size     83   flags    0
+   6 GSINIT                                     size     1A   flags    0
+   7 GSFINAL                                    size      3   flags    0
+   8 CODE                                       size    5B8   flags    0
+   9 INITIALIZER                                size      0   flags    0
+   A CABS                                       size      0   flags    8
+
