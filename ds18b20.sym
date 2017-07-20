@@ -7,51 +7,51 @@ Symbol Table
     .__.ABS.                                                    =  000000 G
     .__.CPU.                                                    =  000000 L
     .__.H$L.                                                    =  000001 L
-  8 _DS18B20_Init                                                  000416 GR
-  8 _DS18B20_ReadByte                                              0004B2 GR
-  8 _DS18B20_ReadTemperature                                       000510 GR
-  8 _DS18B20_WriteByte                                             00046D GR
-  8 _InitializeI2C                                                 0001D8 GR
-  8 _InitializeSystemClock                                         000008 GR
-  8 _InitializeUART                                                000208 GR
-  8 _UARTPrintF                                                    0000E0 GR
+  8 _DS18B20_Init                                                  0003FC GR
+  8 _DS18B20_ReadByte                                              000498 GR
+  8 _DS18B20_ReadTemperature                                       0004F6 GR
+  8 _DS18B20_WriteByte                                             000453 GR
+  8 _InitializeI2C                                                 0001D0 GR
+  8 _InitializeSystemClock                                         00000B GR
+  8 _InitializeUART                                                0001F8 GR
+  8 _UARTPrintF                                                    0000D9 GR
     ___fsadd                                                       ****** GX
     ___fsgt                                                        ****** GX
     ___fsmul                                                       ****** GX
     ___fssub                                                       ****** GX
     ___sint2fs                                                     ****** GX
     ___uchar2fs                                                    ****** GX
-  8 __delay_ms                                                     0003FF GR
-  8 __delay_us                                                     0003EA GR
+  8 __delay_ms                                                     0003E1 GR
+  8 __delay_us                                                     0003CC GR
   5 __interrupt_vect                                               000000 R
     __mulint                                                       ****** GX
   6 __sdcc_gs_init_startup                                         000000 R
   6 __sdcc_init_data                                               000000 R
   5 __sdcc_program_startup                                         000080 R
   3 __start__stack                                                 000000 R
-  8 __tm1637ClkHigh                                                0003CA GR
-  8 __tm1637ClkLow                                                 0003D2 GR
-  8 __tm1637DioHigh                                                0003DA GR
-  8 __tm1637DioLow                                                 0003E2 GR
-  8 __tm1637ReadResult                                             000371 GR
-  8 __tm1637Start                                                  000338 GR
-  8 __tm1637Stop                                                   00034A GR
-  8 __tm1637WriteByte                                              00038C GR
-  8 _delay                                                         000052 GR
+  8 __tm1637ClkHigh                                                0003AC GR
+  8 __tm1637ClkLow                                                 0003B4 GR
+  8 __tm1637DioHigh                                                0003BC GR
+  8 __tm1637DioLow                                                 0003C4 GR
+  8 __tm1637ReadResult                                             000353 GR
+  8 __tm1637Start                                                  00031A GR
+  8 __tm1637Stop                                                   00032C GR
+  8 __tm1637WriteByte                                              00036E GR
+  8 _delay                                                         00004B GR
   8 _delayTenMicro                                                 000000 GR
-  8 _i2c_read                                                      00009D GR
-  8 _i2c_read_register                                             000195 GR
-  8 _i2c_send_address                                              0000F7 GR
-  8 _i2c_send_reg                                                  0000BE GR
-  8 _i2c_set_nak                                                   0000AE GR
-  8 _i2c_set_start_ack                                             000139 GR
-  8 _i2c_set_stop                                                  0000B6 GR
-  8 _main                                                          000594 GR
-  8 _print_byte_hex                                                000147 GR
-  8 _segmentMap                                                    0006DB GR
-  8 _tm1637DisplayDecimal                                          000288 GR
-  8 _tm1637Init                                                    000281 GR
-  8 _tm1637SetBrightness                                           000326 GR
+  8 _i2c_read                                                      000096 GR
+  8 _i2c_read_register                                             00018E GR
+  8 _i2c_send_address                                              0000F0 GR
+  8 _i2c_send_reg                                                  0000B7 GR
+  8 _i2c_set_nak                                                   0000A7 GR
+  8 _i2c_set_start_ack                                             000132 GR
+  8 _i2c_set_stop                                                  0000AF GR
+  8 _main                                                          000555 GR
+  8 _print_byte_hex                                                00013E GR
+  8 _segmentMap                                                    000696 GR
+  8 _tm1637DisplayDecimal                                          000272 GR
+  8 _tm1637Init                                                    00026B GR
+  8 _tm1637SetBrightness                                           000308 GR
     l_DATA                                                         ****** GX
     l_INITIALIZER                                                  ****** GX
     s_DATA                                                         ****** GX
@@ -78,7 +78,7 @@ Area Table
    5 HOME                                       size     83   flags    0
    6 GSINIT                                     size     1A   flags    0
    7 GSFINAL                                    size      3   flags    0
-   8 CODE                                       size    6EC   flags    0
+   8 CODE                                       size    6A7   flags    0
    9 INITIALIZER                                size      0   flags    0
    A CABS                                       size      0   flags    8
 

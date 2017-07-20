@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by SDCC : free open source ANSI-C Compiler
-; Version 3.4.0 #8981 (Jul 11 2014) (Linux)
-; This file was generated Wed Jul 19 15:02:31 2017
+; Version 3.5.0 #9253 (Mar 24 2016) (Linux)
+; This file was generated Thu Jul 20 09:11:00 2017
 ;--------------------------------------------------------
 	.module ds18b20
 	.optsdcc -mstm8
@@ -145,10 +145,13 @@ __sdcc_program_startup:
 _delayTenMicro:
 ;	ds18b20.c: 35: for (a = 0; a < 50; ++a)
 	ld	a, #0x32
+	ld	xh, a
 00104$:
 ;	ds18b20.c: 36: __asm__("nop");
 	nop
+	ld	a, xh
 	dec	a
+	ld	xh, a
 ;	ds18b20.c: 35: for (a = 0; a < 50; ++a)
 	tnz	a
 	jrne	00104$
@@ -159,15 +162,11 @@ _delayTenMicro:
 ;	-----------------------------------------
 _InitializeSystemClock:
 ;	ds18b20.c: 40: CLK_ICKR = 0;                       //  Reset the Internal Clock Register.
-	ldw	x, #0x50c0
-	clr	(x)
+	mov	0x50c0+0, #0x00
 ;	ds18b20.c: 41: CLK_ICKR = CLK_HSIEN;               //  Enable the HSI.
-	ldw	x, #0x50c0
-	ld	a, #0x01
-	ld	(x), a
+	mov	0x50c0+0, #0x01
 ;	ds18b20.c: 42: CLK_ECKR = 0;                       //  Disable the external clock.
-	ldw	x, #0x50c1
-	clr	(x)
+	mov	0x50c1+0, #0x00
 ;	ds18b20.c: 43: while ((CLK_ICKR & CLK_HSIRDY) == 0);       //  Wait for the HSI to be ready for use.
 00101$:
 	ldw	x, #0x50c0
@@ -175,36 +174,23 @@ _InitializeSystemClock:
 	bcp	a, #0x02
 	jreq	00101$
 ;	ds18b20.c: 44: CLK_CKDIVR = 0;                     //  Ensure the clocks are running at full speed.
-	ldw	x, #0x50c6
-	clr	(x)
+	mov	0x50c6+0, #0x00
 ;	ds18b20.c: 45: CLK_PCKENR1 = 0xff;                 //  Enable all peripheral clocks.
-	ldw	x, #0x50c7
-	ld	a, #0xff
-	ld	(x), a
+	mov	0x50c7+0, #0xff
 ;	ds18b20.c: 46: CLK_PCKENR2 = 0xff;                 //  Ditto.
-	ldw	x, #0x50ca
-	ld	a, #0xff
-	ld	(x), a
+	mov	0x50ca+0, #0xff
 ;	ds18b20.c: 47: CLK_CCOR = 0;                       //  Turn off CCO.
-	ldw	x, #0x50c9
-	clr	(x)
+	mov	0x50c9+0, #0x00
 ;	ds18b20.c: 48: CLK_HSITRIMR = 0;                   //  Turn off any HSIU trimming.
-	ldw	x, #0x50cc
-	clr	(x)
+	mov	0x50cc+0, #0x00
 ;	ds18b20.c: 49: CLK_SWIMCCR = 0;                    //  Set SWIM to run at clock / 2.
-	ldw	x, #0x50cd
-	clr	(x)
+	mov	0x50cd+0, #0x00
 ;	ds18b20.c: 50: CLK_SWR = 0xe1;                     //  Use HSI as the clock source.
-	ldw	x, #0x50c4
-	ld	a, #0xe1
-	ld	(x), a
+	mov	0x50c4+0, #0xe1
 ;	ds18b20.c: 51: CLK_SWCR = 0;                       //  Reset the clock switch control register.
-	ldw	x, #0x50c5
-	clr	(x)
+	mov	0x50c5+0, #0x00
 ;	ds18b20.c: 52: CLK_SWCR = CLK_SWEN;                //  Enable switching.
-	ldw	x, #0x50c5
-	ld	a, #0x02
-	ld	(x), a
+	mov	0x50c5+0, #0x02
 ;	ds18b20.c: 53: while ((CLK_SWCR & CLK_SWBSY) != 0);        //  Pause while the clock switch is busy.
 00104$:
 	ldw	x, #0x50c5
@@ -327,8 +313,8 @@ _i2c_send_reg:
 00101$:
 	ldw	x, #0x5217
 	ld	a, (x)
-	sll	a
-	jrnc	00101$
+	tnz	a
+	jrpl	00101$
 	addw	sp, #2
 	ret
 ;	ds18b20.c: 79: void UARTPrintF (char *message) {
@@ -350,8 +336,8 @@ _UARTPrintF:
 00101$:
 	ldw	x, #0x5230
 	ld	a, (x)
-	sll	a
-	jrnc	00101$
+	tnz	a
+	jrpl	00101$
 ;	ds18b20.c: 84: ch++;                               //  Grab the next character.
 	incw	y
 	jra	00104$
@@ -388,11 +374,9 @@ _i2c_send_address:
 	tnz	(0x03, sp)
 	jreq	00103$
 ;	ds18b20.c: 95: I2C_OARL = 0;
-	ldw	x, #0x5213
-	clr	(x)
+	mov	0x5213+0, #0x00
 ;	ds18b20.c: 96: I2C_OARH = 0;
-	ldw	x, #0x5214
-	clr	(x)
+	mov	0x5214+0, #0x00
 ;	ds18b20.c: 99: while ((I2C_SR1 & I2C_ADDR) == 0);
 00103$:
 ;	ds18b20.c: 92: reg = I2C_SR1;
@@ -417,9 +401,7 @@ _i2c_send_address:
 ;	-----------------------------------------
 _i2c_set_start_ack:
 ;	ds18b20.c: 105: I2C_CR2 = I2C_ACK | I2C_START;
-	ldw	x, #0x5211
-	ld	a, #0x05
-	ld	(x), a
+	mov	0x5211+0, #0x05
 ;	ds18b20.c: 106: while ((I2C_SR1 & I2C_SB) == 0);
 00101$:
 	ldw	x, #0x5217
@@ -432,9 +414,9 @@ _i2c_set_start_ack:
 ;	 function print_byte_hex
 ;	-----------------------------------------
 _print_byte_hex:
-	sub	sp, #12
+	sub	sp, #14
 ;	ds18b20.c: 116: a = (buffer >> 4);
-	ld	a, (0x0f, sp)
+	ld	a, (0x11, sp)
 	swap	a
 	and	a, #0x0f
 	clrw	x
@@ -452,7 +434,7 @@ _print_byte_hex:
 	ldw	(0x03, sp), x
 00103$:
 ;	ds18b20.c: 121: b = buffer & 0x0f;
-	ld	a, (0x0f, sp)
+	ld	a, (0x11, sp)
 	and	a, #0x0f
 	clrw	x
 	ld	xl, a
@@ -469,25 +451,27 @@ _print_byte_hex:
 	ldw	(0x01, sp), x
 00106$:
 ;	ds18b20.c: 126: message[0] = a;
-	ldw	y, sp
-	addw	y, #5
+	ldw	x, sp
+	addw	x, #5
+	ldw	(0x0d, sp), x
 	ld	a, (0x04, sp)
-	ld	(y), a
+	ldw	x, (0x0d, sp)
+	ld	(x), a
 ;	ds18b20.c: 127: message[1] = b;
-	ldw	x, y
+	ldw	x, (0x0d, sp)
 	incw	x
 	ld	a, (0x02, sp)
 	ld	(x), a
 ;	ds18b20.c: 128: message[2] = 0;
-	ldw	x, y
+	ldw	x, (0x0d, sp)
 	incw	x
 	incw	x
 	clr	(x)
 ;	ds18b20.c: 129: UARTPrintF (message);
-	pushw	y
+	ldw	x, (0x0d, sp)
+	pushw	x
 	call	_UARTPrintF
-	addw	sp, #2
-	addw	sp, #12
+	addw	sp, #16
 	ret
 ;	ds18b20.c: 133: unsigned char i2c_read_register (UCHAR addr, UCHAR rg) {
 ;	-----------------------------------------
@@ -519,11 +503,11 @@ _i2c_read_register:
 ;	ds18b20.c: 141: reg = I2C_SR1;
 	ldw	x, #0x5217
 	ld	a, (x)
-	ld	(0x01, sp), a
+	ld	(0x02, sp), a
 ;	ds18b20.c: 142: reg = I2C_SR3;
 	ldw	x, #0x5219
 	ld	a, (x)
-	ld	(0x01, sp), a
+	ld	(0x02, sp), a
 ;	ds18b20.c: 143: i2c_set_nak ();
 	call	_i2c_set_nak
 ;	ds18b20.c: 144: i2c_set_stop ();
@@ -531,12 +515,11 @@ _i2c_read_register:
 ;	ds18b20.c: 145: i2c_read (&x);
 	ldw	x, sp
 	incw	x
-	incw	x
 	pushw	x
 	call	_i2c_read
 	addw	sp, #2
 ;	ds18b20.c: 146: return (x);
-	ld	a, (0x02, sp)
+	ld	a, (0x01, sp)
 	addw	sp, #2
 	ret
 ;	ds18b20.c: 149: void InitializeI2C (void) {
@@ -545,21 +528,15 @@ _i2c_read_register:
 ;	-----------------------------------------
 _InitializeI2C:
 ;	ds18b20.c: 150: I2C_CR1 = 0;   //  Disable I2C before configuration starts. PE bit is bit 0
-	ldw	x, #0x5210
-	clr	(x)
+	mov	0x5210+0, #0x00
 ;	ds18b20.c: 154: I2C_FREQR = 16;                     //  Set the internal clock frequency (MHz).
-	ldw	x, #0x5212
-	ld	a, #0x10
-	ld	(x), a
+	mov	0x5212+0, #0x10
 ;	ds18b20.c: 155: UNSET (I2C_CCRH, I2C_FS);           //  I2C running is standard mode.
 	bres	0x521c, #7
 ;	ds18b20.c: 157: I2C_CCRL = 0xa0;                    //  SCL clock speed is 50 kHz.
-	ldw	x, #0x521b
-	ld	a, #0xa0
-	ld	(x), a
+	mov	0x521b+0, #0xa0
 ;	ds18b20.c: 159: I2C_CCRH &= 0x00;	// Clears lower 4 bits "CCR"
-	ldw	x, #0x521c
-	clr	(x)
+	mov	0x521c+0, #0x00
 ;	ds18b20.c: 163: UNSET (I2C_OARH, I2C_ADDMODE);      //  7 bit address mode.
 	bres	0x5214, #7
 ;	ds18b20.c: 164: SET (I2C_OARH, I2C_ADDCONF);        //  Docs say this must always be 1.
@@ -568,13 +545,9 @@ _InitializeI2C:
 	or	a, #0x40
 	ld	(x), a
 ;	ds18b20.c: 168: I2C_TRISER = 17;
-	ldw	x, #0x521d
-	ld	a, #0x11
-	ld	(x), a
+	mov	0x521d+0, #0x11
 ;	ds18b20.c: 176: I2C_CR1 = I2C_PE;	// Enables port
-	ldw	x, #0x5210
-	ld	a, #0x01
-	ld	(x), a
+	mov	0x5210+0, #0x01
 	ret
 ;	ds18b20.c: 182: void InitializeUART() {
 ;	-----------------------------------------
@@ -582,26 +555,19 @@ _InitializeI2C:
 ;	-----------------------------------------
 _InitializeUART:
 ;	ds18b20.c: 192: UART1_CR1 = 0;
-	ldw	x, #0x5234
-	clr	(x)
+	mov	0x5234+0, #0x00
 ;	ds18b20.c: 193: UART1_CR2 = 0;
-	ldw	x, #0x5235
-	clr	(x)
+	mov	0x5235+0, #0x00
 ;	ds18b20.c: 194: UART1_CR4 = 0;
-	ldw	x, #0x5237
-	clr	(x)
+	mov	0x5237+0, #0x00
 ;	ds18b20.c: 195: UART1_CR3 = 0;
-	ldw	x, #0x5236
-	clr	(x)
+	mov	0x5236+0, #0x00
 ;	ds18b20.c: 196: UART1_CR5 = 0;
-	ldw	x, #0x5238
-	clr	(x)
+	mov	0x5238+0, #0x00
 ;	ds18b20.c: 197: UART1_GTR = 0;
-	ldw	x, #0x5239
-	clr	(x)
+	mov	0x5239+0, #0x00
 ;	ds18b20.c: 198: UART1_PSCR = 0;
-	ldw	x, #0x523a
-	clr	(x)
+	mov	0x523a+0, #0x00
 ;	ds18b20.c: 202: UNSET (UART1_CR1, CR1_M);        //  8 Data bits.
 	ldw	x, #0x5234
 	ld	a, (x)
@@ -623,13 +589,9 @@ _InitializeUART:
 	and	a, #0xef
 	ld	(x), a
 ;	ds18b20.c: 206: UART1_BRR2 = 0x0a;      //  Set the baud rate registers to 115200 baud
-	ldw	x, #0x5233
-	ld	a, #0x0a
-	ld	(x), a
+	mov	0x5233+0, #0x0a
 ;	ds18b20.c: 207: UART1_BRR1 = 0x08;      //  based upon a 16 MHz system clock.
-	ldw	x, #0x5232
-	ld	a, #0x08
-	ld	(x), a
+	mov	0x5232+0, #0x08
 ;	ds18b20.c: 211: UNSET (UART1_CR2, CR2_TEN);      //  Disable transmit.
 	ldw	x, #0x5235
 	ld	a, (x)
@@ -663,9 +625,7 @@ _InitializeUART:
 	or	a, #0x04
 	ld	(x), a
 ;	ds18b20.c: 224: UART1_CR3 = CR3_CLKEN;
-	ldw	x, #0x5236
-	ld	a, #0x08
-	ld	(x), a
+	mov	0x5236+0, #0x08
 	ret
 ;	ds18b20.c: 252: void tm1637Init(void)
 ;	-----------------------------------------
@@ -682,59 +642,57 @@ _tm1637Init:
 ;	 function tm1637DisplayDecimal
 ;	-----------------------------------------
 _tm1637DisplayDecimal:
-	sub	sp, #19
+	sub	sp, #13
 ;	ds18b20.c: 261: unsigned int v = TT & 0x0000FFFF;
-	ld	a, (0x19, sp)
-	ld	xl, a
-	ld	a, (0x18, sp)
-	ld	xh, a
-	clr	(0x11, sp)
-	clr	a
-	ldw	(0x05, sp), x
+	ldw	y, (0x12, sp)
+	clrw	x
+	ldw	(0x01, sp), y
 ;	ds18b20.c: 267: for (ii = 0; ii < 4; ++ii) {
 	ldw	x, sp
-	incw	x
+	addw	x, #5
 	ldw	(0x0a, sp), x
 	ldw	x, #_segmentMap+0
-	ldw	(0x0e, sp), x
-	clrw	y
+	ldw	(0x0c, sp), x
+	clrw	x
+	ldw	(0x03, sp), x
 00106$:
 ;	ds18b20.c: 268: digitArr[ii] = segmentMap[v % 10];
-	ldw	x, y
-	addw	x, (0x0a, sp)
-	ldw	(0x0c, sp), x
-	pushw	y
-	ldw	x, (0x07, sp)
+	ldw	x, (0x0a, sp)
+	addw	x, (0x03, sp)
+	pushw	x
+	ldw	x, (0x03, sp)
 	ldw	y, #0x000a
 	divw	x, y
-	ldw	x, y
-	popw	y
-	addw	x, (0x0e, sp)
-	ld	a, (x)
-	ldw	x, (0x0c, sp)
+	ld	a, yl
+	popw	x
+	ld	yl, a
+	addw	y, (0x0c, sp)
+	ld	a, (y)
 	ld	(x), a
 ;	ds18b20.c: 269: if (ii == 2 && displaySeparator) {
-	cpw	y, #0x0002
+	pushw	x
+	ldw	x, (0x05, sp)
+	cpw	x, #0x0002
+	popw	x
 	jrne	00102$
-	ldw	x, (0x1a, sp)
+	ldw	y, (0x14, sp)
 	jreq	00102$
 ;	ds18b20.c: 270: digitArr[ii] |= 1 << 7;
-	ldw	x, (0x0c, sp)
 	ld	a, (x)
 	or	a, #0x80
-	ldw	x, (0x0c, sp)
 	ld	(x), a
 00102$:
 ;	ds18b20.c: 272: v /= 10;
-	pushw	y
-	ldw	x, (0x07, sp)
+	ldw	x, (0x01, sp)
 	ldw	y, #0x000a
 	divw	x, y
-	popw	y
-	ldw	(0x05, sp), x
+	ldw	(0x01, sp), x
 ;	ds18b20.c: 267: for (ii = 0; ii < 4; ++ii) {
-	incw	y
-	cpw	y, #0x0004
+	ldw	x, (0x03, sp)
+	incw	x
+	ldw	(0x03, sp), x
+	ldw	x, (0x03, sp)
+	cpw	x, #0x0004
 	jrc	00106$
 ;	ds18b20.c: 275: _tm1637Start();
 	call	__tm1637Start
@@ -756,32 +714,30 @@ _tm1637DisplayDecimal:
 	call	__tm1637ReadResult
 ;	ds18b20.c: 284: for (ii = 0; ii < 4; ++ii) {
 	clrw	x
-	ldw	(0x07, sp), x
 00108$:
 ;	ds18b20.c: 285: _tm1637WriteByte(digitArr[3 - ii]);
-	ld	a, (0x08, sp)
+	exg	a, xl
 	ld	(0x09, sp), a
+	exg	a, xl
 	ld	a, #0x03
 	sub	a, (0x09, sp)
-	clrw	x
-	ld	xl, a
-	addw	x, (0x0a, sp)
-	ld	a, (x)
+	clrw	y
+	ld	yl, a
+	addw	y, (0x0a, sp)
+	ld	a, (y)
+	pushw	x
 	push	a
 	call	__tm1637WriteByte
 	pop	a
-;	ds18b20.c: 286: _tm1637ReadResult();
 	call	__tm1637ReadResult
+	popw	x
 ;	ds18b20.c: 284: for (ii = 0; ii < 4; ++ii) {
-	ldw	x, (0x07, sp)
 	incw	x
-	ldw	(0x07, sp), x
-	ldw	x, (0x07, sp)
 	cpw	x, #0x0004
 	jrc	00108$
 ;	ds18b20.c: 289: _tm1637Stop();
 	call	__tm1637Stop
-	addw	sp, #19
+	addw	sp, #13
 	ret
 ;	ds18b20.c: 294: void tm1637SetBrightness(char brightness)
 ;	-----------------------------------------
@@ -982,12 +938,13 @@ __delay_us:
 ;	 function _delay_ms
 ;	-----------------------------------------
 __delay_ms:
+	sub	sp, #2
 ;	ds18b20.c: 399: while(i--)
-	ldw	x, (0x03, sp)
+	ldw	x, (0x05, sp)
 00101$:
-	ldw	y, x
+	ldw	(0x01, sp), x
 	decw	x
-	tnzw	y
+	ldw	y, (0x01, sp)
 	jreq	00104$
 ;	ds18b20.c: 401: _delay_us(1000);
 	pushw	x
@@ -998,6 +955,7 @@ __delay_ms:
 	popw	x
 	jra	00101$
 00104$:
+	addw	sp, #2
 	ret
 ;	ds18b20.c: 407: void DS18B20_Init(void)
 ;	-----------------------------------------
@@ -1193,36 +1151,36 @@ _DS18B20_ReadByte:
 ;	 function DS18B20_ReadTemperature
 ;	-----------------------------------------
 _DS18B20_ReadTemperature:
-	sub	sp, #14
-;	ds18b20.c: 472: DS18B20_Init();
+	sub	sp, #10
+;	ds18b20.c: 481: DS18B20_Init();
 	call	_DS18B20_Init
-;	ds18b20.c: 473: DS18B20_WriteByte(0xcc);
+;	ds18b20.c: 482: DS18B20_WriteByte(0xcc);
 	push	#0xcc
 	call	_DS18B20_WriteByte
 	pop	a
-;	ds18b20.c: 474: DS18B20_WriteByte(0x44);
+;	ds18b20.c: 483: DS18B20_WriteByte(0x44);
 	push	#0x44
 	call	_DS18B20_WriteByte
 	pop	a
-;	ds18b20.c: 476: DS18B20_Init();
+;	ds18b20.c: 485: DS18B20_Init();
 	call	_DS18B20_Init
-;	ds18b20.c: 477: DS18B20_WriteByte(0xcc);
+;	ds18b20.c: 486: DS18B20_WriteByte(0xcc);
 	push	#0xcc
 	call	_DS18B20_WriteByte
 	pop	a
-;	ds18b20.c: 478: DS18B20_WriteByte(0xbe);
+;	ds18b20.c: 487: DS18B20_WriteByte(0xbe);
 	push	#0xbe
 	call	_DS18B20_WriteByte
 	pop	a
-;	ds18b20.c: 480: temp = DS18B20_ReadByte();
+;	ds18b20.c: 489: temp = DS18B20_ReadByte();
 	call	_DS18B20_ReadByte
-;	ds18b20.c: 481: t = (((temp & 0xf0) >> 4) + (temp & 0x07) * 0.125); 
+;	ds18b20.c: 490: t = (((temp & 0xf0) >> 4) + (temp & 0x07) * 0.125); 
 	ld	xh, a
 	and	a, #0xf0
 	swap	a
 	and	a, #0x0f
-	ld	(0x0e, sp), a
-	clr	(0x0d, sp)
+	ld	(0x0a, sp), a
+	clr	(0x09, sp)
 	ld	a, xh
 	and	a, #0x07
 	push	a
@@ -1238,7 +1196,7 @@ _DS18B20_ReadTemperature:
 	addw	sp, #8
 	ldw	(0x05, sp), y
 	pushw	x
-	ldw	y, (0x0f, sp)
+	ldw	y, (0x0b, sp)
 	pushw	y
 	call	___sint2fs
 	addw	sp, #2
@@ -1249,66 +1207,36 @@ _DS18B20_ReadTemperature:
 	pushw	x
 	pushw	y
 	call	___fsadd
-	addw	sp, #8
-	ldw	(0x0b, sp), x
-	ldw	(0x09, sp), y
-;	ds18b20.c: 482: temp = DS18B20_ReadByte();
-	call	_DS18B20_ReadByte
-;	ds18b20.c: 483: t += ((temp & 0x0f) << 4);
-	and	a, #0x0f
-	clrw	x
-	ld	xl, a
-	sllw	x
-	sllw	x
-	sllw	x
-	sllw	x
-	pushw	x
-	call	___sint2fs
-	addw	sp, #2
-	pushw	x
-	pushw	y
-	ldw	x, (0x0f, sp)
-	pushw	x
-	ldw	x, (0x0f, sp)
-	pushw	x
-	call	___fsadd
-	addw	sp, #8
-;	ds18b20.c: 485: return t;
-	addw	sp, #14
+;	ds18b20.c: 494: return t;
+	addw	sp, #18
 	ret
-;	ds18b20.c: 491: int main () {
+;	ds18b20.c: 500: int main () {
 ;	-----------------------------------------
 ;	 function main
 ;	-----------------------------------------
 _main:
 	sub	sp, #22
-;	ds18b20.c: 495: InitializeSystemClock();
+;	ds18b20.c: 504: InitializeSystemClock();
 	call	_InitializeSystemClock
-;	ds18b20.c: 498: PD_DDR = (1 << 3) | (1 << 2); // output mode
-	ldw	x, #0x5011
-	ld	a, #0x0c
-	ld	(x), a
-;	ds18b20.c: 499: PD_CR1 = (1 << 3) | (1 << 2); // push-pull
-	ldw	x, #0x5012
-	ld	a, #0x0c
-	ld	(x), a
-;	ds18b20.c: 500: PD_CR2 = (1 << 3) | (1 << 2); // up to 10MHz speed
-	ldw	x, #0x5013
-	ld	a, #0x0c
-	ld	(x), a
-;	ds18b20.c: 501: tm1637Init();
+;	ds18b20.c: 507: PD_DDR = (1 << 3) | (1 << 2); // output mode
+	mov	0x5011+0, #0x0c
+;	ds18b20.c: 508: PD_CR1 = (1 << 3) | (1 << 2); // push-pull
+	mov	0x5012+0, #0x0c
+;	ds18b20.c: 509: PD_CR2 = (1 << 3) | (1 << 2); // up to 10MHz speed
+	mov	0x5013+0, #0x0c
+;	ds18b20.c: 510: tm1637Init();
 	call	_tm1637Init
-;	ds18b20.c: 503: InitializeUART();
+;	ds18b20.c: 512: InitializeUART();
 	call	_InitializeUART
-;	ds18b20.c: 507: while (1) {
+;	ds18b20.c: 516: while (1) {
 00114$:
-;	ds18b20.c: 510: objTemp = DS18B20_ReadTemperature(); 
+;	ds18b20.c: 519: objTemp = DS18B20_ReadTemperature(); 
 	call	_DS18B20_ReadTemperature
 	ldw	(0x07, sp), x
 	ldw	(0x05, sp), y
-;	ds18b20.c: 513: while (objTemp > 1000) {
+;	ds18b20.c: 522: while (objTemp > 1000) {
 	clrw	x
-	ldw	(0x01, sp), x
+	ldw	(0x03, sp), x
 00101$:
 	clrw	x
 	pushw	x
@@ -1322,11 +1250,11 @@ _main:
 	addw	sp, #8
 	tnz	a
 	jreq	00127$
-;	ds18b20.c: 514: vierde+=1;
-	ldw	x, (0x01, sp)
+;	ds18b20.c: 523: vierde+=1;
+	ldw	x, (0x03, sp)
 	incw	x
-	ldw	(0x01, sp), x
-;	ds18b20.c: 515: objTemp-=1000;
+	ldw	(0x03, sp), x
+;	ds18b20.c: 524: objTemp-=1000;
 	clrw	x
 	pushw	x
 	push	#0x7a
@@ -1340,12 +1268,12 @@ _main:
 	ldw	(0x07, sp), x
 	ldw	(0x05, sp), y
 	jra	00101$
-;	ds18b20.c: 517: while (objTemp > 100) {
+;	ds18b20.c: 526: while (objTemp > 100) {
 00127$:
-	ldw	y, (0x01, sp)
-	ldw	(0x15, sp), y
+	ldw	y, (0x03, sp)
+	ldw	(0x13, sp), y
 	clrw	x
-	ldw	(0x03, sp), x
+	ldw	(0x09, sp), x
 00104$:
 	clrw	x
 	pushw	x
@@ -1359,11 +1287,11 @@ _main:
 	addw	sp, #8
 	tnz	a
 	jreq	00128$
-;	ds18b20.c: 518: derde+=1;
-	ldw	x, (0x03, sp)
+;	ds18b20.c: 527: derde+=1;
+	ldw	x, (0x09, sp)
 	incw	x
-	ldw	(0x03, sp), x
-;	ds18b20.c: 519: objTemp-=100;
+	ldw	(0x09, sp), x
+;	ds18b20.c: 528: objTemp-=100;
 	clrw	x
 	pushw	x
 	push	#0xc8
@@ -1377,12 +1305,12 @@ _main:
 	ldw	(0x07, sp), x
 	ldw	(0x05, sp), y
 	jra	00104$
-;	ds18b20.c: 521: while (objTemp > 10) {
+;	ds18b20.c: 530: while (objTemp > 10) {
 00128$:
-	ldw	y, (0x03, sp)
-	ldw	(0x13, sp), y
+	ldw	y, (0x09, sp)
+	ldw	(0x11, sp), y
 	clrw	x
-	ldw	(0x0b, sp), x
+	ldw	(0x01, sp), x
 00107$:
 	clrw	x
 	pushw	x
@@ -1396,11 +1324,11 @@ _main:
 	addw	sp, #8
 	tnz	a
 	jreq	00129$
-;	ds18b20.c: 522: tweede+=1;
-	ldw	x, (0x0b, sp)
+;	ds18b20.c: 531: tweede+=1;
+	ldw	x, (0x01, sp)
 	incw	x
-	ldw	(0x0b, sp), x
-;	ds18b20.c: 523: objTemp-=10;
+	ldw	(0x01, sp), x
+;	ds18b20.c: 532: objTemp-=10;
 	clrw	x
 	pushw	x
 	push	#0x20
@@ -1414,12 +1342,12 @@ _main:
 	ldw	(0x07, sp), x
 	ldw	(0x05, sp), y
 	jra	00107$
-;	ds18b20.c: 525: while (objTemp > 0)
+;	ds18b20.c: 534: while (objTemp > 0)
 00129$:
-	ldw	y, (0x0b, sp)
-	ldw	(0x11, sp), y
+	ldw	y, (0x01, sp)
+	ldw	(0x0f, sp), y
 	clrw	x
-	ldw	(0x09, sp), x
+	ldw	(0x0b, sp), x
 00110$:
 	clrw	x
 	pushw	x
@@ -1433,11 +1361,11 @@ _main:
 	addw	sp, #8
 	tnz	a
 	jreq	00112$
-;	ds18b20.c: 527: eerste+=1;
-	ldw	x, (0x09, sp)
+;	ds18b20.c: 536: eerste+=1;
+	ldw	x, (0x0b, sp)
 	incw	x
-	ldw	(0x09, sp), x
-;	ds18b20.c: 528: objTemp-=1;
+	ldw	(0x0b, sp), x
+;	ds18b20.c: 537: objTemp-=1;
 	clrw	x
 	pushw	x
 	push	#0x80
@@ -1452,43 +1380,43 @@ _main:
 	ldw	(0x05, sp), y
 	jra	00110$
 00112$:
-;	ds18b20.c: 531: utemp=vierde*1000+derde*100+tweede*10+eerste;
-	ldw	x, (0x15, sp)
+;	ds18b20.c: 540: utemp=vierde*1000+derde*100+tweede*10+eerste;
+	ldw	x, (0x13, sp)
 	pushw	x
 	push	#0xe8
 	push	#0x03
 	call	__mulint
 	addw	sp, #4
-	ldw	(0x0f, sp), x
-	ldw	x, (0x13, sp)
+	ldw	(0x0d, sp), x
+	ldw	x, (0x11, sp)
 	pushw	x
 	push	#0x64
 	push	#0x00
 	call	__mulint
 	addw	sp, #4
-	addw	x, (0x0f, sp)
-	ldw	(0x0d, sp), x
-	ldw	x, (0x11, sp)
+	addw	x, (0x0d, sp)
+	ldw	(0x15, sp), x
+	ldw	x, (0x0f, sp)
 	pushw	x
 	push	#0x0a
 	push	#0x00
 	call	__mulint
 	addw	sp, #4
-	addw	x, (0x0d, sp)
-	addw	x, (0x09, sp)
+	addw	x, (0x15, sp)
+	addw	x, (0x0b, sp)
 	clrw	y
 	tnzw	x
 	jrpl	00162$
 	decw	y
 00162$:
-;	ds18b20.c: 534: tm1637DisplayDecimal(utemp, 1); // eg 37:12
+;	ds18b20.c: 543: tm1637DisplayDecimal(utemp, 1); // eg 37:12
 	push	#0x01
 	push	#0x00
 	pushw	x
 	pushw	y
 	call	_tm1637DisplayDecimal
 	addw	sp, #6
-;	ds18b20.c: 537: delayTenMicro();
+;	ds18b20.c: 546: delayTenMicro();
 	call	_delayTenMicro
 	jp	00114$
 	addw	sp, #22

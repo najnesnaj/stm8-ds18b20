@@ -488,9 +488,9 @@ float DS18B20_ReadTemperature(void)
 
 	temp = DS18B20_ReadByte();
 	t = (((temp & 0xf0) >> 4) + (temp & 0x07) * 0.125); 
-	temp = DS18B20_ReadByte();
-	t += ((temp & 0x0f) << 4);
-
+//	temp = DS18B20_ReadByte();
+//	t += ((temp & 0x0f) << 4);
+//t = 49;
 	return t;
 }
 

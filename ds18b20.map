@@ -3,84 +3,44 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CABS                                00000000    00000000 =           0. bytes (ABS,CON)
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     00000000  l_BIT_BANK                      
-     00000000  l_BSEG                          
-     00000000  l_BSEG_BYTES                    
+     00000000  .__.ABS.                           _ulong2fs
      00000000  l_CABS                          
      00000000  l_DABS                          
      00000000  l_DATA                          
      00000000  l_INITIALIZED                   
      00000000  l_INITIALIZER                   
-     00000000  l_ISEG                          
-     00000000  l_OSEG                          
-     00000000  l_REG_BANK_0                    
-     00000000  l_REG_BANK_1                    
-     00000000  l_REG_BANK_2                    
-     00000000  l_REG_BANK_3                    
      00000000  l__CODE                         
-     00000000  s_BSEG                          
      00000000  s_CABS                          
      00000000  s_DABS                          
-     00000000  s_DSEG                          
-     00000000  s_REG_BANK_0                    
-     00000000  s_SSEG                          
+     00000000  s__CODE                         
+     00000001  l_SSEG                          
      00000001  s_DATA                          
      00000001  s_INITIALIZED                   
+     00000001  s_SSEG                          
      00000003  l_GSFINAL                       
-     00000008  s_REG_BANK_1                    
-     00000010  s_REG_BANK_2                    
-     00000018  s_BIT_BANK                      
-     00000018  s_ISEG                          
-     00000018  s_OSEG                          
-     00000018  s_REG_BANK_3                    
      0000001A  l_GSINIT                        
-     00000020  s_BSEG_BYTES                    
-     00000020  s__CODE                         
-     00000080  l_DSEG                          
      00000083  l_HOME                          
-     00000100  l_IRAM                          
-     00000100  l_SSEG                          
-     000011DA  l_CODE                          
+     00000F26  l_CODE                          
      00008000  s_HOME                          
      00008083  s_GSINIT                        
      0000809D  s_GSFINAL                       
      000080A0  s_CODE                          
-     0000927A  s_INITIALIZER                   
+     00008FC6  s_INITIALIZER                   
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 2.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+SSEG                                00000001    00000001 =           1. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     00000000  .__.ABS.                           _ulong2fs
-
 ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
-Hexadecimal  [32-Bits]
-
-Area                                    Addr        Size        Decimal Bytes (Attributes)
---------------------------------        ----        ----        ------- ----- ------------
-DSEG                                00000000    00000080 =         128. bytes (REL,CON)
-
-      Value  Global                              Global Defined In Module
-      -----  --------------------------------   ------------------------
-ASxxxx Linker V03.00 + NoICE + sdld,  page 4.
-Hexadecimal  [32-Bits]
-
-Area                                    Addr        Size        Decimal Bytes (Attributes)
---------------------------------        ----        ----        ------- ----- ------------
-SSEG                                00000000    00000100 =         256. bytes (REL,OVR)
-
-      Value  Global                              Global Defined In Module
-      -----  --------------------------------   ------------------------
-ASxxxx Linker V03.00 + NoICE + sdld,  page 5.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
@@ -89,7 +49,7 @@ HOME                                00008000    00000083 =         131. bytes (R
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-ASxxxx Linker V03.00 + NoICE + sdld,  page 6.
+ASxxxx Linker V03.00 + NoICE + sdld,  page 4.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
@@ -98,7 +58,7 @@ GSINIT                              00008083    0000001A =          26. bytes (R
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-ASxxxx Linker V03.00 + NoICE + sdld,  page 7.
+ASxxxx Linker V03.00 + NoICE + sdld,  page 5.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
@@ -107,64 +67,64 @@ GSFINAL                             0000809D    00000003 =           3. bytes (R
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-ASxxxx Linker V03.00 + NoICE + sdld,  page 8.
+ASxxxx Linker V03.00 + NoICE + sdld,  page 6.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CODE                                000080A0    000011DA =        4570. bytes (REL,CON)
+CODE                                000080A0    00000F26 =        3878. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
      000080A0  _delayTenMicro                     ds18b20
-     000080A8  _InitializeSystemClock             ds18b20
-     000080F2  _delay                             ds18b20
-     0000813D  _i2c_read                          ds18b20
-     0000814E  _i2c_set_nak                       ds18b20
-     00008156  _i2c_set_stop                      ds18b20
-     0000815E  _i2c_send_reg                      ds18b20
-     00008180  _UARTPrintF                        ds18b20
-     00008197  _i2c_send_address                  ds18b20
-     000081D9  _i2c_set_start_ack                 ds18b20
-     000081E7  _print_byte_hex                    ds18b20
-     00008235  _i2c_read_register                 ds18b20
-     00008278  _InitializeI2C                     ds18b20
-     000082A8  _InitializeUART                    ds18b20
-     00008321  _tm1637Init                        ds18b20
-     00008328  _tm1637DisplayDecimal              ds18b20
-     000083C6  _tm1637SetBrightness               ds18b20
-     000083D8  __tm1637Start                      ds18b20
-     000083EA  __tm1637Stop                       ds18b20
-     00008411  __tm1637ReadResult                 ds18b20
-     0000842C  __tm1637WriteByte                  ds18b20
-     0000846A  __tm1637ClkHigh                    ds18b20
-     00008472  __tm1637ClkLow                     ds18b20
-     0000847A  __tm1637DioHigh                    ds18b20
-     00008482  __tm1637DioLow                     ds18b20
-     0000848A  __delay_us                         ds18b20
-     0000849F  __delay_ms                         ds18b20
-     000084B6  _DS18B20_Init                      ds18b20
-     0000850D  _DS18B20_WriteByte                 ds18b20
-     00008552  _DS18B20_ReadByte                  ds18b20
-     000085B0  _DS18B20_ReadTemperature           ds18b20
-     00008634  _main                              ds18b20
-     0000877B  _segmentMap                        ds18b20
-     0000878C  ___fssub                           _fssub
-     000087B4  ___fsmul                           _fsmul
-     00008AEA  ___fsgt                            _fsgt
-     00008BF1  __mulint                           _mulint
-     00008C47  ___fsadd                           _fsadd
-     00008FD3  ___sint2fs                         _sint2fs
-     00008FE4  ___uchar2fs                        _uchar2fs
-     00008FF4  __mullong                          _mullong
-     0000915D  ___slong2fs                        _slong2fs
-     00009194  ___ulong2fs                        _ulong2fs
+     000080AB  _InitializeSystemClock             ds18b20
+     000080EB  _delay                             ds18b20
+     00008136  _i2c_read                          ds18b20
+     00008147  _i2c_set_nak                       ds18b20
+     0000814F  _i2c_set_stop                      ds18b20
+     00008157  _i2c_send_reg                      ds18b20
+     00008179  _UARTPrintF                        ds18b20
+     00008190  _i2c_send_address                  ds18b20
+     000081D2  _i2c_set_start_ack                 ds18b20
+     000081DE  _print_byte_hex                    ds18b20
+     0000822E  _i2c_read_register                 ds18b20
+     00008270  _InitializeI2C                     ds18b20
+     00008298  _InitializeUART                    ds18b20
+     0000830B  _tm1637Init                        ds18b20
+     00008312  _tm1637DisplayDecimal              ds18b20
+     000083A8  _tm1637SetBrightness               ds18b20
+     000083BA  __tm1637Start                      ds18b20
+     000083CC  __tm1637Stop                       ds18b20
+     000083F3  __tm1637ReadResult                 ds18b20
+     0000840E  __tm1637WriteByte                  ds18b20
+     0000844C  __tm1637ClkHigh                    ds18b20
+     00008454  __tm1637ClkLow                     ds18b20
+     0000845C  __tm1637DioHigh                    ds18b20
+     00008464  __tm1637DioLow                     ds18b20
+     0000846C  __delay_us                         ds18b20
+     00008481  __delay_ms                         ds18b20
+     0000849C  _DS18B20_Init                      ds18b20
+     000084F3  _DS18B20_WriteByte                 ds18b20
+     00008538  _DS18B20_ReadByte                  ds18b20
+     00008596  _DS18B20_ReadTemperature           ds18b20
+     000085F5  _main                              ds18b20
+     00008736  _segmentMap                        ds18b20
+     00008747  ___fssub                           _fssub
+     0000876A  ___fsmul                           _fsmul
+     00008A6C  ___fsgt                            _fsgt
+     00008B58  __mulint                           
+     00008B79  ___fsadd                           _fsadd
+     00008E3B  ___sint2fs                         _sint2fs
+     00008E4C  ___uchar2fs                        _uchar2fs
+     00008E5B  __mullong                          
+     00008ED7  ___slong2fs                        _slong2fs
+     00008F02  ___ulong2fs                        _ulong2fs
 
-ASxxxx Linker V03.00 + NoICE + sdld,  page 9.
+ASxxxx Linker V03.00 + NoICE + sdld,  page 7.
 
 Files Linked                              [ module(s) ]
 
-ds18b20.rel                               [  ]
+ds18b20.rel                               [ ds18b20 ]
 
 
 Libraries Linked                          [ object file ]
@@ -180,7 +140,7 @@ Libraries Linked                          [ object file ]
 /usr/bin/../share/sdcc/lib/stm8/stm8.lib  [ _slong2fs.rel ]
 /usr/bin/../share/sdcc/lib/stm8/stm8.lib  [ _ulong2fs.rel ]
 
-ASxxxx Linker V03.00 + NoICE + sdld,  page 10.
+ASxxxx Linker V03.00 + NoICE + sdld,  page 8.
 
 User Base Address Definitions
 
