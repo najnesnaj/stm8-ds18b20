@@ -1,7 +1,7 @@
                                       1 ;--------------------------------------------------------
                                       2 ; File Created by SDCC : free open source ANSI-C Compiler
-                                      3 ; Version 3.5.0 #9253 (Mar 24 2016) (Linux)
-                                      4 ; This file was generated Thu Jul 20 09:11:00 2017
+                                      3 ; Version 3.4.0 #8981 (Jul  5 2014) (Linux)
+                                      4 ; This file was generated Thu Jul 20 15:21:31 2017
                                       5 ;--------------------------------------------------------
                                       6 	.module ds18b20
                                       7 	.optsdcc -mstm8
@@ -54,8 +54,8 @@
                                      54 ; Stack segment in internal ram 
                                      55 ;--------------------------------------------------------
                                      56 	.area	SSEG
-      000001                         57 __start__stack:
-      000001                         58 	.ds	1
+      000000                         57 __start__stack:
+      000000                         58 	.ds	1
                                      59 
                                      60 ;--------------------------------------------------------
                                      61 ; absolute external ram data
@@ -118,7 +118,7 @@
       00808F AE 00 00         [ 2]  118 	ldw	x, #l_INITIALIZER
       008092 27 09            [ 1]  119 	jreq	00004$
       008094                        120 00003$:
-      008094 D6 8F C5         [ 1]  121 	ld	a, (s_INITIALIZER - 1, x)
+      008094 D6 92 80         [ 1]  121 	ld	a, (s_INITIALIZER - 1, x)
       008097 D7 00 00         [ 1]  122 	ld	(s_INITIALIZED - 1, x), a
       00809A 5A               [ 2]  123 	decw	x
       00809B 26 F7            [ 1]  124 	jrne	00003$
@@ -132,7 +132,7 @@
                                     132 	.area HOME
                                     133 	.area HOME
       008080                        134 __sdcc_program_startup:
-      008080 CC 85 F5         [ 2]  135 	jp	_main
+      008080 CC 86 2D         [ 2]  135 	jp	_main
                                     136 ;	return from main will return to caller
                                     137 ;--------------------------------------------------------
                                     138 ; code
@@ -145,1300 +145,1374 @@
       0080A0                        145 _delayTenMicro:
                                     146 ;	ds18b20.c: 35: for (a = 0; a < 50; ++a)
       0080A0 A6 32            [ 1]  147 	ld	a, #0x32
-      0080A2 95               [ 1]  148 	ld	xh, a
-      0080A3                        149 00104$:
-                                    150 ;	ds18b20.c: 36: __asm__("nop");
-      0080A3 9D               [ 1]  151 	nop
-      0080A4 9E               [ 1]  152 	ld	a, xh
-      0080A5 4A               [ 1]  153 	dec	a
-      0080A6 95               [ 1]  154 	ld	xh, a
-                                    155 ;	ds18b20.c: 35: for (a = 0; a < 50; ++a)
-      0080A7 4D               [ 1]  156 	tnz	a
-      0080A8 26 F9            [ 1]  157 	jrne	00104$
-      0080AA 81               [ 4]  158 	ret
-                                    159 ;	ds18b20.c: 39: void InitializeSystemClock() {
-                                    160 ;	-----------------------------------------
-                                    161 ;	 function InitializeSystemClock
-                                    162 ;	-----------------------------------------
-      0080AB                        163 _InitializeSystemClock:
-                                    164 ;	ds18b20.c: 40: CLK_ICKR = 0;                       //  Reset the Internal Clock Register.
-      0080AB 35 00 50 C0      [ 1]  165 	mov	0x50c0+0, #0x00
-                                    166 ;	ds18b20.c: 41: CLK_ICKR = CLK_HSIEN;               //  Enable the HSI.
-      0080AF 35 01 50 C0      [ 1]  167 	mov	0x50c0+0, #0x01
+      0080A2                        148 00104$:
+                                    149 ;	ds18b20.c: 36: __asm__("nop");
+      0080A2 9D               [ 1]  150 	nop
+      0080A3 4A               [ 1]  151 	dec	a
+                                    152 ;	ds18b20.c: 35: for (a = 0; a < 50; ++a)
+      0080A4 4D               [ 1]  153 	tnz	a
+      0080A5 26 FB            [ 1]  154 	jrne	00104$
+      0080A7 81               [ 4]  155 	ret
+                                    156 ;	ds18b20.c: 39: void InitializeSystemClock() {
+                                    157 ;	-----------------------------------------
+                                    158 ;	 function InitializeSystemClock
+                                    159 ;	-----------------------------------------
+      0080A8                        160 _InitializeSystemClock:
+                                    161 ;	ds18b20.c: 40: CLK_ICKR = 0;                       //  Reset the Internal Clock Register.
+      0080A8 AE 50 C0         [ 2]  162 	ldw	x, #0x50c0
+      0080AB 7F               [ 1]  163 	clr	(x)
+                                    164 ;	ds18b20.c: 41: CLK_ICKR = CLK_HSIEN;               //  Enable the HSI.
+      0080AC AE 50 C0         [ 2]  165 	ldw	x, #0x50c0
+      0080AF A6 01            [ 1]  166 	ld	a, #0x01
+      0080B1 F7               [ 1]  167 	ld	(x), a
                                     168 ;	ds18b20.c: 42: CLK_ECKR = 0;                       //  Disable the external clock.
-      0080B3 35 00 50 C1      [ 1]  169 	mov	0x50c1+0, #0x00
-                                    170 ;	ds18b20.c: 43: while ((CLK_ICKR & CLK_HSIRDY) == 0);       //  Wait for the HSI to be ready for use.
-      0080B7                        171 00101$:
-      0080B7 AE 50 C0         [ 2]  172 	ldw	x, #0x50c0
-      0080BA F6               [ 1]  173 	ld	a, (x)
-      0080BB A5 02            [ 1]  174 	bcp	a, #0x02
-      0080BD 27 F8            [ 1]  175 	jreq	00101$
-                                    176 ;	ds18b20.c: 44: CLK_CKDIVR = 0;                     //  Ensure the clocks are running at full speed.
-      0080BF 35 00 50 C6      [ 1]  177 	mov	0x50c6+0, #0x00
-                                    178 ;	ds18b20.c: 45: CLK_PCKENR1 = 0xff;                 //  Enable all peripheral clocks.
-      0080C3 35 FF 50 C7      [ 1]  179 	mov	0x50c7+0, #0xff
-                                    180 ;	ds18b20.c: 46: CLK_PCKENR2 = 0xff;                 //  Ditto.
-      0080C7 35 FF 50 CA      [ 1]  181 	mov	0x50ca+0, #0xff
-                                    182 ;	ds18b20.c: 47: CLK_CCOR = 0;                       //  Turn off CCO.
-      0080CB 35 00 50 C9      [ 1]  183 	mov	0x50c9+0, #0x00
-                                    184 ;	ds18b20.c: 48: CLK_HSITRIMR = 0;                   //  Turn off any HSIU trimming.
-      0080CF 35 00 50 CC      [ 1]  185 	mov	0x50cc+0, #0x00
-                                    186 ;	ds18b20.c: 49: CLK_SWIMCCR = 0;                    //  Set SWIM to run at clock / 2.
-      0080D3 35 00 50 CD      [ 1]  187 	mov	0x50cd+0, #0x00
-                                    188 ;	ds18b20.c: 50: CLK_SWR = 0xe1;                     //  Use HSI as the clock source.
-      0080D7 35 E1 50 C4      [ 1]  189 	mov	0x50c4+0, #0xe1
-                                    190 ;	ds18b20.c: 51: CLK_SWCR = 0;                       //  Reset the clock switch control register.
-      0080DB 35 00 50 C5      [ 1]  191 	mov	0x50c5+0, #0x00
-                                    192 ;	ds18b20.c: 52: CLK_SWCR = CLK_SWEN;                //  Enable switching.
-      0080DF 35 02 50 C5      [ 1]  193 	mov	0x50c5+0, #0x02
-                                    194 ;	ds18b20.c: 53: while ((CLK_SWCR & CLK_SWBSY) != 0);        //  Pause while the clock switch is busy.
-      0080E3                        195 00104$:
-      0080E3 AE 50 C5         [ 2]  196 	ldw	x, #0x50c5
-      0080E6 F6               [ 1]  197 	ld	a, (x)
-      0080E7 44               [ 1]  198 	srl	a
-      0080E8 25 F9            [ 1]  199 	jrc	00104$
-      0080EA 81               [ 4]  200 	ret
-                                    201 ;	ds18b20.c: 55: void delay (int time_ms) {
-                                    202 ;	-----------------------------------------
-                                    203 ;	 function delay
-                                    204 ;	-----------------------------------------
-      0080EB                        205 _delay:
-      0080EB 52 0A            [ 2]  206 	sub	sp, #10
-                                    207 ;	ds18b20.c: 57: for (x = 0; x < 1036*time_ms; ++x)
-      0080ED 5F               [ 1]  208 	clrw	x
-      0080EE 1F 03            [ 2]  209 	ldw	(0x03, sp), x
-      0080F0 1F 01            [ 2]  210 	ldw	(0x01, sp), x
-      0080F2 1E 0D            [ 2]  211 	ldw	x, (0x0d, sp)
-      0080F4 89               [ 2]  212 	pushw	x
-      0080F5 4B 0C            [ 1]  213 	push	#0x0c
-      0080F7 4B 04            [ 1]  214 	push	#0x04
-      0080F9 CD 8B 58         [ 4]  215 	call	__mulint
-      0080FC 5B 04            [ 2]  216 	addw	sp, #4
-      0080FE 1F 09            [ 2]  217 	ldw	(0x09, sp), x
-      008100                        218 00103$:
-      008100 16 09            [ 2]  219 	ldw	y, (0x09, sp)
-      008102 17 07            [ 2]  220 	ldw	(0x07, sp), y
-      008104 7B 07            [ 1]  221 	ld	a, (0x07, sp)
-      008106 49               [ 1]  222 	rlc	a
-      008107 4F               [ 1]  223 	clr	a
-      008108 A2 00            [ 1]  224 	sbc	a, #0x00
-      00810A 6B 06            [ 1]  225 	ld	(0x06, sp), a
-      00810C 6B 05            [ 1]  226 	ld	(0x05, sp), a
-      00810E 1E 03            [ 2]  227 	ldw	x, (0x03, sp)
-      008110 13 07            [ 2]  228 	cpw	x, (0x07, sp)
-      008112 7B 02            [ 1]  229 	ld	a, (0x02, sp)
-      008114 12 06            [ 1]  230 	sbc	a, (0x06, sp)
-      008116 7B 01            [ 1]  231 	ld	a, (0x01, sp)
-      008118 12 05            [ 1]  232 	sbc	a, (0x05, sp)
-      00811A 2E 17            [ 1]  233 	jrsge	00105$
-                                    234 ;	ds18b20.c: 58: __asm__("nop");
-      00811C 9D               [ 1]  235 	nop
-                                    236 ;	ds18b20.c: 57: for (x = 0; x < 1036*time_ms; ++x)
-      00811D 16 03            [ 2]  237 	ldw	y, (0x03, sp)
-      00811F 72 A9 00 01      [ 2]  238 	addw	y, #0x0001
-      008123 7B 02            [ 1]  239 	ld	a, (0x02, sp)
-      008125 A9 00            [ 1]  240 	adc	a, #0x00
-      008127 97               [ 1]  241 	ld	xl, a
-      008128 7B 01            [ 1]  242 	ld	a, (0x01, sp)
-      00812A A9 00            [ 1]  243 	adc	a, #0x00
-      00812C 95               [ 1]  244 	ld	xh, a
-      00812D 17 03            [ 2]  245 	ldw	(0x03, sp), y
-      00812F 1F 01            [ 2]  246 	ldw	(0x01, sp), x
-      008131 20 CD            [ 2]  247 	jra	00103$
-      008133                        248 00105$:
-      008133 5B 0A            [ 2]  249 	addw	sp, #10
-      008135 81               [ 4]  250 	ret
-                                    251 ;	ds18b20.c: 60: void i2c_read (unsigned char *x) {
-                                    252 ;	-----------------------------------------
-                                    253 ;	 function i2c_read
-                                    254 ;	-----------------------------------------
-      008136                        255 _i2c_read:
-                                    256 ;	ds18b20.c: 61: while ((I2C_SR1 & I2C_RXNE) == 0);
-      008136                        257 00101$:
-      008136 AE 52 17         [ 2]  258 	ldw	x, #0x5217
-      008139 F6               [ 1]  259 	ld	a, (x)
-      00813A A5 40            [ 1]  260 	bcp	a, #0x40
-      00813C 27 F8            [ 1]  261 	jreq	00101$
-                                    262 ;	ds18b20.c: 62: *x = I2C_DR;
-      00813E 16 03            [ 2]  263 	ldw	y, (0x03, sp)
-      008140 AE 52 16         [ 2]  264 	ldw	x, #0x5216
-      008143 F6               [ 1]  265 	ld	a, (x)
-      008144 90 F7            [ 1]  266 	ld	(y), a
-      008146 81               [ 4]  267 	ret
-                                    268 ;	ds18b20.c: 64: void i2c_set_nak (void) {
-                                    269 ;	-----------------------------------------
-                                    270 ;	 function i2c_set_nak
-                                    271 ;	-----------------------------------------
-      008147                        272 _i2c_set_nak:
-                                    273 ;	ds18b20.c: 65: I2C_CR2 &= ~I2C_ACK;
-      008147 AE 52 11         [ 2]  274 	ldw	x, #0x5211
-      00814A F6               [ 1]  275 	ld	a, (x)
-      00814B A4 FB            [ 1]  276 	and	a, #0xfb
-      00814D F7               [ 1]  277 	ld	(x), a
-      00814E 81               [ 4]  278 	ret
-                                    279 ;	ds18b20.c: 67: void i2c_set_stop (void) {
-                                    280 ;	-----------------------------------------
-                                    281 ;	 function i2c_set_stop
-                                    282 ;	-----------------------------------------
-      00814F                        283 _i2c_set_stop:
-                                    284 ;	ds18b20.c: 68: I2C_CR2 |= I2C_STOP;
-      00814F AE 52 11         [ 2]  285 	ldw	x, #0x5211
-      008152 F6               [ 1]  286 	ld	a, (x)
-      008153 AA 02            [ 1]  287 	or	a, #0x02
-      008155 F7               [ 1]  288 	ld	(x), a
-      008156 81               [ 4]  289 	ret
-                                    290 ;	ds18b20.c: 70: void i2c_send_reg (UCHAR addr) {
-                                    291 ;	-----------------------------------------
-                                    292 ;	 function i2c_send_reg
-                                    293 ;	-----------------------------------------
-      008157                        294 _i2c_send_reg:
-      008157 52 02            [ 2]  295 	sub	sp, #2
-                                    296 ;	ds18b20.c: 72: reg = I2C_SR1;
-      008159 AE 52 17         [ 2]  297 	ldw	x, #0x5217
-      00815C F6               [ 1]  298 	ld	a, (x)
-      00815D 5F               [ 1]  299 	clrw	x
-      00815E 97               [ 1]  300 	ld	xl, a
-      00815F 1F 01            [ 2]  301 	ldw	(0x01, sp), x
-                                    302 ;	ds18b20.c: 73: reg = I2C_SR3;
-      008161 AE 52 19         [ 2]  303 	ldw	x, #0x5219
-      008164 F6               [ 1]  304 	ld	a, (x)
-      008165 5F               [ 1]  305 	clrw	x
-      008166 97               [ 1]  306 	ld	xl, a
-      008167 1F 01            [ 2]  307 	ldw	(0x01, sp), x
-                                    308 ;	ds18b20.c: 74: I2C_DR = addr;
-      008169 AE 52 16         [ 2]  309 	ldw	x, #0x5216
-      00816C 7B 05            [ 1]  310 	ld	a, (0x05, sp)
-      00816E F7               [ 1]  311 	ld	(x), a
-                                    312 ;	ds18b20.c: 75: while ((I2C_SR1 & I2C_TXE) == 0);
-      00816F                        313 00101$:
-      00816F AE 52 17         [ 2]  314 	ldw	x, #0x5217
-      008172 F6               [ 1]  315 	ld	a, (x)
-      008173 4D               [ 1]  316 	tnz	a
-      008174 2A F9            [ 1]  317 	jrpl	00101$
-      008176 5B 02            [ 2]  318 	addw	sp, #2
-      008178 81               [ 4]  319 	ret
-                                    320 ;	ds18b20.c: 79: void UARTPrintF (char *message) {
-                                    321 ;	-----------------------------------------
-                                    322 ;	 function UARTPrintF
-                                    323 ;	-----------------------------------------
-      008179                        324 _UARTPrintF:
-                                    325 ;	ds18b20.c: 80: char *ch = message;
-      008179 16 03            [ 2]  326 	ldw	y, (0x03, sp)
-                                    327 ;	ds18b20.c: 81: while (*ch) {
-      00817B                        328 00104$:
-      00817B 90 F6            [ 1]  329 	ld	a, (y)
-      00817D 4D               [ 1]  330 	tnz	a
-      00817E 27 0F            [ 1]  331 	jreq	00107$
-                                    332 ;	ds18b20.c: 82: UART1_DR = (unsigned char) *ch;     //  Put the next character into the data transmission register.
-      008180 AE 52 31         [ 2]  333 	ldw	x, #0x5231
-      008183 F7               [ 1]  334 	ld	(x), a
-                                    335 ;	ds18b20.c: 83: while ((UART1_SR & SR_TXE) == 0);   //  Wait for transmission to complete.
-      008184                        336 00101$:
-      008184 AE 52 30         [ 2]  337 	ldw	x, #0x5230
-      008187 F6               [ 1]  338 	ld	a, (x)
-      008188 4D               [ 1]  339 	tnz	a
-      008189 2A F9            [ 1]  340 	jrpl	00101$
-                                    341 ;	ds18b20.c: 84: ch++;                               //  Grab the next character.
-      00818B 90 5C            [ 2]  342 	incw	y
-      00818D 20 EC            [ 2]  343 	jra	00104$
-      00818F                        344 00107$:
-      00818F 81               [ 4]  345 	ret
-                                    346 ;	ds18b20.c: 90: void i2c_send_address (UCHAR addr, UCHAR mode) {
-                                    347 ;	-----------------------------------------
-                                    348 ;	 function i2c_send_address
-                                    349 ;	-----------------------------------------
-      008190                        350 _i2c_send_address:
-      008190 52 03            [ 2]  351 	sub	sp, #3
-                                    352 ;	ds18b20.c: 92: reg = I2C_SR1;
-      008192 AE 52 17         [ 2]  353 	ldw	x, #0x5217
-      008195 F6               [ 1]  354 	ld	a, (x)
-      008196 5F               [ 1]  355 	clrw	x
-      008197 97               [ 1]  356 	ld	xl, a
-      008198 1F 01            [ 2]  357 	ldw	(0x01, sp), x
-                                    358 ;	ds18b20.c: 93: I2C_DR = (addr << 1) | mode;
-      00819A 7B 06            [ 1]  359 	ld	a, (0x06, sp)
-      00819C 48               [ 1]  360 	sll	a
-      00819D 1A 07            [ 1]  361 	or	a, (0x07, sp)
-      00819F AE 52 16         [ 2]  362 	ldw	x, #0x5216
-      0081A2 F7               [ 1]  363 	ld	(x), a
-                                    364 ;	ds18b20.c: 94: if (mode == I2C_READ) {
-      0081A3 7B 07            [ 1]  365 	ld	a, (0x07, sp)
-      0081A5 A1 01            [ 1]  366 	cp	a, #0x01
-      0081A7 26 06            [ 1]  367 	jrne	00127$
-      0081A9 A6 01            [ 1]  368 	ld	a, #0x01
-      0081AB 6B 03            [ 1]  369 	ld	(0x03, sp), a
-      0081AD 20 02            [ 2]  370 	jra	00128$
-      0081AF                        371 00127$:
-      0081AF 0F 03            [ 1]  372 	clr	(0x03, sp)
-      0081B1                        373 00128$:
-      0081B1 0D 03            [ 1]  374 	tnz	(0x03, sp)
-      0081B3 27 08            [ 1]  375 	jreq	00103$
-                                    376 ;	ds18b20.c: 95: I2C_OARL = 0;
-      0081B5 35 00 52 13      [ 1]  377 	mov	0x5213+0, #0x00
-                                    378 ;	ds18b20.c: 96: I2C_OARH = 0;
-      0081B9 35 00 52 14      [ 1]  379 	mov	0x5214+0, #0x00
-                                    380 ;	ds18b20.c: 99: while ((I2C_SR1 & I2C_ADDR) == 0);
-      0081BD                        381 00103$:
-                                    382 ;	ds18b20.c: 92: reg = I2C_SR1;
-      0081BD AE 52 17         [ 2]  383 	ldw	x, #0x5217
-      0081C0 F6               [ 1]  384 	ld	a, (x)
-                                    385 ;	ds18b20.c: 99: while ((I2C_SR1 & I2C_ADDR) == 0);
-      0081C1 A5 02            [ 1]  386 	bcp	a, #0x02
-      0081C3 27 F8            [ 1]  387 	jreq	00103$
-                                    388 ;	ds18b20.c: 100: if (mode == I2C_READ)
-      0081C5 0D 03            [ 1]  389 	tnz	(0x03, sp)
-      0081C7 27 06            [ 1]  390 	jreq	00108$
-                                    391 ;	ds18b20.c: 101: UNSET (I2C_SR1, I2C_ADDR);
-      0081C9 A4 FD            [ 1]  392 	and	a, #0xfd
-      0081CB AE 52 17         [ 2]  393 	ldw	x, #0x5217
-      0081CE F7               [ 1]  394 	ld	(x), a
-      0081CF                        395 00108$:
-      0081CF 5B 03            [ 2]  396 	addw	sp, #3
-      0081D1 81               [ 4]  397 	ret
-                                    398 ;	ds18b20.c: 104: void i2c_set_start_ack (void) {
-                                    399 ;	-----------------------------------------
-                                    400 ;	 function i2c_set_start_ack
-                                    401 ;	-----------------------------------------
-      0081D2                        402 _i2c_set_start_ack:
-                                    403 ;	ds18b20.c: 105: I2C_CR2 = I2C_ACK | I2C_START;
-      0081D2 35 05 52 11      [ 1]  404 	mov	0x5211+0, #0x05
-                                    405 ;	ds18b20.c: 106: while ((I2C_SR1 & I2C_SB) == 0);
-      0081D6                        406 00101$:
-      0081D6 AE 52 17         [ 2]  407 	ldw	x, #0x5217
-      0081D9 F6               [ 1]  408 	ld	a, (x)
-      0081DA 44               [ 1]  409 	srl	a
-      0081DB 24 F9            [ 1]  410 	jrnc	00101$
-      0081DD 81               [ 4]  411 	ret
-                                    412 ;	ds18b20.c: 113: void print_byte_hex (unsigned char buffer) {
-                                    413 ;	-----------------------------------------
-                                    414 ;	 function print_byte_hex
+      0080B2 AE 50 C1         [ 2]  169 	ldw	x, #0x50c1
+      0080B5 7F               [ 1]  170 	clr	(x)
+                                    171 ;	ds18b20.c: 43: while ((CLK_ICKR & CLK_HSIRDY) == 0);       //  Wait for the HSI to be ready for use.
+      0080B6                        172 00101$:
+      0080B6 AE 50 C0         [ 2]  173 	ldw	x, #0x50c0
+      0080B9 F6               [ 1]  174 	ld	a, (x)
+      0080BA A5 02            [ 1]  175 	bcp	a, #0x02
+      0080BC 27 F8            [ 1]  176 	jreq	00101$
+                                    177 ;	ds18b20.c: 44: CLK_CKDIVR = 0;                     //  Ensure the clocks are running at full speed.
+      0080BE AE 50 C6         [ 2]  178 	ldw	x, #0x50c6
+      0080C1 7F               [ 1]  179 	clr	(x)
+                                    180 ;	ds18b20.c: 45: CLK_PCKENR1 = 0xff;                 //  Enable all peripheral clocks.
+      0080C2 AE 50 C7         [ 2]  181 	ldw	x, #0x50c7
+      0080C5 A6 FF            [ 1]  182 	ld	a, #0xff
+      0080C7 F7               [ 1]  183 	ld	(x), a
+                                    184 ;	ds18b20.c: 46: CLK_PCKENR2 = 0xff;                 //  Ditto.
+      0080C8 AE 50 CA         [ 2]  185 	ldw	x, #0x50ca
+      0080CB A6 FF            [ 1]  186 	ld	a, #0xff
+      0080CD F7               [ 1]  187 	ld	(x), a
+                                    188 ;	ds18b20.c: 47: CLK_CCOR = 0;                       //  Turn off CCO.
+      0080CE AE 50 C9         [ 2]  189 	ldw	x, #0x50c9
+      0080D1 7F               [ 1]  190 	clr	(x)
+                                    191 ;	ds18b20.c: 48: CLK_HSITRIMR = 0;                   //  Turn off any HSIU trimming.
+      0080D2 AE 50 CC         [ 2]  192 	ldw	x, #0x50cc
+      0080D5 7F               [ 1]  193 	clr	(x)
+                                    194 ;	ds18b20.c: 49: CLK_SWIMCCR = 0;                    //  Set SWIM to run at clock / 2.
+      0080D6 AE 50 CD         [ 2]  195 	ldw	x, #0x50cd
+      0080D9 7F               [ 1]  196 	clr	(x)
+                                    197 ;	ds18b20.c: 50: CLK_SWR = 0xe1;                     //  Use HSI as the clock source.
+      0080DA AE 50 C4         [ 2]  198 	ldw	x, #0x50c4
+      0080DD A6 E1            [ 1]  199 	ld	a, #0xe1
+      0080DF F7               [ 1]  200 	ld	(x), a
+                                    201 ;	ds18b20.c: 51: CLK_SWCR = 0;                       //  Reset the clock switch control register.
+      0080E0 AE 50 C5         [ 2]  202 	ldw	x, #0x50c5
+      0080E3 7F               [ 1]  203 	clr	(x)
+                                    204 ;	ds18b20.c: 52: CLK_SWCR = CLK_SWEN;                //  Enable switching.
+      0080E4 AE 50 C5         [ 2]  205 	ldw	x, #0x50c5
+      0080E7 A6 02            [ 1]  206 	ld	a, #0x02
+      0080E9 F7               [ 1]  207 	ld	(x), a
+                                    208 ;	ds18b20.c: 53: while ((CLK_SWCR & CLK_SWBSY) != 0);        //  Pause while the clock switch is busy.
+      0080EA                        209 00104$:
+      0080EA AE 50 C5         [ 2]  210 	ldw	x, #0x50c5
+      0080ED F6               [ 1]  211 	ld	a, (x)
+      0080EE 44               [ 1]  212 	srl	a
+      0080EF 25 F9            [ 1]  213 	jrc	00104$
+      0080F1 81               [ 4]  214 	ret
+                                    215 ;	ds18b20.c: 55: void delay (int time_ms) {
+                                    216 ;	-----------------------------------------
+                                    217 ;	 function delay
+                                    218 ;	-----------------------------------------
+      0080F2                        219 _delay:
+      0080F2 52 0A            [ 2]  220 	sub	sp, #10
+                                    221 ;	ds18b20.c: 57: for (x = 0; x < 1036*time_ms; ++x)
+      0080F4 5F               [ 1]  222 	clrw	x
+      0080F5 1F 03            [ 2]  223 	ldw	(0x03, sp), x
+      0080F7 1F 01            [ 2]  224 	ldw	(0x01, sp), x
+      0080F9 1E 0D            [ 2]  225 	ldw	x, (0x0d, sp)
+      0080FB 89               [ 2]  226 	pushw	x
+      0080FC 4B 0C            [ 1]  227 	push	#0x0c
+      0080FE 4B 04            [ 1]  228 	push	#0x04
+      008100 CD 8B F8         [ 4]  229 	call	__mulint
+      008103 5B 04            [ 2]  230 	addw	sp, #4
+      008105 1F 09            [ 2]  231 	ldw	(0x09, sp), x
+      008107                        232 00103$:
+      008107 16 09            [ 2]  233 	ldw	y, (0x09, sp)
+      008109 17 07            [ 2]  234 	ldw	(0x07, sp), y
+      00810B 7B 07            [ 1]  235 	ld	a, (0x07, sp)
+      00810D 49               [ 1]  236 	rlc	a
+      00810E 4F               [ 1]  237 	clr	a
+      00810F A2 00            [ 1]  238 	sbc	a, #0x00
+      008111 6B 06            [ 1]  239 	ld	(0x06, sp), a
+      008113 6B 05            [ 1]  240 	ld	(0x05, sp), a
+      008115 1E 03            [ 2]  241 	ldw	x, (0x03, sp)
+      008117 13 07            [ 2]  242 	cpw	x, (0x07, sp)
+      008119 7B 02            [ 1]  243 	ld	a, (0x02, sp)
+      00811B 12 06            [ 1]  244 	sbc	a, (0x06, sp)
+      00811D 7B 01            [ 1]  245 	ld	a, (0x01, sp)
+      00811F 12 05            [ 1]  246 	sbc	a, (0x05, sp)
+      008121 2E 17            [ 1]  247 	jrsge	00105$
+                                    248 ;	ds18b20.c: 58: __asm__("nop");
+      008123 9D               [ 1]  249 	nop
+                                    250 ;	ds18b20.c: 57: for (x = 0; x < 1036*time_ms; ++x)
+      008124 16 03            [ 2]  251 	ldw	y, (0x03, sp)
+      008126 72 A9 00 01      [ 2]  252 	addw	y, #0x0001
+      00812A 7B 02            [ 1]  253 	ld	a, (0x02, sp)
+      00812C A9 00            [ 1]  254 	adc	a, #0x00
+      00812E 97               [ 1]  255 	ld	xl, a
+      00812F 7B 01            [ 1]  256 	ld	a, (0x01, sp)
+      008131 A9 00            [ 1]  257 	adc	a, #0x00
+      008133 95               [ 1]  258 	ld	xh, a
+      008134 17 03            [ 2]  259 	ldw	(0x03, sp), y
+      008136 1F 01            [ 2]  260 	ldw	(0x01, sp), x
+      008138 20 CD            [ 2]  261 	jra	00103$
+      00813A                        262 00105$:
+      00813A 5B 0A            [ 2]  263 	addw	sp, #10
+      00813C 81               [ 4]  264 	ret
+                                    265 ;	ds18b20.c: 60: void i2c_read (unsigned char *x) {
+                                    266 ;	-----------------------------------------
+                                    267 ;	 function i2c_read
+                                    268 ;	-----------------------------------------
+      00813D                        269 _i2c_read:
+                                    270 ;	ds18b20.c: 61: while ((I2C_SR1 & I2C_RXNE) == 0);
+      00813D                        271 00101$:
+      00813D AE 52 17         [ 2]  272 	ldw	x, #0x5217
+      008140 F6               [ 1]  273 	ld	a, (x)
+      008141 A5 40            [ 1]  274 	bcp	a, #0x40
+      008143 27 F8            [ 1]  275 	jreq	00101$
+                                    276 ;	ds18b20.c: 62: *x = I2C_DR;
+      008145 16 03            [ 2]  277 	ldw	y, (0x03, sp)
+      008147 AE 52 16         [ 2]  278 	ldw	x, #0x5216
+      00814A F6               [ 1]  279 	ld	a, (x)
+      00814B 90 F7            [ 1]  280 	ld	(y), a
+      00814D 81               [ 4]  281 	ret
+                                    282 ;	ds18b20.c: 64: void i2c_set_nak (void) {
+                                    283 ;	-----------------------------------------
+                                    284 ;	 function i2c_set_nak
+                                    285 ;	-----------------------------------------
+      00814E                        286 _i2c_set_nak:
+                                    287 ;	ds18b20.c: 65: I2C_CR2 &= ~I2C_ACK;
+      00814E AE 52 11         [ 2]  288 	ldw	x, #0x5211
+      008151 F6               [ 1]  289 	ld	a, (x)
+      008152 A4 FB            [ 1]  290 	and	a, #0xfb
+      008154 F7               [ 1]  291 	ld	(x), a
+      008155 81               [ 4]  292 	ret
+                                    293 ;	ds18b20.c: 67: void i2c_set_stop (void) {
+                                    294 ;	-----------------------------------------
+                                    295 ;	 function i2c_set_stop
+                                    296 ;	-----------------------------------------
+      008156                        297 _i2c_set_stop:
+                                    298 ;	ds18b20.c: 68: I2C_CR2 |= I2C_STOP;
+      008156 AE 52 11         [ 2]  299 	ldw	x, #0x5211
+      008159 F6               [ 1]  300 	ld	a, (x)
+      00815A AA 02            [ 1]  301 	or	a, #0x02
+      00815C F7               [ 1]  302 	ld	(x), a
+      00815D 81               [ 4]  303 	ret
+                                    304 ;	ds18b20.c: 70: void i2c_send_reg (UCHAR addr) {
+                                    305 ;	-----------------------------------------
+                                    306 ;	 function i2c_send_reg
+                                    307 ;	-----------------------------------------
+      00815E                        308 _i2c_send_reg:
+      00815E 52 02            [ 2]  309 	sub	sp, #2
+                                    310 ;	ds18b20.c: 72: reg = I2C_SR1;
+      008160 AE 52 17         [ 2]  311 	ldw	x, #0x5217
+      008163 F6               [ 1]  312 	ld	a, (x)
+      008164 5F               [ 1]  313 	clrw	x
+      008165 97               [ 1]  314 	ld	xl, a
+      008166 1F 01            [ 2]  315 	ldw	(0x01, sp), x
+                                    316 ;	ds18b20.c: 73: reg = I2C_SR3;
+      008168 AE 52 19         [ 2]  317 	ldw	x, #0x5219
+      00816B F6               [ 1]  318 	ld	a, (x)
+      00816C 5F               [ 1]  319 	clrw	x
+      00816D 97               [ 1]  320 	ld	xl, a
+      00816E 1F 01            [ 2]  321 	ldw	(0x01, sp), x
+                                    322 ;	ds18b20.c: 74: I2C_DR = addr;
+      008170 AE 52 16         [ 2]  323 	ldw	x, #0x5216
+      008173 7B 05            [ 1]  324 	ld	a, (0x05, sp)
+      008175 F7               [ 1]  325 	ld	(x), a
+                                    326 ;	ds18b20.c: 75: while ((I2C_SR1 & I2C_TXE) == 0);
+      008176                        327 00101$:
+      008176 AE 52 17         [ 2]  328 	ldw	x, #0x5217
+      008179 F6               [ 1]  329 	ld	a, (x)
+      00817A 48               [ 1]  330 	sll	a
+      00817B 24 F9            [ 1]  331 	jrnc	00101$
+      00817D 5B 02            [ 2]  332 	addw	sp, #2
+      00817F 81               [ 4]  333 	ret
+                                    334 ;	ds18b20.c: 79: void UARTPrintF (char *message) {
+                                    335 ;	-----------------------------------------
+                                    336 ;	 function UARTPrintF
+                                    337 ;	-----------------------------------------
+      008180                        338 _UARTPrintF:
+                                    339 ;	ds18b20.c: 80: char *ch = message;
+      008180 16 03            [ 2]  340 	ldw	y, (0x03, sp)
+                                    341 ;	ds18b20.c: 81: while (*ch) {
+      008182                        342 00104$:
+      008182 90 F6            [ 1]  343 	ld	a, (y)
+      008184 4D               [ 1]  344 	tnz	a
+      008185 27 0F            [ 1]  345 	jreq	00107$
+                                    346 ;	ds18b20.c: 82: UART1_DR = (unsigned char) *ch;     //  Put the next character into the data transmission register.
+      008187 AE 52 31         [ 2]  347 	ldw	x, #0x5231
+      00818A F7               [ 1]  348 	ld	(x), a
+                                    349 ;	ds18b20.c: 83: while ((UART1_SR & SR_TXE) == 0);   //  Wait for transmission to complete.
+      00818B                        350 00101$:
+      00818B AE 52 30         [ 2]  351 	ldw	x, #0x5230
+      00818E F6               [ 1]  352 	ld	a, (x)
+      00818F 48               [ 1]  353 	sll	a
+      008190 24 F9            [ 1]  354 	jrnc	00101$
+                                    355 ;	ds18b20.c: 84: ch++;                               //  Grab the next character.
+      008192 90 5C            [ 2]  356 	incw	y
+      008194 20 EC            [ 2]  357 	jra	00104$
+      008196                        358 00107$:
+      008196 81               [ 4]  359 	ret
+                                    360 ;	ds18b20.c: 90: void i2c_send_address (UCHAR addr, UCHAR mode) {
+                                    361 ;	-----------------------------------------
+                                    362 ;	 function i2c_send_address
+                                    363 ;	-----------------------------------------
+      008197                        364 _i2c_send_address:
+      008197 52 03            [ 2]  365 	sub	sp, #3
+                                    366 ;	ds18b20.c: 92: reg = I2C_SR1;
+      008199 AE 52 17         [ 2]  367 	ldw	x, #0x5217
+      00819C F6               [ 1]  368 	ld	a, (x)
+      00819D 5F               [ 1]  369 	clrw	x
+      00819E 97               [ 1]  370 	ld	xl, a
+      00819F 1F 01            [ 2]  371 	ldw	(0x01, sp), x
+                                    372 ;	ds18b20.c: 93: I2C_DR = (addr << 1) | mode;
+      0081A1 7B 06            [ 1]  373 	ld	a, (0x06, sp)
+      0081A3 48               [ 1]  374 	sll	a
+      0081A4 1A 07            [ 1]  375 	or	a, (0x07, sp)
+      0081A6 AE 52 16         [ 2]  376 	ldw	x, #0x5216
+      0081A9 F7               [ 1]  377 	ld	(x), a
+                                    378 ;	ds18b20.c: 94: if (mode == I2C_READ) {
+      0081AA 7B 07            [ 1]  379 	ld	a, (0x07, sp)
+      0081AC A1 01            [ 1]  380 	cp	a, #0x01
+      0081AE 26 06            [ 1]  381 	jrne	00127$
+      0081B0 A6 01            [ 1]  382 	ld	a, #0x01
+      0081B2 6B 03            [ 1]  383 	ld	(0x03, sp), a
+      0081B4 20 02            [ 2]  384 	jra	00128$
+      0081B6                        385 00127$:
+      0081B6 0F 03            [ 1]  386 	clr	(0x03, sp)
+      0081B8                        387 00128$:
+      0081B8 0D 03            [ 1]  388 	tnz	(0x03, sp)
+      0081BA 27 08            [ 1]  389 	jreq	00103$
+                                    390 ;	ds18b20.c: 95: I2C_OARL = 0;
+      0081BC AE 52 13         [ 2]  391 	ldw	x, #0x5213
+      0081BF 7F               [ 1]  392 	clr	(x)
+                                    393 ;	ds18b20.c: 96: I2C_OARH = 0;
+      0081C0 AE 52 14         [ 2]  394 	ldw	x, #0x5214
+      0081C3 7F               [ 1]  395 	clr	(x)
+                                    396 ;	ds18b20.c: 99: while ((I2C_SR1 & I2C_ADDR) == 0);
+      0081C4                        397 00103$:
+                                    398 ;	ds18b20.c: 92: reg = I2C_SR1;
+      0081C4 AE 52 17         [ 2]  399 	ldw	x, #0x5217
+      0081C7 F6               [ 1]  400 	ld	a, (x)
+                                    401 ;	ds18b20.c: 99: while ((I2C_SR1 & I2C_ADDR) == 0);
+      0081C8 A5 02            [ 1]  402 	bcp	a, #0x02
+      0081CA 27 F8            [ 1]  403 	jreq	00103$
+                                    404 ;	ds18b20.c: 100: if (mode == I2C_READ)
+      0081CC 0D 03            [ 1]  405 	tnz	(0x03, sp)
+      0081CE 27 06            [ 1]  406 	jreq	00108$
+                                    407 ;	ds18b20.c: 101: UNSET (I2C_SR1, I2C_ADDR);
+      0081D0 A4 FD            [ 1]  408 	and	a, #0xfd
+      0081D2 AE 52 17         [ 2]  409 	ldw	x, #0x5217
+      0081D5 F7               [ 1]  410 	ld	(x), a
+      0081D6                        411 00108$:
+      0081D6 5B 03            [ 2]  412 	addw	sp, #3
+      0081D8 81               [ 4]  413 	ret
+                                    414 ;	ds18b20.c: 104: void i2c_set_start_ack (void) {
                                     415 ;	-----------------------------------------
-      0081DE                        416 _print_byte_hex:
-      0081DE 52 0E            [ 2]  417 	sub	sp, #14
-                                    418 ;	ds18b20.c: 116: a = (buffer >> 4);
-      0081E0 7B 11            [ 1]  419 	ld	a, (0x11, sp)
-      0081E2 4E               [ 1]  420 	swap	a
-      0081E3 A4 0F            [ 1]  421 	and	a, #0x0f
-      0081E5 5F               [ 1]  422 	clrw	x
-      0081E6 97               [ 1]  423 	ld	xl, a
-                                    424 ;	ds18b20.c: 117: if (a > 9)
-      0081E7 A3 00 09         [ 2]  425 	cpw	x, #0x0009
-      0081EA 2D 07            [ 1]  426 	jrsle	00102$
-                                    427 ;	ds18b20.c: 118: a = a + 'a' - 10;
-      0081EC 1C 00 57         [ 2]  428 	addw	x, #0x0057
-      0081EF 1F 03            [ 2]  429 	ldw	(0x03, sp), x
-      0081F1 20 05            [ 2]  430 	jra	00103$
-      0081F3                        431 00102$:
-                                    432 ;	ds18b20.c: 120: a += '0'; 
-      0081F3 1C 00 30         [ 2]  433 	addw	x, #0x0030
-      0081F6 1F 03            [ 2]  434 	ldw	(0x03, sp), x
-      0081F8                        435 00103$:
-                                    436 ;	ds18b20.c: 121: b = buffer & 0x0f;
-      0081F8 7B 11            [ 1]  437 	ld	a, (0x11, sp)
-      0081FA A4 0F            [ 1]  438 	and	a, #0x0f
-      0081FC 5F               [ 1]  439 	clrw	x
-      0081FD 97               [ 1]  440 	ld	xl, a
-                                    441 ;	ds18b20.c: 122: if (b > 9)
-      0081FE A3 00 09         [ 2]  442 	cpw	x, #0x0009
-      008201 2D 07            [ 1]  443 	jrsle	00105$
-                                    444 ;	ds18b20.c: 123: b = b + 'a' - 10;
-      008203 1C 00 57         [ 2]  445 	addw	x, #0x0057
-      008206 1F 01            [ 2]  446 	ldw	(0x01, sp), x
-      008208 20 05            [ 2]  447 	jra	00106$
-      00820A                        448 00105$:
-                                    449 ;	ds18b20.c: 125: b += '0'; 
-      00820A 1C 00 30         [ 2]  450 	addw	x, #0x0030
-      00820D 1F 01            [ 2]  451 	ldw	(0x01, sp), x
-      00820F                        452 00106$:
-                                    453 ;	ds18b20.c: 126: message[0] = a;
-      00820F 96               [ 1]  454 	ldw	x, sp
-      008210 1C 00 05         [ 2]  455 	addw	x, #5
-      008213 1F 0D            [ 2]  456 	ldw	(0x0d, sp), x
-      008215 7B 04            [ 1]  457 	ld	a, (0x04, sp)
-      008217 1E 0D            [ 2]  458 	ldw	x, (0x0d, sp)
-      008219 F7               [ 1]  459 	ld	(x), a
-                                    460 ;	ds18b20.c: 127: message[1] = b;
-      00821A 1E 0D            [ 2]  461 	ldw	x, (0x0d, sp)
-      00821C 5C               [ 2]  462 	incw	x
-      00821D 7B 02            [ 1]  463 	ld	a, (0x02, sp)
-      00821F F7               [ 1]  464 	ld	(x), a
-                                    465 ;	ds18b20.c: 128: message[2] = 0;
-      008220 1E 0D            [ 2]  466 	ldw	x, (0x0d, sp)
-      008222 5C               [ 2]  467 	incw	x
-      008223 5C               [ 2]  468 	incw	x
-      008224 7F               [ 1]  469 	clr	(x)
-                                    470 ;	ds18b20.c: 129: UARTPrintF (message);
-      008225 1E 0D            [ 2]  471 	ldw	x, (0x0d, sp)
-      008227 89               [ 2]  472 	pushw	x
-      008228 CD 81 79         [ 4]  473 	call	_UARTPrintF
-      00822B 5B 10            [ 2]  474 	addw	sp, #16
-      00822D 81               [ 4]  475 	ret
-                                    476 ;	ds18b20.c: 133: unsigned char i2c_read_register (UCHAR addr, UCHAR rg) {
-                                    477 ;	-----------------------------------------
-                                    478 ;	 function i2c_read_register
-                                    479 ;	-----------------------------------------
-      00822E                        480 _i2c_read_register:
-      00822E 52 02            [ 2]  481 	sub	sp, #2
-                                    482 ;	ds18b20.c: 136: i2c_set_start_ack ();
-      008230 CD 81 D2         [ 4]  483 	call	_i2c_set_start_ack
-                                    484 ;	ds18b20.c: 137: i2c_send_address (addr, I2C_WRITE);
-      008233 4B 00            [ 1]  485 	push	#0x00
-      008235 7B 06            [ 1]  486 	ld	a, (0x06, sp)
-      008237 88               [ 1]  487 	push	a
-      008238 CD 81 90         [ 4]  488 	call	_i2c_send_address
-      00823B 5B 02            [ 2]  489 	addw	sp, #2
-                                    490 ;	ds18b20.c: 138: i2c_send_reg (rg);
-      00823D 7B 06            [ 1]  491 	ld	a, (0x06, sp)
-      00823F 88               [ 1]  492 	push	a
-      008240 CD 81 57         [ 4]  493 	call	_i2c_send_reg
-      008243 84               [ 1]  494 	pop	a
-                                    495 ;	ds18b20.c: 139: i2c_set_start_ack ();
-      008244 CD 81 D2         [ 4]  496 	call	_i2c_set_start_ack
-                                    497 ;	ds18b20.c: 140: i2c_send_address (addr, I2C_READ);
-      008247 4B 01            [ 1]  498 	push	#0x01
-      008249 7B 06            [ 1]  499 	ld	a, (0x06, sp)
-      00824B 88               [ 1]  500 	push	a
-      00824C CD 81 90         [ 4]  501 	call	_i2c_send_address
-      00824F 5B 02            [ 2]  502 	addw	sp, #2
-                                    503 ;	ds18b20.c: 141: reg = I2C_SR1;
-      008251 AE 52 17         [ 2]  504 	ldw	x, #0x5217
-      008254 F6               [ 1]  505 	ld	a, (x)
-      008255 6B 02            [ 1]  506 	ld	(0x02, sp), a
-                                    507 ;	ds18b20.c: 142: reg = I2C_SR3;
-      008257 AE 52 19         [ 2]  508 	ldw	x, #0x5219
-      00825A F6               [ 1]  509 	ld	a, (x)
-      00825B 6B 02            [ 1]  510 	ld	(0x02, sp), a
-                                    511 ;	ds18b20.c: 143: i2c_set_nak ();
-      00825D CD 81 47         [ 4]  512 	call	_i2c_set_nak
-                                    513 ;	ds18b20.c: 144: i2c_set_stop ();
-      008260 CD 81 4F         [ 4]  514 	call	_i2c_set_stop
-                                    515 ;	ds18b20.c: 145: i2c_read (&x);
-      008263 96               [ 1]  516 	ldw	x, sp
-      008264 5C               [ 2]  517 	incw	x
-      008265 89               [ 2]  518 	pushw	x
-      008266 CD 81 36         [ 4]  519 	call	_i2c_read
-      008269 5B 02            [ 2]  520 	addw	sp, #2
-                                    521 ;	ds18b20.c: 146: return (x);
-      00826B 7B 01            [ 1]  522 	ld	a, (0x01, sp)
-      00826D 5B 02            [ 2]  523 	addw	sp, #2
-      00826F 81               [ 4]  524 	ret
-                                    525 ;	ds18b20.c: 149: void InitializeI2C (void) {
-                                    526 ;	-----------------------------------------
-                                    527 ;	 function InitializeI2C
-                                    528 ;	-----------------------------------------
-      008270                        529 _InitializeI2C:
-                                    530 ;	ds18b20.c: 150: I2C_CR1 = 0;   //  Disable I2C before configuration starts. PE bit is bit 0
-      008270 35 00 52 10      [ 1]  531 	mov	0x5210+0, #0x00
-                                    532 ;	ds18b20.c: 154: I2C_FREQR = 16;                     //  Set the internal clock frequency (MHz).
-      008274 35 10 52 12      [ 1]  533 	mov	0x5212+0, #0x10
-                                    534 ;	ds18b20.c: 155: UNSET (I2C_CCRH, I2C_FS);           //  I2C running is standard mode.
-      008278 72 1F 52 1C      [ 1]  535 	bres	0x521c, #7
-                                    536 ;	ds18b20.c: 157: I2C_CCRL = 0xa0;                    //  SCL clock speed is 50 kHz.
-      00827C 35 A0 52 1B      [ 1]  537 	mov	0x521b+0, #0xa0
-                                    538 ;	ds18b20.c: 159: I2C_CCRH &= 0x00;	// Clears lower 4 bits "CCR"
-      008280 35 00 52 1C      [ 1]  539 	mov	0x521c+0, #0x00
-                                    540 ;	ds18b20.c: 163: UNSET (I2C_OARH, I2C_ADDMODE);      //  7 bit address mode.
-      008284 72 1F 52 14      [ 1]  541 	bres	0x5214, #7
-                                    542 ;	ds18b20.c: 164: SET (I2C_OARH, I2C_ADDCONF);        //  Docs say this must always be 1.
-      008288 AE 52 14         [ 2]  543 	ldw	x, #0x5214
-      00828B F6               [ 1]  544 	ld	a, (x)
-      00828C AA 40            [ 1]  545 	or	a, #0x40
-      00828E F7               [ 1]  546 	ld	(x), a
-                                    547 ;	ds18b20.c: 168: I2C_TRISER = 17;
-      00828F 35 11 52 1D      [ 1]  548 	mov	0x521d+0, #0x11
-                                    549 ;	ds18b20.c: 176: I2C_CR1 = I2C_PE;	// Enables port
-      008293 35 01 52 10      [ 1]  550 	mov	0x5210+0, #0x01
-      008297 81               [ 4]  551 	ret
-                                    552 ;	ds18b20.c: 182: void InitializeUART() {
-                                    553 ;	-----------------------------------------
-                                    554 ;	 function InitializeUART
-                                    555 ;	-----------------------------------------
-      008298                        556 _InitializeUART:
-                                    557 ;	ds18b20.c: 192: UART1_CR1 = 0;
-      008298 35 00 52 34      [ 1]  558 	mov	0x5234+0, #0x00
-                                    559 ;	ds18b20.c: 193: UART1_CR2 = 0;
-      00829C 35 00 52 35      [ 1]  560 	mov	0x5235+0, #0x00
-                                    561 ;	ds18b20.c: 194: UART1_CR4 = 0;
-      0082A0 35 00 52 37      [ 1]  562 	mov	0x5237+0, #0x00
-                                    563 ;	ds18b20.c: 195: UART1_CR3 = 0;
-      0082A4 35 00 52 36      [ 1]  564 	mov	0x5236+0, #0x00
-                                    565 ;	ds18b20.c: 196: UART1_CR5 = 0;
-      0082A8 35 00 52 38      [ 1]  566 	mov	0x5238+0, #0x00
-                                    567 ;	ds18b20.c: 197: UART1_GTR = 0;
-      0082AC 35 00 52 39      [ 1]  568 	mov	0x5239+0, #0x00
-                                    569 ;	ds18b20.c: 198: UART1_PSCR = 0;
-      0082B0 35 00 52 3A      [ 1]  570 	mov	0x523a+0, #0x00
-                                    571 ;	ds18b20.c: 202: UNSET (UART1_CR1, CR1_M);        //  8 Data bits.
-      0082B4 AE 52 34         [ 2]  572 	ldw	x, #0x5234
-      0082B7 F6               [ 1]  573 	ld	a, (x)
-      0082B8 A4 EF            [ 1]  574 	and	a, #0xef
-      0082BA F7               [ 1]  575 	ld	(x), a
-                                    576 ;	ds18b20.c: 203: UNSET (UART1_CR1, CR1_PCEN);     //  Disable parity.
-      0082BB AE 52 34         [ 2]  577 	ldw	x, #0x5234
-      0082BE F6               [ 1]  578 	ld	a, (x)
-      0082BF A4 FB            [ 1]  579 	and	a, #0xfb
-      0082C1 F7               [ 1]  580 	ld	(x), a
-                                    581 ;	ds18b20.c: 204: UNSET (UART1_CR3, CR3_STOPH);    //  1 stop bit.
-      0082C2 AE 52 36         [ 2]  582 	ldw	x, #0x5236
-      0082C5 F6               [ 1]  583 	ld	a, (x)
-      0082C6 A4 DF            [ 1]  584 	and	a, #0xdf
-      0082C8 F7               [ 1]  585 	ld	(x), a
-                                    586 ;	ds18b20.c: 205: UNSET (UART1_CR3, CR3_STOPL);    //  1 stop bit.
-      0082C9 AE 52 36         [ 2]  587 	ldw	x, #0x5236
-      0082CC F6               [ 1]  588 	ld	a, (x)
-      0082CD A4 EF            [ 1]  589 	and	a, #0xef
-      0082CF F7               [ 1]  590 	ld	(x), a
-                                    591 ;	ds18b20.c: 206: UART1_BRR2 = 0x0a;      //  Set the baud rate registers to 115200 baud
-      0082D0 35 0A 52 33      [ 1]  592 	mov	0x5233+0, #0x0a
-                                    593 ;	ds18b20.c: 207: UART1_BRR1 = 0x08;      //  based upon a 16 MHz system clock.
-      0082D4 35 08 52 32      [ 1]  594 	mov	0x5232+0, #0x08
-                                    595 ;	ds18b20.c: 211: UNSET (UART1_CR2, CR2_TEN);      //  Disable transmit.
-      0082D8 AE 52 35         [ 2]  596 	ldw	x, #0x5235
-      0082DB F6               [ 1]  597 	ld	a, (x)
-      0082DC A4 F7            [ 1]  598 	and	a, #0xf7
-      0082DE F7               [ 1]  599 	ld	(x), a
-                                    600 ;	ds18b20.c: 212: UNSET (UART1_CR2, CR2_REN);      //  Disable receive.
-      0082DF AE 52 35         [ 2]  601 	ldw	x, #0x5235
-      0082E2 F6               [ 1]  602 	ld	a, (x)
-      0082E3 A4 FB            [ 1]  603 	and	a, #0xfb
-      0082E5 F7               [ 1]  604 	ld	(x), a
-                                    605 ;	ds18b20.c: 216: SET (UART1_CR3, CR3_CPOL);
-      0082E6 AE 52 36         [ 2]  606 	ldw	x, #0x5236
-      0082E9 F6               [ 1]  607 	ld	a, (x)
-      0082EA AA 04            [ 1]  608 	or	a, #0x04
-      0082EC F7               [ 1]  609 	ld	(x), a
-                                    610 ;	ds18b20.c: 217: SET (UART1_CR3, CR3_CPHA);
-      0082ED AE 52 36         [ 2]  611 	ldw	x, #0x5236
-      0082F0 F6               [ 1]  612 	ld	a, (x)
-      0082F1 AA 02            [ 1]  613 	or	a, #0x02
-      0082F3 F7               [ 1]  614 	ld	(x), a
-                                    615 ;	ds18b20.c: 218: SET (UART1_CR3, CR3_LBCL);
-      0082F4 72 10 52 36      [ 1]  616 	bset	0x5236, #0
-                                    617 ;	ds18b20.c: 222: SET (UART1_CR2, CR2_TEN);
-      0082F8 AE 52 35         [ 2]  618 	ldw	x, #0x5235
-      0082FB F6               [ 1]  619 	ld	a, (x)
-      0082FC AA 08            [ 1]  620 	or	a, #0x08
-      0082FE F7               [ 1]  621 	ld	(x), a
-                                    622 ;	ds18b20.c: 223: SET (UART1_CR2, CR2_REN);
-      0082FF AE 52 35         [ 2]  623 	ldw	x, #0x5235
-      008302 F6               [ 1]  624 	ld	a, (x)
-      008303 AA 04            [ 1]  625 	or	a, #0x04
-      008305 F7               [ 1]  626 	ld	(x), a
-                                    627 ;	ds18b20.c: 224: UART1_CR3 = CR3_CLKEN;
-      008306 35 08 52 36      [ 1]  628 	mov	0x5236+0, #0x08
-      00830A 81               [ 4]  629 	ret
-                                    630 ;	ds18b20.c: 252: void tm1637Init(void)
-                                    631 ;	-----------------------------------------
-                                    632 ;	 function tm1637Init
-                                    633 ;	-----------------------------------------
-      00830B                        634 _tm1637Init:
-                                    635 ;	ds18b20.c: 254: tm1637SetBrightness(8);
-      00830B 4B 08            [ 1]  636 	push	#0x08
-      00830D CD 83 A8         [ 4]  637 	call	_tm1637SetBrightness
-      008310 84               [ 1]  638 	pop	a
-      008311 81               [ 4]  639 	ret
-                                    640 ;	ds18b20.c: 259: void tm1637DisplayDecimal(long TT,unsigned int displaySeparator)
-                                    641 ;	-----------------------------------------
-                                    642 ;	 function tm1637DisplayDecimal
-                                    643 ;	-----------------------------------------
-      008312                        644 _tm1637DisplayDecimal:
-      008312 52 0D            [ 2]  645 	sub	sp, #13
-                                    646 ;	ds18b20.c: 261: unsigned int v = TT & 0x0000FFFF;
-      008314 16 12            [ 2]  647 	ldw	y, (0x12, sp)
-      008316 5F               [ 1]  648 	clrw	x
-      008317 17 01            [ 2]  649 	ldw	(0x01, sp), y
-                                    650 ;	ds18b20.c: 267: for (ii = 0; ii < 4; ++ii) {
-      008319 96               [ 1]  651 	ldw	x, sp
-      00831A 1C 00 05         [ 2]  652 	addw	x, #5
-      00831D 1F 0A            [ 2]  653 	ldw	(0x0a, sp), x
-      00831F AE 87 36         [ 2]  654 	ldw	x, #_segmentMap+0
-      008322 1F 0C            [ 2]  655 	ldw	(0x0c, sp), x
-      008324 5F               [ 1]  656 	clrw	x
-      008325 1F 03            [ 2]  657 	ldw	(0x03, sp), x
-      008327                        658 00106$:
-                                    659 ;	ds18b20.c: 268: digitArr[ii] = segmentMap[v % 10];
-      008327 1E 0A            [ 2]  660 	ldw	x, (0x0a, sp)
-      008329 72 FB 03         [ 2]  661 	addw	x, (0x03, sp)
-      00832C 89               [ 2]  662 	pushw	x
-      00832D 1E 03            [ 2]  663 	ldw	x, (0x03, sp)
-      00832F 90 AE 00 0A      [ 2]  664 	ldw	y, #0x000a
-      008333 65               [ 2]  665 	divw	x, y
-      008334 90 9F            [ 1]  666 	ld	a, yl
-      008336 85               [ 2]  667 	popw	x
-      008337 90 97            [ 1]  668 	ld	yl, a
-      008339 72 F9 0C         [ 2]  669 	addw	y, (0x0c, sp)
-      00833C 90 F6            [ 1]  670 	ld	a, (y)
-      00833E F7               [ 1]  671 	ld	(x), a
-                                    672 ;	ds18b20.c: 269: if (ii == 2 && displaySeparator) {
-      00833F 89               [ 2]  673 	pushw	x
-      008340 1E 05            [ 2]  674 	ldw	x, (0x05, sp)
-      008342 A3 00 02         [ 2]  675 	cpw	x, #0x0002
-      008345 85               [ 2]  676 	popw	x
-      008346 26 08            [ 1]  677 	jrne	00102$
-      008348 16 14            [ 2]  678 	ldw	y, (0x14, sp)
-      00834A 27 04            [ 1]  679 	jreq	00102$
-                                    680 ;	ds18b20.c: 270: digitArr[ii] |= 1 << 7;
-      00834C F6               [ 1]  681 	ld	a, (x)
-      00834D AA 80            [ 1]  682 	or	a, #0x80
-      00834F F7               [ 1]  683 	ld	(x), a
-      008350                        684 00102$:
-                                    685 ;	ds18b20.c: 272: v /= 10;
-      008350 1E 01            [ 2]  686 	ldw	x, (0x01, sp)
-      008352 90 AE 00 0A      [ 2]  687 	ldw	y, #0x000a
-      008356 65               [ 2]  688 	divw	x, y
-      008357 1F 01            [ 2]  689 	ldw	(0x01, sp), x
-                                    690 ;	ds18b20.c: 267: for (ii = 0; ii < 4; ++ii) {
-      008359 1E 03            [ 2]  691 	ldw	x, (0x03, sp)
-      00835B 5C               [ 2]  692 	incw	x
-      00835C 1F 03            [ 2]  693 	ldw	(0x03, sp), x
-      00835E 1E 03            [ 2]  694 	ldw	x, (0x03, sp)
-      008360 A3 00 04         [ 2]  695 	cpw	x, #0x0004
-      008363 25 C2            [ 1]  696 	jrc	00106$
-                                    697 ;	ds18b20.c: 275: _tm1637Start();
-      008365 CD 83 BA         [ 4]  698 	call	__tm1637Start
-                                    699 ;	ds18b20.c: 276: _tm1637WriteByte(0x40);
-      008368 4B 40            [ 1]  700 	push	#0x40
-      00836A CD 84 0E         [ 4]  701 	call	__tm1637WriteByte
-      00836D 84               [ 1]  702 	pop	a
-                                    703 ;	ds18b20.c: 277: _tm1637ReadResult();
-      00836E CD 83 F3         [ 4]  704 	call	__tm1637ReadResult
-                                    705 ;	ds18b20.c: 278: _tm1637Stop();
-      008371 CD 83 CC         [ 4]  706 	call	__tm1637Stop
-                                    707 ;	ds18b20.c: 280: _tm1637Start();
-      008374 CD 83 BA         [ 4]  708 	call	__tm1637Start
-                                    709 ;	ds18b20.c: 281: _tm1637WriteByte(0xc0);
-      008377 4B C0            [ 1]  710 	push	#0xc0
-      008379 CD 84 0E         [ 4]  711 	call	__tm1637WriteByte
-      00837C 84               [ 1]  712 	pop	a
-                                    713 ;	ds18b20.c: 282: _tm1637ReadResult();
-      00837D CD 83 F3         [ 4]  714 	call	__tm1637ReadResult
-                                    715 ;	ds18b20.c: 284: for (ii = 0; ii < 4; ++ii) {
-      008380 5F               [ 1]  716 	clrw	x
-      008381                        717 00108$:
-                                    718 ;	ds18b20.c: 285: _tm1637WriteByte(digitArr[3 - ii]);
-      008381 41               [ 1]  719 	exg	a, xl
-      008382 6B 09            [ 1]  720 	ld	(0x09, sp), a
-      008384 41               [ 1]  721 	exg	a, xl
-      008385 A6 03            [ 1]  722 	ld	a, #0x03
-      008387 10 09            [ 1]  723 	sub	a, (0x09, sp)
-      008389 90 5F            [ 1]  724 	clrw	y
-      00838B 90 97            [ 1]  725 	ld	yl, a
-      00838D 72 F9 0A         [ 2]  726 	addw	y, (0x0a, sp)
-      008390 90 F6            [ 1]  727 	ld	a, (y)
-      008392 89               [ 2]  728 	pushw	x
-      008393 88               [ 1]  729 	push	a
-      008394 CD 84 0E         [ 4]  730 	call	__tm1637WriteByte
-      008397 84               [ 1]  731 	pop	a
-      008398 CD 83 F3         [ 4]  732 	call	__tm1637ReadResult
-      00839B 85               [ 2]  733 	popw	x
-                                    734 ;	ds18b20.c: 284: for (ii = 0; ii < 4; ++ii) {
-      00839C 5C               [ 2]  735 	incw	x
-      00839D A3 00 04         [ 2]  736 	cpw	x, #0x0004
-      0083A0 25 DF            [ 1]  737 	jrc	00108$
-                                    738 ;	ds18b20.c: 289: _tm1637Stop();
-      0083A2 CD 83 CC         [ 4]  739 	call	__tm1637Stop
-      0083A5 5B 0D            [ 2]  740 	addw	sp, #13
-      0083A7 81               [ 4]  741 	ret
-                                    742 ;	ds18b20.c: 294: void tm1637SetBrightness(char brightness)
-                                    743 ;	-----------------------------------------
-                                    744 ;	 function tm1637SetBrightness
-                                    745 ;	-----------------------------------------
-      0083A8                        746 _tm1637SetBrightness:
-                                    747 ;	ds18b20.c: 301: _tm1637Start();
-      0083A8 CD 83 BA         [ 4]  748 	call	__tm1637Start
-                                    749 ;	ds18b20.c: 302: _tm1637WriteByte(0x87 + brightness);
-      0083AB 7B 03            [ 1]  750 	ld	a, (0x03, sp)
-      0083AD AB 87            [ 1]  751 	add	a, #0x87
-      0083AF 88               [ 1]  752 	push	a
-      0083B0 CD 84 0E         [ 4]  753 	call	__tm1637WriteByte
-      0083B3 84               [ 1]  754 	pop	a
-                                    755 ;	ds18b20.c: 303: _tm1637ReadResult();
-      0083B4 CD 83 F3         [ 4]  756 	call	__tm1637ReadResult
-                                    757 ;	ds18b20.c: 304: _tm1637Stop();
-      0083B7 CC 83 CC         [ 2]  758 	jp	__tm1637Stop
-                                    759 ;	ds18b20.c: 307: void _tm1637Start(void)
-                                    760 ;	-----------------------------------------
-                                    761 ;	 function _tm1637Start
-                                    762 ;	-----------------------------------------
-      0083BA                        763 __tm1637Start:
-                                    764 ;	ds18b20.c: 309: _tm1637ClkHigh();
-      0083BA CD 84 4C         [ 4]  765 	call	__tm1637ClkHigh
-                                    766 ;	ds18b20.c: 310: _tm1637DioHigh();
-      0083BD CD 84 5C         [ 4]  767 	call	__tm1637DioHigh
-                                    768 ;	ds18b20.c: 311: delay(5);
-      0083C0 4B 05            [ 1]  769 	push	#0x05
-      0083C2 4B 00            [ 1]  770 	push	#0x00
-      0083C4 CD 80 EB         [ 4]  771 	call	_delay
-      0083C7 5B 02            [ 2]  772 	addw	sp, #2
-                                    773 ;	ds18b20.c: 312: _tm1637DioLow();
-      0083C9 CC 84 64         [ 2]  774 	jp	__tm1637DioLow
-                                    775 ;	ds18b20.c: 315: void _tm1637Stop(void)
-                                    776 ;	-----------------------------------------
-                                    777 ;	 function _tm1637Stop
-                                    778 ;	-----------------------------------------
-      0083CC                        779 __tm1637Stop:
-                                    780 ;	ds18b20.c: 317: _tm1637ClkLow();
-      0083CC CD 84 54         [ 4]  781 	call	__tm1637ClkLow
-                                    782 ;	ds18b20.c: 318: delay(5);
-      0083CF 4B 05            [ 1]  783 	push	#0x05
-      0083D1 4B 00            [ 1]  784 	push	#0x00
-      0083D3 CD 80 EB         [ 4]  785 	call	_delay
-      0083D6 5B 02            [ 2]  786 	addw	sp, #2
-                                    787 ;	ds18b20.c: 319: _tm1637DioLow();
-      0083D8 CD 84 64         [ 4]  788 	call	__tm1637DioLow
-                                    789 ;	ds18b20.c: 320: delay(5);
-      0083DB 4B 05            [ 1]  790 	push	#0x05
-      0083DD 4B 00            [ 1]  791 	push	#0x00
-      0083DF CD 80 EB         [ 4]  792 	call	_delay
-      0083E2 5B 02            [ 2]  793 	addw	sp, #2
-                                    794 ;	ds18b20.c: 321: _tm1637ClkHigh();
-      0083E4 CD 84 4C         [ 4]  795 	call	__tm1637ClkHigh
-                                    796 ;	ds18b20.c: 322: delay(5);
-      0083E7 4B 05            [ 1]  797 	push	#0x05
-      0083E9 4B 00            [ 1]  798 	push	#0x00
-      0083EB CD 80 EB         [ 4]  799 	call	_delay
-      0083EE 5B 02            [ 2]  800 	addw	sp, #2
-                                    801 ;	ds18b20.c: 323: _tm1637DioHigh();
-      0083F0 CC 84 5C         [ 2]  802 	jp	__tm1637DioHigh
-                                    803 ;	ds18b20.c: 326: void _tm1637ReadResult(void)
+                                    416 ;	 function i2c_set_start_ack
+                                    417 ;	-----------------------------------------
+      0081D9                        418 _i2c_set_start_ack:
+                                    419 ;	ds18b20.c: 105: I2C_CR2 = I2C_ACK | I2C_START;
+      0081D9 AE 52 11         [ 2]  420 	ldw	x, #0x5211
+      0081DC A6 05            [ 1]  421 	ld	a, #0x05
+      0081DE F7               [ 1]  422 	ld	(x), a
+                                    423 ;	ds18b20.c: 106: while ((I2C_SR1 & I2C_SB) == 0);
+      0081DF                        424 00101$:
+      0081DF AE 52 17         [ 2]  425 	ldw	x, #0x5217
+      0081E2 F6               [ 1]  426 	ld	a, (x)
+      0081E3 44               [ 1]  427 	srl	a
+      0081E4 24 F9            [ 1]  428 	jrnc	00101$
+      0081E6 81               [ 4]  429 	ret
+                                    430 ;	ds18b20.c: 113: void print_byte_hex (unsigned char buffer) {
+                                    431 ;	-----------------------------------------
+                                    432 ;	 function print_byte_hex
+                                    433 ;	-----------------------------------------
+      0081E7                        434 _print_byte_hex:
+      0081E7 52 0C            [ 2]  435 	sub	sp, #12
+                                    436 ;	ds18b20.c: 116: a = (buffer >> 4);
+      0081E9 7B 0F            [ 1]  437 	ld	a, (0x0f, sp)
+      0081EB 4E               [ 1]  438 	swap	a
+      0081EC A4 0F            [ 1]  439 	and	a, #0x0f
+      0081EE 5F               [ 1]  440 	clrw	x
+      0081EF 97               [ 1]  441 	ld	xl, a
+                                    442 ;	ds18b20.c: 117: if (a > 9)
+      0081F0 A3 00 09         [ 2]  443 	cpw	x, #0x0009
+      0081F3 2D 07            [ 1]  444 	jrsle	00102$
+                                    445 ;	ds18b20.c: 118: a = a + 'a' - 10;
+      0081F5 1C 00 57         [ 2]  446 	addw	x, #0x0057
+      0081F8 1F 03            [ 2]  447 	ldw	(0x03, sp), x
+      0081FA 20 05            [ 2]  448 	jra	00103$
+      0081FC                        449 00102$:
+                                    450 ;	ds18b20.c: 120: a += '0'; 
+      0081FC 1C 00 30         [ 2]  451 	addw	x, #0x0030
+      0081FF 1F 03            [ 2]  452 	ldw	(0x03, sp), x
+      008201                        453 00103$:
+                                    454 ;	ds18b20.c: 121: b = buffer & 0x0f;
+      008201 7B 0F            [ 1]  455 	ld	a, (0x0f, sp)
+      008203 A4 0F            [ 1]  456 	and	a, #0x0f
+      008205 5F               [ 1]  457 	clrw	x
+      008206 97               [ 1]  458 	ld	xl, a
+                                    459 ;	ds18b20.c: 122: if (b > 9)
+      008207 A3 00 09         [ 2]  460 	cpw	x, #0x0009
+      00820A 2D 07            [ 1]  461 	jrsle	00105$
+                                    462 ;	ds18b20.c: 123: b = b + 'a' - 10;
+      00820C 1C 00 57         [ 2]  463 	addw	x, #0x0057
+      00820F 1F 01            [ 2]  464 	ldw	(0x01, sp), x
+      008211 20 05            [ 2]  465 	jra	00106$
+      008213                        466 00105$:
+                                    467 ;	ds18b20.c: 125: b += '0'; 
+      008213 1C 00 30         [ 2]  468 	addw	x, #0x0030
+      008216 1F 01            [ 2]  469 	ldw	(0x01, sp), x
+      008218                        470 00106$:
+                                    471 ;	ds18b20.c: 126: message[0] = a;
+      008218 90 96            [ 1]  472 	ldw	y, sp
+      00821A 72 A9 00 05      [ 2]  473 	addw	y, #5
+      00821E 7B 04            [ 1]  474 	ld	a, (0x04, sp)
+      008220 90 F7            [ 1]  475 	ld	(y), a
+                                    476 ;	ds18b20.c: 127: message[1] = b;
+      008222 93               [ 1]  477 	ldw	x, y
+      008223 5C               [ 2]  478 	incw	x
+      008224 7B 02            [ 1]  479 	ld	a, (0x02, sp)
+      008226 F7               [ 1]  480 	ld	(x), a
+                                    481 ;	ds18b20.c: 128: message[2] = 0;
+      008227 93               [ 1]  482 	ldw	x, y
+      008228 5C               [ 2]  483 	incw	x
+      008229 5C               [ 2]  484 	incw	x
+      00822A 7F               [ 1]  485 	clr	(x)
+                                    486 ;	ds18b20.c: 129: UARTPrintF (message);
+      00822B 90 89            [ 2]  487 	pushw	y
+      00822D CD 81 80         [ 4]  488 	call	_UARTPrintF
+      008230 5B 02            [ 2]  489 	addw	sp, #2
+      008232 5B 0C            [ 2]  490 	addw	sp, #12
+      008234 81               [ 4]  491 	ret
+                                    492 ;	ds18b20.c: 133: unsigned char i2c_read_register (UCHAR addr, UCHAR rg) {
+                                    493 ;	-----------------------------------------
+                                    494 ;	 function i2c_read_register
+                                    495 ;	-----------------------------------------
+      008235                        496 _i2c_read_register:
+      008235 52 02            [ 2]  497 	sub	sp, #2
+                                    498 ;	ds18b20.c: 136: i2c_set_start_ack ();
+      008237 CD 81 D9         [ 4]  499 	call	_i2c_set_start_ack
+                                    500 ;	ds18b20.c: 137: i2c_send_address (addr, I2C_WRITE);
+      00823A 4B 00            [ 1]  501 	push	#0x00
+      00823C 7B 06            [ 1]  502 	ld	a, (0x06, sp)
+      00823E 88               [ 1]  503 	push	a
+      00823F CD 81 97         [ 4]  504 	call	_i2c_send_address
+      008242 5B 02            [ 2]  505 	addw	sp, #2
+                                    506 ;	ds18b20.c: 138: i2c_send_reg (rg);
+      008244 7B 06            [ 1]  507 	ld	a, (0x06, sp)
+      008246 88               [ 1]  508 	push	a
+      008247 CD 81 5E         [ 4]  509 	call	_i2c_send_reg
+      00824A 84               [ 1]  510 	pop	a
+                                    511 ;	ds18b20.c: 139: i2c_set_start_ack ();
+      00824B CD 81 D9         [ 4]  512 	call	_i2c_set_start_ack
+                                    513 ;	ds18b20.c: 140: i2c_send_address (addr, I2C_READ);
+      00824E 4B 01            [ 1]  514 	push	#0x01
+      008250 7B 06            [ 1]  515 	ld	a, (0x06, sp)
+      008252 88               [ 1]  516 	push	a
+      008253 CD 81 97         [ 4]  517 	call	_i2c_send_address
+      008256 5B 02            [ 2]  518 	addw	sp, #2
+                                    519 ;	ds18b20.c: 141: reg = I2C_SR1;
+      008258 AE 52 17         [ 2]  520 	ldw	x, #0x5217
+      00825B F6               [ 1]  521 	ld	a, (x)
+      00825C 6B 01            [ 1]  522 	ld	(0x01, sp), a
+                                    523 ;	ds18b20.c: 142: reg = I2C_SR3;
+      00825E AE 52 19         [ 2]  524 	ldw	x, #0x5219
+      008261 F6               [ 1]  525 	ld	a, (x)
+      008262 6B 01            [ 1]  526 	ld	(0x01, sp), a
+                                    527 ;	ds18b20.c: 143: i2c_set_nak ();
+      008264 CD 81 4E         [ 4]  528 	call	_i2c_set_nak
+                                    529 ;	ds18b20.c: 144: i2c_set_stop ();
+      008267 CD 81 56         [ 4]  530 	call	_i2c_set_stop
+                                    531 ;	ds18b20.c: 145: i2c_read (&x);
+      00826A 96               [ 1]  532 	ldw	x, sp
+      00826B 5C               [ 2]  533 	incw	x
+      00826C 5C               [ 2]  534 	incw	x
+      00826D 89               [ 2]  535 	pushw	x
+      00826E CD 81 3D         [ 4]  536 	call	_i2c_read
+      008271 5B 02            [ 2]  537 	addw	sp, #2
+                                    538 ;	ds18b20.c: 146: return (x);
+      008273 7B 02            [ 1]  539 	ld	a, (0x02, sp)
+      008275 5B 02            [ 2]  540 	addw	sp, #2
+      008277 81               [ 4]  541 	ret
+                                    542 ;	ds18b20.c: 149: void InitializeI2C (void) {
+                                    543 ;	-----------------------------------------
+                                    544 ;	 function InitializeI2C
+                                    545 ;	-----------------------------------------
+      008278                        546 _InitializeI2C:
+                                    547 ;	ds18b20.c: 150: I2C_CR1 = 0;   //  Disable I2C before configuration starts. PE bit is bit 0
+      008278 AE 52 10         [ 2]  548 	ldw	x, #0x5210
+      00827B 7F               [ 1]  549 	clr	(x)
+                                    550 ;	ds18b20.c: 154: I2C_FREQR = 16;                     //  Set the internal clock frequency (MHz).
+      00827C AE 52 12         [ 2]  551 	ldw	x, #0x5212
+      00827F A6 10            [ 1]  552 	ld	a, #0x10
+      008281 F7               [ 1]  553 	ld	(x), a
+                                    554 ;	ds18b20.c: 155: UNSET (I2C_CCRH, I2C_FS);           //  I2C running is standard mode.
+      008282 72 17 52 1C      [ 1]  555 	bres	0x521c, #7
+                                    556 ;	ds18b20.c: 157: I2C_CCRL = 0xa0;                    //  SCL clock speed is 50 kHz.
+      008286 AE 52 1B         [ 2]  557 	ldw	x, #0x521b
+      008289 A6 A0            [ 1]  558 	ld	a, #0xa0
+      00828B F7               [ 1]  559 	ld	(x), a
+                                    560 ;	ds18b20.c: 159: I2C_CCRH &= 0x00;	// Clears lower 4 bits "CCR"
+      00828C AE 52 1C         [ 2]  561 	ldw	x, #0x521c
+      00828F 7F               [ 1]  562 	clr	(x)
+                                    563 ;	ds18b20.c: 163: UNSET (I2C_OARH, I2C_ADDMODE);      //  7 bit address mode.
+      008290 72 17 52 14      [ 1]  564 	bres	0x5214, #7
+                                    565 ;	ds18b20.c: 164: SET (I2C_OARH, I2C_ADDCONF);        //  Docs say this must always be 1.
+      008294 AE 52 14         [ 2]  566 	ldw	x, #0x5214
+      008297 F6               [ 1]  567 	ld	a, (x)
+      008298 AA 40            [ 1]  568 	or	a, #0x40
+      00829A F7               [ 1]  569 	ld	(x), a
+                                    570 ;	ds18b20.c: 168: I2C_TRISER = 17;
+      00829B AE 52 1D         [ 2]  571 	ldw	x, #0x521d
+      00829E A6 11            [ 1]  572 	ld	a, #0x11
+      0082A0 F7               [ 1]  573 	ld	(x), a
+                                    574 ;	ds18b20.c: 176: I2C_CR1 = I2C_PE;	// Enables port
+      0082A1 AE 52 10         [ 2]  575 	ldw	x, #0x5210
+      0082A4 A6 01            [ 1]  576 	ld	a, #0x01
+      0082A6 F7               [ 1]  577 	ld	(x), a
+      0082A7 81               [ 4]  578 	ret
+                                    579 ;	ds18b20.c: 182: void InitializeUART() {
+                                    580 ;	-----------------------------------------
+                                    581 ;	 function InitializeUART
+                                    582 ;	-----------------------------------------
+      0082A8                        583 _InitializeUART:
+                                    584 ;	ds18b20.c: 192: UART1_CR1 = 0;
+      0082A8 AE 52 34         [ 2]  585 	ldw	x, #0x5234
+      0082AB 7F               [ 1]  586 	clr	(x)
+                                    587 ;	ds18b20.c: 193: UART1_CR2 = 0;
+      0082AC AE 52 35         [ 2]  588 	ldw	x, #0x5235
+      0082AF 7F               [ 1]  589 	clr	(x)
+                                    590 ;	ds18b20.c: 194: UART1_CR4 = 0;
+      0082B0 AE 52 37         [ 2]  591 	ldw	x, #0x5237
+      0082B3 7F               [ 1]  592 	clr	(x)
+                                    593 ;	ds18b20.c: 195: UART1_CR3 = 0;
+      0082B4 AE 52 36         [ 2]  594 	ldw	x, #0x5236
+      0082B7 7F               [ 1]  595 	clr	(x)
+                                    596 ;	ds18b20.c: 196: UART1_CR5 = 0;
+      0082B8 AE 52 38         [ 2]  597 	ldw	x, #0x5238
+      0082BB 7F               [ 1]  598 	clr	(x)
+                                    599 ;	ds18b20.c: 197: UART1_GTR = 0;
+      0082BC AE 52 39         [ 2]  600 	ldw	x, #0x5239
+      0082BF 7F               [ 1]  601 	clr	(x)
+                                    602 ;	ds18b20.c: 198: UART1_PSCR = 0;
+      0082C0 AE 52 3A         [ 2]  603 	ldw	x, #0x523a
+      0082C3 7F               [ 1]  604 	clr	(x)
+                                    605 ;	ds18b20.c: 202: UNSET (UART1_CR1, CR1_M);        //  8 Data bits.
+      0082C4 AE 52 34         [ 2]  606 	ldw	x, #0x5234
+      0082C7 F6               [ 1]  607 	ld	a, (x)
+      0082C8 A4 EF            [ 1]  608 	and	a, #0xef
+      0082CA F7               [ 1]  609 	ld	(x), a
+                                    610 ;	ds18b20.c: 203: UNSET (UART1_CR1, CR1_PCEN);     //  Disable parity.
+      0082CB AE 52 34         [ 2]  611 	ldw	x, #0x5234
+      0082CE F6               [ 1]  612 	ld	a, (x)
+      0082CF A4 FB            [ 1]  613 	and	a, #0xfb
+      0082D1 F7               [ 1]  614 	ld	(x), a
+                                    615 ;	ds18b20.c: 204: UNSET (UART1_CR3, CR3_STOPH);    //  1 stop bit.
+      0082D2 AE 52 36         [ 2]  616 	ldw	x, #0x5236
+      0082D5 F6               [ 1]  617 	ld	a, (x)
+      0082D6 A4 DF            [ 1]  618 	and	a, #0xdf
+      0082D8 F7               [ 1]  619 	ld	(x), a
+                                    620 ;	ds18b20.c: 205: UNSET (UART1_CR3, CR3_STOPL);    //  1 stop bit.
+      0082D9 AE 52 36         [ 2]  621 	ldw	x, #0x5236
+      0082DC F6               [ 1]  622 	ld	a, (x)
+      0082DD A4 EF            [ 1]  623 	and	a, #0xef
+      0082DF F7               [ 1]  624 	ld	(x), a
+                                    625 ;	ds18b20.c: 206: UART1_BRR2 = 0x0a;      //  Set the baud rate registers to 115200 baud
+      0082E0 AE 52 33         [ 2]  626 	ldw	x, #0x5233
+      0082E3 A6 0A            [ 1]  627 	ld	a, #0x0a
+      0082E5 F7               [ 1]  628 	ld	(x), a
+                                    629 ;	ds18b20.c: 207: UART1_BRR1 = 0x08;      //  based upon a 16 MHz system clock.
+      0082E6 AE 52 32         [ 2]  630 	ldw	x, #0x5232
+      0082E9 A6 08            [ 1]  631 	ld	a, #0x08
+      0082EB F7               [ 1]  632 	ld	(x), a
+                                    633 ;	ds18b20.c: 211: UNSET (UART1_CR2, CR2_TEN);      //  Disable transmit.
+      0082EC AE 52 35         [ 2]  634 	ldw	x, #0x5235
+      0082EF F6               [ 1]  635 	ld	a, (x)
+      0082F0 A4 F7            [ 1]  636 	and	a, #0xf7
+      0082F2 F7               [ 1]  637 	ld	(x), a
+                                    638 ;	ds18b20.c: 212: UNSET (UART1_CR2, CR2_REN);      //  Disable receive.
+      0082F3 AE 52 35         [ 2]  639 	ldw	x, #0x5235
+      0082F6 F6               [ 1]  640 	ld	a, (x)
+      0082F7 A4 FB            [ 1]  641 	and	a, #0xfb
+      0082F9 F7               [ 1]  642 	ld	(x), a
+                                    643 ;	ds18b20.c: 216: SET (UART1_CR3, CR3_CPOL);
+      0082FA AE 52 36         [ 2]  644 	ldw	x, #0x5236
+      0082FD F6               [ 1]  645 	ld	a, (x)
+      0082FE AA 04            [ 1]  646 	or	a, #0x04
+      008300 F7               [ 1]  647 	ld	(x), a
+                                    648 ;	ds18b20.c: 217: SET (UART1_CR3, CR3_CPHA);
+      008301 AE 52 36         [ 2]  649 	ldw	x, #0x5236
+      008304 F6               [ 1]  650 	ld	a, (x)
+      008305 AA 02            [ 1]  651 	or	a, #0x02
+      008307 F7               [ 1]  652 	ld	(x), a
+                                    653 ;	ds18b20.c: 218: SET (UART1_CR3, CR3_LBCL);
+      008308 72 10 52 36      [ 1]  654 	bset	0x5236, #0
+                                    655 ;	ds18b20.c: 222: SET (UART1_CR2, CR2_TEN);
+      00830C AE 52 35         [ 2]  656 	ldw	x, #0x5235
+      00830F F6               [ 1]  657 	ld	a, (x)
+      008310 AA 08            [ 1]  658 	or	a, #0x08
+      008312 F7               [ 1]  659 	ld	(x), a
+                                    660 ;	ds18b20.c: 223: SET (UART1_CR2, CR2_REN);
+      008313 AE 52 35         [ 2]  661 	ldw	x, #0x5235
+      008316 F6               [ 1]  662 	ld	a, (x)
+      008317 AA 04            [ 1]  663 	or	a, #0x04
+      008319 F7               [ 1]  664 	ld	(x), a
+                                    665 ;	ds18b20.c: 224: UART1_CR3 = CR3_CLKEN;
+      00831A AE 52 36         [ 2]  666 	ldw	x, #0x5236
+      00831D A6 08            [ 1]  667 	ld	a, #0x08
+      00831F F7               [ 1]  668 	ld	(x), a
+      008320 81               [ 4]  669 	ret
+                                    670 ;	ds18b20.c: 252: void tm1637Init(void)
+                                    671 ;	-----------------------------------------
+                                    672 ;	 function tm1637Init
+                                    673 ;	-----------------------------------------
+      008321                        674 _tm1637Init:
+                                    675 ;	ds18b20.c: 254: tm1637SetBrightness(8);
+      008321 4B 08            [ 1]  676 	push	#0x08
+      008323 CD 83 C6         [ 4]  677 	call	_tm1637SetBrightness
+      008326 84               [ 1]  678 	pop	a
+      008327 81               [ 4]  679 	ret
+                                    680 ;	ds18b20.c: 259: void tm1637DisplayDecimal(long TT,unsigned int displaySeparator)
+                                    681 ;	-----------------------------------------
+                                    682 ;	 function tm1637DisplayDecimal
+                                    683 ;	-----------------------------------------
+      008328                        684 _tm1637DisplayDecimal:
+      008328 52 13            [ 2]  685 	sub	sp, #19
+                                    686 ;	ds18b20.c: 261: unsigned int v = TT & 0x0000FFFF;
+      00832A 7B 19            [ 1]  687 	ld	a, (0x19, sp)
+      00832C 97               [ 1]  688 	ld	xl, a
+      00832D 7B 18            [ 1]  689 	ld	a, (0x18, sp)
+      00832F 95               [ 1]  690 	ld	xh, a
+      008330 0F 11            [ 1]  691 	clr	(0x11, sp)
+      008332 4F               [ 1]  692 	clr	a
+      008333 1F 05            [ 2]  693 	ldw	(0x05, sp), x
+                                    694 ;	ds18b20.c: 267: for (ii = 0; ii < 4; ++ii) {
+      008335 96               [ 1]  695 	ldw	x, sp
+      008336 5C               [ 2]  696 	incw	x
+      008337 1F 0A            [ 2]  697 	ldw	(0x0a, sp), x
+      008339 AE 87 82         [ 2]  698 	ldw	x, #_segmentMap+0
+      00833C 1F 0E            [ 2]  699 	ldw	(0x0e, sp), x
+      00833E 90 5F            [ 1]  700 	clrw	y
+      008340                        701 00106$:
+                                    702 ;	ds18b20.c: 268: digitArr[ii] = segmentMap[v % 10];
+      008340 93               [ 1]  703 	ldw	x, y
+      008341 72 FB 0A         [ 2]  704 	addw	x, (0x0a, sp)
+      008344 1F 0C            [ 2]  705 	ldw	(0x0c, sp), x
+      008346 90 89            [ 2]  706 	pushw	y
+      008348 1E 07            [ 2]  707 	ldw	x, (0x07, sp)
+      00834A 90 AE 00 0A      [ 2]  708 	ldw	y, #0x000a
+      00834E 65               [ 2]  709 	divw	x, y
+      00834F 93               [ 1]  710 	ldw	x, y
+      008350 90 85            [ 2]  711 	popw	y
+      008352 72 FB 0E         [ 2]  712 	addw	x, (0x0e, sp)
+      008355 F6               [ 1]  713 	ld	a, (x)
+      008356 1E 0C            [ 2]  714 	ldw	x, (0x0c, sp)
+      008358 F7               [ 1]  715 	ld	(x), a
+                                    716 ;	ds18b20.c: 269: if (ii == 2 && displaySeparator) {
+      008359 90 A3 00 02      [ 2]  717 	cpw	y, #0x0002
+      00835D 26 0C            [ 1]  718 	jrne	00102$
+      00835F 1E 1A            [ 2]  719 	ldw	x, (0x1a, sp)
+      008361 27 08            [ 1]  720 	jreq	00102$
+                                    721 ;	ds18b20.c: 270: digitArr[ii] |= 1 << 7;
+      008363 1E 0C            [ 2]  722 	ldw	x, (0x0c, sp)
+      008365 F6               [ 1]  723 	ld	a, (x)
+      008366 AA 80            [ 1]  724 	or	a, #0x80
+      008368 1E 0C            [ 2]  725 	ldw	x, (0x0c, sp)
+      00836A F7               [ 1]  726 	ld	(x), a
+      00836B                        727 00102$:
+                                    728 ;	ds18b20.c: 272: v /= 10;
+      00836B 90 89            [ 2]  729 	pushw	y
+      00836D 1E 07            [ 2]  730 	ldw	x, (0x07, sp)
+      00836F 90 AE 00 0A      [ 2]  731 	ldw	y, #0x000a
+      008373 65               [ 2]  732 	divw	x, y
+      008374 90 85            [ 2]  733 	popw	y
+      008376 1F 05            [ 2]  734 	ldw	(0x05, sp), x
+                                    735 ;	ds18b20.c: 267: for (ii = 0; ii < 4; ++ii) {
+      008378 90 5C            [ 2]  736 	incw	y
+      00837A 90 A3 00 04      [ 2]  737 	cpw	y, #0x0004
+      00837E 25 C0            [ 1]  738 	jrc	00106$
+                                    739 ;	ds18b20.c: 275: _tm1637Start();
+      008380 CD 83 D8         [ 4]  740 	call	__tm1637Start
+                                    741 ;	ds18b20.c: 276: _tm1637WriteByte(0x40);
+      008383 4B 40            [ 1]  742 	push	#0x40
+      008385 CD 84 2C         [ 4]  743 	call	__tm1637WriteByte
+      008388 84               [ 1]  744 	pop	a
+                                    745 ;	ds18b20.c: 277: _tm1637ReadResult();
+      008389 CD 84 11         [ 4]  746 	call	__tm1637ReadResult
+                                    747 ;	ds18b20.c: 278: _tm1637Stop();
+      00838C CD 83 EA         [ 4]  748 	call	__tm1637Stop
+                                    749 ;	ds18b20.c: 280: _tm1637Start();
+      00838F CD 83 D8         [ 4]  750 	call	__tm1637Start
+                                    751 ;	ds18b20.c: 281: _tm1637WriteByte(0xc0);
+      008392 4B C0            [ 1]  752 	push	#0xc0
+      008394 CD 84 2C         [ 4]  753 	call	__tm1637WriteByte
+      008397 84               [ 1]  754 	pop	a
+                                    755 ;	ds18b20.c: 282: _tm1637ReadResult();
+      008398 CD 84 11         [ 4]  756 	call	__tm1637ReadResult
+                                    757 ;	ds18b20.c: 284: for (ii = 0; ii < 4; ++ii) {
+      00839B 5F               [ 1]  758 	clrw	x
+      00839C 1F 07            [ 2]  759 	ldw	(0x07, sp), x
+      00839E                        760 00108$:
+                                    761 ;	ds18b20.c: 285: _tm1637WriteByte(digitArr[3 - ii]);
+      00839E 7B 08            [ 1]  762 	ld	a, (0x08, sp)
+      0083A0 6B 09            [ 1]  763 	ld	(0x09, sp), a
+      0083A2 A6 03            [ 1]  764 	ld	a, #0x03
+      0083A4 10 09            [ 1]  765 	sub	a, (0x09, sp)
+      0083A6 5F               [ 1]  766 	clrw	x
+      0083A7 97               [ 1]  767 	ld	xl, a
+      0083A8 72 FB 0A         [ 2]  768 	addw	x, (0x0a, sp)
+      0083AB F6               [ 1]  769 	ld	a, (x)
+      0083AC 88               [ 1]  770 	push	a
+      0083AD CD 84 2C         [ 4]  771 	call	__tm1637WriteByte
+      0083B0 84               [ 1]  772 	pop	a
+                                    773 ;	ds18b20.c: 286: _tm1637ReadResult();
+      0083B1 CD 84 11         [ 4]  774 	call	__tm1637ReadResult
+                                    775 ;	ds18b20.c: 284: for (ii = 0; ii < 4; ++ii) {
+      0083B4 1E 07            [ 2]  776 	ldw	x, (0x07, sp)
+      0083B6 5C               [ 2]  777 	incw	x
+      0083B7 1F 07            [ 2]  778 	ldw	(0x07, sp), x
+      0083B9 1E 07            [ 2]  779 	ldw	x, (0x07, sp)
+      0083BB A3 00 04         [ 2]  780 	cpw	x, #0x0004
+      0083BE 25 DE            [ 1]  781 	jrc	00108$
+                                    782 ;	ds18b20.c: 289: _tm1637Stop();
+      0083C0 CD 83 EA         [ 4]  783 	call	__tm1637Stop
+      0083C3 5B 13            [ 2]  784 	addw	sp, #19
+      0083C5 81               [ 4]  785 	ret
+                                    786 ;	ds18b20.c: 294: void tm1637SetBrightness(char brightness)
+                                    787 ;	-----------------------------------------
+                                    788 ;	 function tm1637SetBrightness
+                                    789 ;	-----------------------------------------
+      0083C6                        790 _tm1637SetBrightness:
+                                    791 ;	ds18b20.c: 301: _tm1637Start();
+      0083C6 CD 83 D8         [ 4]  792 	call	__tm1637Start
+                                    793 ;	ds18b20.c: 302: _tm1637WriteByte(0x87 + brightness);
+      0083C9 7B 03            [ 1]  794 	ld	a, (0x03, sp)
+      0083CB AB 87            [ 1]  795 	add	a, #0x87
+      0083CD 88               [ 1]  796 	push	a
+      0083CE CD 84 2C         [ 4]  797 	call	__tm1637WriteByte
+      0083D1 84               [ 1]  798 	pop	a
+                                    799 ;	ds18b20.c: 303: _tm1637ReadResult();
+      0083D2 CD 84 11         [ 4]  800 	call	__tm1637ReadResult
+                                    801 ;	ds18b20.c: 304: _tm1637Stop();
+      0083D5 CC 83 EA         [ 2]  802 	jp	__tm1637Stop
+                                    803 ;	ds18b20.c: 307: void _tm1637Start(void)
                                     804 ;	-----------------------------------------
-                                    805 ;	 function _tm1637ReadResult
+                                    805 ;	 function _tm1637Start
                                     806 ;	-----------------------------------------
-      0083F3                        807 __tm1637ReadResult:
-                                    808 ;	ds18b20.c: 328: _tm1637ClkLow();
-      0083F3 CD 84 54         [ 4]  809 	call	__tm1637ClkLow
-                                    810 ;	ds18b20.c: 329: delay(5);
-      0083F6 4B 05            [ 1]  811 	push	#0x05
-      0083F8 4B 00            [ 1]  812 	push	#0x00
-      0083FA CD 80 EB         [ 4]  813 	call	_delay
-      0083FD 5B 02            [ 2]  814 	addw	sp, #2
-                                    815 ;	ds18b20.c: 331: _tm1637ClkHigh();
-      0083FF CD 84 4C         [ 4]  816 	call	__tm1637ClkHigh
-                                    817 ;	ds18b20.c: 332: delay(5);
-      008402 4B 05            [ 1]  818 	push	#0x05
-      008404 4B 00            [ 1]  819 	push	#0x00
-      008406 CD 80 EB         [ 4]  820 	call	_delay
-      008409 5B 02            [ 2]  821 	addw	sp, #2
-                                    822 ;	ds18b20.c: 333: _tm1637ClkLow();
-      00840B CC 84 54         [ 2]  823 	jp	__tm1637ClkLow
-                                    824 ;	ds18b20.c: 336: void _tm1637WriteByte(unsigned char b)
-                                    825 ;	-----------------------------------------
-                                    826 ;	 function _tm1637WriteByte
-                                    827 ;	-----------------------------------------
-      00840E                        828 __tm1637WriteByte:
-      00840E 52 02            [ 2]  829 	sub	sp, #2
-                                    830 ;	ds18b20.c: 338: for (ii = 0; ii < 8; ++ii) {
-      008410 5F               [ 1]  831 	clrw	x
-      008411 1F 01            [ 2]  832 	ldw	(0x01, sp), x
-      008413                        833 00105$:
-                                    834 ;	ds18b20.c: 339: _tm1637ClkLow();
-      008413 CD 84 54         [ 4]  835 	call	__tm1637ClkLow
-                                    836 ;	ds18b20.c: 340: if (b & 0x01) {
-      008416 7B 05            [ 1]  837 	ld	a, (0x05, sp)
-      008418 44               [ 1]  838 	srl	a
-      008419 24 05            [ 1]  839 	jrnc	00102$
-                                    840 ;	ds18b20.c: 341: _tm1637DioHigh();
-      00841B CD 84 5C         [ 4]  841 	call	__tm1637DioHigh
-      00841E 20 03            [ 2]  842 	jra	00103$
-      008420                        843 00102$:
-                                    844 ;	ds18b20.c: 344: _tm1637DioLow();
-      008420 CD 84 64         [ 4]  845 	call	__tm1637DioLow
-      008423                        846 00103$:
-                                    847 ;	ds18b20.c: 346: delay(15);
-      008423 4B 0F            [ 1]  848 	push	#0x0f
-      008425 4B 00            [ 1]  849 	push	#0x00
-      008427 CD 80 EB         [ 4]  850 	call	_delay
-      00842A 5B 02            [ 2]  851 	addw	sp, #2
-                                    852 ;	ds18b20.c: 347: b >>= 1;
-      00842C 7B 05            [ 1]  853 	ld	a, (0x05, sp)
-      00842E 44               [ 1]  854 	srl	a
-      00842F 6B 05            [ 1]  855 	ld	(0x05, sp), a
-                                    856 ;	ds18b20.c: 348: _tm1637ClkHigh();
-      008431 CD 84 4C         [ 4]  857 	call	__tm1637ClkHigh
-                                    858 ;	ds18b20.c: 349: delay(15);
-      008434 4B 0F            [ 1]  859 	push	#0x0f
-      008436 4B 00            [ 1]  860 	push	#0x00
-      008438 CD 80 EB         [ 4]  861 	call	_delay
-      00843B 5B 02            [ 2]  862 	addw	sp, #2
-                                    863 ;	ds18b20.c: 338: for (ii = 0; ii < 8; ++ii) {
-      00843D 1E 01            [ 2]  864 	ldw	x, (0x01, sp)
-      00843F 5C               [ 2]  865 	incw	x
-      008440 1F 01            [ 2]  866 	ldw	(0x01, sp), x
-      008442 1E 01            [ 2]  867 	ldw	x, (0x01, sp)
-      008444 A3 00 08         [ 2]  868 	cpw	x, #0x0008
-      008447 2F CA            [ 1]  869 	jrslt	00105$
-      008449 5B 02            [ 2]  870 	addw	sp, #2
-      00844B 81               [ 4]  871 	ret
-                                    872 ;	ds18b20.c: 355: void _tm1637ClkHigh(void)
-                                    873 ;	-----------------------------------------
-                                    874 ;	 function _tm1637ClkHigh
-                                    875 ;	-----------------------------------------
-      00844C                        876 __tm1637ClkHigh:
-                                    877 ;	ds18b20.c: 360: PD_ODR |= 1 << 2;
-      00844C AE 50 0F         [ 2]  878 	ldw	x, #0x500f
-      00844F F6               [ 1]  879 	ld	a, (x)
-      008450 AA 04            [ 1]  880 	or	a, #0x04
-      008452 F7               [ 1]  881 	ld	(x), a
-      008453 81               [ 4]  882 	ret
-                                    883 ;	ds18b20.c: 363: void _tm1637ClkLow(void)
-                                    884 ;	-----------------------------------------
-                                    885 ;	 function _tm1637ClkLow
-                                    886 ;	-----------------------------------------
-      008454                        887 __tm1637ClkLow:
-                                    888 ;	ds18b20.c: 367: PD_ODR &= ~(1 << 2);
-      008454 AE 50 0F         [ 2]  889 	ldw	x, #0x500f
-      008457 F6               [ 1]  890 	ld	a, (x)
-      008458 A4 FB            [ 1]  891 	and	a, #0xfb
-      00845A F7               [ 1]  892 	ld	(x), a
-      00845B 81               [ 4]  893 	ret
-                                    894 ;	ds18b20.c: 373: void _tm1637DioHigh(void)
-                                    895 ;	-----------------------------------------
-                                    896 ;	 function _tm1637DioHigh
-                                    897 ;	-----------------------------------------
-      00845C                        898 __tm1637DioHigh:
-                                    899 ;	ds18b20.c: 377: PD_ODR |= 1 << 3;
-      00845C AE 50 0F         [ 2]  900 	ldw	x, #0x500f
-      00845F F6               [ 1]  901 	ld	a, (x)
-      008460 AA 08            [ 1]  902 	or	a, #0x08
-      008462 F7               [ 1]  903 	ld	(x), a
-      008463 81               [ 4]  904 	ret
-                                    905 ;	ds18b20.c: 381: void _tm1637DioLow(void)
-                                    906 ;	-----------------------------------------
-                                    907 ;	 function _tm1637DioLow
-                                    908 ;	-----------------------------------------
-      008464                        909 __tm1637DioLow:
-                                    910 ;	ds18b20.c: 383: PD_ODR &= ~(1 << 3);
-      008464 AE 50 0F         [ 2]  911 	ldw	x, #0x500f
-      008467 F6               [ 1]  912 	ld	a, (x)
-      008468 A4 F7            [ 1]  913 	and	a, #0xf7
-      00846A F7               [ 1]  914 	ld	(x), a
-      00846B 81               [ 4]  915 	ret
-                                    916 ;	ds18b20.c: 391: void _delay_us(unsigned int i)
+      0083D8                        807 __tm1637Start:
+                                    808 ;	ds18b20.c: 309: _tm1637ClkHigh();
+      0083D8 CD 84 6A         [ 4]  809 	call	__tm1637ClkHigh
+                                    810 ;	ds18b20.c: 310: _tm1637DioHigh();
+      0083DB CD 84 7A         [ 4]  811 	call	__tm1637DioHigh
+                                    812 ;	ds18b20.c: 311: delay(5);
+      0083DE 4B 05            [ 1]  813 	push	#0x05
+      0083E0 4B 00            [ 1]  814 	push	#0x00
+      0083E2 CD 80 F2         [ 4]  815 	call	_delay
+      0083E5 5B 02            [ 2]  816 	addw	sp, #2
+                                    817 ;	ds18b20.c: 312: _tm1637DioLow();
+      0083E7 CC 84 82         [ 2]  818 	jp	__tm1637DioLow
+                                    819 ;	ds18b20.c: 315: void _tm1637Stop(void)
+                                    820 ;	-----------------------------------------
+                                    821 ;	 function _tm1637Stop
+                                    822 ;	-----------------------------------------
+      0083EA                        823 __tm1637Stop:
+                                    824 ;	ds18b20.c: 317: _tm1637ClkLow();
+      0083EA CD 84 72         [ 4]  825 	call	__tm1637ClkLow
+                                    826 ;	ds18b20.c: 318: delay(5);
+      0083ED 4B 05            [ 1]  827 	push	#0x05
+      0083EF 4B 00            [ 1]  828 	push	#0x00
+      0083F1 CD 80 F2         [ 4]  829 	call	_delay
+      0083F4 5B 02            [ 2]  830 	addw	sp, #2
+                                    831 ;	ds18b20.c: 319: _tm1637DioLow();
+      0083F6 CD 84 82         [ 4]  832 	call	__tm1637DioLow
+                                    833 ;	ds18b20.c: 320: delay(5);
+      0083F9 4B 05            [ 1]  834 	push	#0x05
+      0083FB 4B 00            [ 1]  835 	push	#0x00
+      0083FD CD 80 F2         [ 4]  836 	call	_delay
+      008400 5B 02            [ 2]  837 	addw	sp, #2
+                                    838 ;	ds18b20.c: 321: _tm1637ClkHigh();
+      008402 CD 84 6A         [ 4]  839 	call	__tm1637ClkHigh
+                                    840 ;	ds18b20.c: 322: delay(5);
+      008405 4B 05            [ 1]  841 	push	#0x05
+      008407 4B 00            [ 1]  842 	push	#0x00
+      008409 CD 80 F2         [ 4]  843 	call	_delay
+      00840C 5B 02            [ 2]  844 	addw	sp, #2
+                                    845 ;	ds18b20.c: 323: _tm1637DioHigh();
+      00840E CC 84 7A         [ 2]  846 	jp	__tm1637DioHigh
+                                    847 ;	ds18b20.c: 326: void _tm1637ReadResult(void)
+                                    848 ;	-----------------------------------------
+                                    849 ;	 function _tm1637ReadResult
+                                    850 ;	-----------------------------------------
+      008411                        851 __tm1637ReadResult:
+                                    852 ;	ds18b20.c: 328: _tm1637ClkLow();
+      008411 CD 84 72         [ 4]  853 	call	__tm1637ClkLow
+                                    854 ;	ds18b20.c: 329: delay(5);
+      008414 4B 05            [ 1]  855 	push	#0x05
+      008416 4B 00            [ 1]  856 	push	#0x00
+      008418 CD 80 F2         [ 4]  857 	call	_delay
+      00841B 5B 02            [ 2]  858 	addw	sp, #2
+                                    859 ;	ds18b20.c: 331: _tm1637ClkHigh();
+      00841D CD 84 6A         [ 4]  860 	call	__tm1637ClkHigh
+                                    861 ;	ds18b20.c: 332: delay(5);
+      008420 4B 05            [ 1]  862 	push	#0x05
+      008422 4B 00            [ 1]  863 	push	#0x00
+      008424 CD 80 F2         [ 4]  864 	call	_delay
+      008427 5B 02            [ 2]  865 	addw	sp, #2
+                                    866 ;	ds18b20.c: 333: _tm1637ClkLow();
+      008429 CC 84 72         [ 2]  867 	jp	__tm1637ClkLow
+                                    868 ;	ds18b20.c: 336: void _tm1637WriteByte(unsigned char b)
+                                    869 ;	-----------------------------------------
+                                    870 ;	 function _tm1637WriteByte
+                                    871 ;	-----------------------------------------
+      00842C                        872 __tm1637WriteByte:
+      00842C 52 02            [ 2]  873 	sub	sp, #2
+                                    874 ;	ds18b20.c: 338: for (ii = 0; ii < 8; ++ii) {
+      00842E 5F               [ 1]  875 	clrw	x
+      00842F 1F 01            [ 2]  876 	ldw	(0x01, sp), x
+      008431                        877 00105$:
+                                    878 ;	ds18b20.c: 339: _tm1637ClkLow();
+      008431 CD 84 72         [ 4]  879 	call	__tm1637ClkLow
+                                    880 ;	ds18b20.c: 340: if (b & 0x01) {
+      008434 7B 05            [ 1]  881 	ld	a, (0x05, sp)
+      008436 44               [ 1]  882 	srl	a
+      008437 24 05            [ 1]  883 	jrnc	00102$
+                                    884 ;	ds18b20.c: 341: _tm1637DioHigh();
+      008439 CD 84 7A         [ 4]  885 	call	__tm1637DioHigh
+      00843C 20 03            [ 2]  886 	jra	00103$
+      00843E                        887 00102$:
+                                    888 ;	ds18b20.c: 344: _tm1637DioLow();
+      00843E CD 84 82         [ 4]  889 	call	__tm1637DioLow
+      008441                        890 00103$:
+                                    891 ;	ds18b20.c: 346: delay(15);
+      008441 4B 0F            [ 1]  892 	push	#0x0f
+      008443 4B 00            [ 1]  893 	push	#0x00
+      008445 CD 80 F2         [ 4]  894 	call	_delay
+      008448 5B 02            [ 2]  895 	addw	sp, #2
+                                    896 ;	ds18b20.c: 347: b >>= 1;
+      00844A 7B 05            [ 1]  897 	ld	a, (0x05, sp)
+      00844C 44               [ 1]  898 	srl	a
+      00844D 6B 05            [ 1]  899 	ld	(0x05, sp), a
+                                    900 ;	ds18b20.c: 348: _tm1637ClkHigh();
+      00844F CD 84 6A         [ 4]  901 	call	__tm1637ClkHigh
+                                    902 ;	ds18b20.c: 349: delay(15);
+      008452 4B 0F            [ 1]  903 	push	#0x0f
+      008454 4B 00            [ 1]  904 	push	#0x00
+      008456 CD 80 F2         [ 4]  905 	call	_delay
+      008459 5B 02            [ 2]  906 	addw	sp, #2
+                                    907 ;	ds18b20.c: 338: for (ii = 0; ii < 8; ++ii) {
+      00845B 1E 01            [ 2]  908 	ldw	x, (0x01, sp)
+      00845D 5C               [ 2]  909 	incw	x
+      00845E 1F 01            [ 2]  910 	ldw	(0x01, sp), x
+      008460 1E 01            [ 2]  911 	ldw	x, (0x01, sp)
+      008462 A3 00 08         [ 2]  912 	cpw	x, #0x0008
+      008465 2F CA            [ 1]  913 	jrslt	00105$
+      008467 5B 02            [ 2]  914 	addw	sp, #2
+      008469 81               [ 4]  915 	ret
+                                    916 ;	ds18b20.c: 355: void _tm1637ClkHigh(void)
                                     917 ;	-----------------------------------------
-                                    918 ;	 function _delay_us
+                                    918 ;	 function _tm1637ClkHigh
                                     919 ;	-----------------------------------------
-      00846C                        920 __delay_us:
-                                    921 ;	ds18b20.c: 393: i *= 3; 
-      00846C 1E 03            [ 2]  922 	ldw	x, (0x03, sp)
-      00846E 89               [ 2]  923 	pushw	x
-      00846F 4B 03            [ 1]  924 	push	#0x03
-      008471 4B 00            [ 1]  925 	push	#0x00
-      008473 CD 8B 58         [ 4]  926 	call	__mulint
-      008476 5B 04            [ 2]  927 	addw	sp, #4
-      008478 1F 03            [ 2]  928 	ldw	(0x03, sp), x
-                                    929 ;	ds18b20.c: 394: while(--i);
-      00847A 1E 03            [ 2]  930 	ldw	x, (0x03, sp)
-      00847C                        931 00101$:
-      00847C 5A               [ 2]  932 	decw	x
-      00847D 5D               [ 2]  933 	tnzw	x
-      00847E 26 FC            [ 1]  934 	jrne	00101$
-      008480 81               [ 4]  935 	ret
-                                    936 ;	ds18b20.c: 397: void _delay_ms(unsigned int i)
-                                    937 ;	-----------------------------------------
-                                    938 ;	 function _delay_ms
+      00846A                        920 __tm1637ClkHigh:
+                                    921 ;	ds18b20.c: 360: PD_ODR |= 1 << 2;
+      00846A AE 50 0F         [ 2]  922 	ldw	x, #0x500f
+      00846D F6               [ 1]  923 	ld	a, (x)
+      00846E AA 04            [ 1]  924 	or	a, #0x04
+      008470 F7               [ 1]  925 	ld	(x), a
+      008471 81               [ 4]  926 	ret
+                                    927 ;	ds18b20.c: 363: void _tm1637ClkLow(void)
+                                    928 ;	-----------------------------------------
+                                    929 ;	 function _tm1637ClkLow
+                                    930 ;	-----------------------------------------
+      008472                        931 __tm1637ClkLow:
+                                    932 ;	ds18b20.c: 367: PD_ODR &= ~(1 << 2);
+      008472 AE 50 0F         [ 2]  933 	ldw	x, #0x500f
+      008475 F6               [ 1]  934 	ld	a, (x)
+      008476 A4 FB            [ 1]  935 	and	a, #0xfb
+      008478 F7               [ 1]  936 	ld	(x), a
+      008479 81               [ 4]  937 	ret
+                                    938 ;	ds18b20.c: 373: void _tm1637DioHigh(void)
                                     939 ;	-----------------------------------------
-      008481                        940 __delay_ms:
-      008481 52 02            [ 2]  941 	sub	sp, #2
-                                    942 ;	ds18b20.c: 399: while(i--)
-      008483 1E 05            [ 2]  943 	ldw	x, (0x05, sp)
-      008485                        944 00101$:
-      008485 1F 01            [ 2]  945 	ldw	(0x01, sp), x
-      008487 5A               [ 2]  946 	decw	x
-      008488 16 01            [ 2]  947 	ldw	y, (0x01, sp)
-      00848A 27 0D            [ 1]  948 	jreq	00104$
-                                    949 ;	ds18b20.c: 401: _delay_us(1000);
-      00848C 89               [ 2]  950 	pushw	x
-      00848D 4B E8            [ 1]  951 	push	#0xe8
-      00848F 4B 03            [ 1]  952 	push	#0x03
-      008491 CD 84 6C         [ 4]  953 	call	__delay_us
-      008494 5B 02            [ 2]  954 	addw	sp, #2
-      008496 85               [ 2]  955 	popw	x
-      008497 20 EC            [ 2]  956 	jra	00101$
-      008499                        957 00104$:
-      008499 5B 02            [ 2]  958 	addw	sp, #2
-      00849B 81               [ 4]  959 	ret
-                                    960 ;	ds18b20.c: 407: void DS18B20_Init(void)
+                                    940 ;	 function _tm1637DioHigh
+                                    941 ;	-----------------------------------------
+      00847A                        942 __tm1637DioHigh:
+                                    943 ;	ds18b20.c: 377: PD_ODR |= 1 << 3;
+      00847A AE 50 0F         [ 2]  944 	ldw	x, #0x500f
+      00847D F6               [ 1]  945 	ld	a, (x)
+      00847E AA 08            [ 1]  946 	or	a, #0x08
+      008480 F7               [ 1]  947 	ld	(x), a
+      008481 81               [ 4]  948 	ret
+                                    949 ;	ds18b20.c: 381: void _tm1637DioLow(void)
+                                    950 ;	-----------------------------------------
+                                    951 ;	 function _tm1637DioLow
+                                    952 ;	-----------------------------------------
+      008482                        953 __tm1637DioLow:
+                                    954 ;	ds18b20.c: 383: PD_ODR &= ~(1 << 3);
+      008482 AE 50 0F         [ 2]  955 	ldw	x, #0x500f
+      008485 F6               [ 1]  956 	ld	a, (x)
+      008486 A4 F7            [ 1]  957 	and	a, #0xf7
+      008488 F7               [ 1]  958 	ld	(x), a
+      008489 81               [ 4]  959 	ret
+                                    960 ;	ds18b20.c: 391: void _delay_us(unsigned int i)
                                     961 ;	-----------------------------------------
-                                    962 ;	 function DS18B20_Init
+                                    962 ;	 function _delay_us
                                     963 ;	-----------------------------------------
-      00849C                        964 _DS18B20_Init:
-                                    965 ;	ds18b20.c: 409: DS18B20_DQ_OUT;   
-      00849C AE 50 02         [ 2]  966 	ldw	x, #0x5002
-      00849F F6               [ 1]  967 	ld	a, (x)
-      0084A0 AA 08            [ 1]  968 	or	a, #0x08
-      0084A2 F7               [ 1]  969 	ld	(x), a
-                                    970 ;	ds18b20.c: 410: DS18B20_DQ_PUSH_PULL;    
-      0084A3 AE 50 03         [ 2]  971 	ldw	x, #0x5003
-      0084A6 F6               [ 1]  972 	ld	a, (x)
-      0084A7 AA 08            [ 1]  973 	or	a, #0x08
-      0084A9 F7               [ 1]  974 	ld	(x), a
-                                    975 ;	ds18b20.c: 411: DS18B20_DQ_HIGH;   
-      0084AA AE 50 00         [ 2]  976 	ldw	x, #0x5000
-      0084AD F6               [ 1]  977 	ld	a, (x)
-      0084AE AA 08            [ 1]  978 	or	a, #0x08
-      0084B0 F7               [ 1]  979 	ld	(x), a
-                                    980 ;	ds18b20.c: 412: _delay_us(10);
-      0084B1 4B 0A            [ 1]  981 	push	#0x0a
-      0084B3 4B 00            [ 1]  982 	push	#0x00
-      0084B5 CD 84 6C         [ 4]  983 	call	__delay_us
-      0084B8 5B 02            [ 2]  984 	addw	sp, #2
-                                    985 ;	ds18b20.c: 413: DS18B20_DQ_LOW;   
-      0084BA AE 50 00         [ 2]  986 	ldw	x, #0x5000
-      0084BD F6               [ 1]  987 	ld	a, (x)
-      0084BE A4 F7            [ 1]  988 	and	a, #0xf7
-      0084C0 F7               [ 1]  989 	ld	(x), a
-                                    990 ;	ds18b20.c: 414: _delay_us(600);     //????
-      0084C1 4B 58            [ 1]  991 	push	#0x58
-      0084C3 4B 02            [ 1]  992 	push	#0x02
-      0084C5 CD 84 6C         [ 4]  993 	call	__delay_us
-      0084C8 5B 02            [ 2]  994 	addw	sp, #2
-                                    995 ;	ds18b20.c: 416: DS18B20_DQ_IN;   
-      0084CA AE 50 02         [ 2]  996 	ldw	x, #0x5002
-      0084CD F6               [ 1]  997 	ld	a, (x)
-      0084CE A4 F7            [ 1]  998 	and	a, #0xf7
-      0084D0 F7               [ 1]  999 	ld	(x), a
-                                   1000 ;	ds18b20.c: 417: DS18B20_DQ_PULL_UP;    
-      0084D1 AE 50 03         [ 2] 1001 	ldw	x, #0x5003
-      0084D4 F6               [ 1] 1002 	ld	a, (x)
-      0084D5 AA 08            [ 1] 1003 	or	a, #0x08
-      0084D7 F7               [ 1] 1004 	ld	(x), a
-                                   1005 ;	ds18b20.c: 418: _delay_us(100);     
-      0084D8 4B 64            [ 1] 1006 	push	#0x64
-      0084DA 4B 00            [ 1] 1007 	push	#0x00
-      0084DC CD 84 6C         [ 4] 1008 	call	__delay_us
-      0084DF 5B 02            [ 2] 1009 	addw	sp, #2
-                                   1010 ;	ds18b20.c: 419: while(DS18B20_DQ_VALUE == 1);
-      0084E1                       1011 00101$:
-      0084E1 AE 50 01         [ 2] 1012 	ldw	x, #0x5001
-      0084E4 F6               [ 1] 1013 	ld	a, (x)
-      0084E5 A1 01            [ 1] 1014 	cp	a, #0x01
-      0084E7 27 F8            [ 1] 1015 	jreq	00101$
-                                   1016 ;	ds18b20.c: 420: _delay_us(400);
-      0084E9 4B 90            [ 1] 1017 	push	#0x90
-      0084EB 4B 01            [ 1] 1018 	push	#0x01
-      0084ED CD 84 6C         [ 4] 1019 	call	__delay_us
-      0084F0 5B 02            [ 2] 1020 	addw	sp, #2
-      0084F2 81               [ 4] 1021 	ret
-                                   1022 ;	ds18b20.c: 424: void DS18B20_WriteByte(unsigned char _data)
-                                   1023 ;	-----------------------------------------
-                                   1024 ;	 function DS18B20_WriteByte
-                                   1025 ;	-----------------------------------------
-      0084F3                       1026 _DS18B20_WriteByte:
-      0084F3 88               [ 1] 1027 	push	a
-                                   1028 ;	ds18b20.c: 428: DS18B20_DQ_OUT;
-      0084F4 AE 50 02         [ 2] 1029 	ldw	x, #0x5002
-      0084F7 F6               [ 1] 1030 	ld	a, (x)
-      0084F8 AA 08            [ 1] 1031 	or	a, #0x08
-      0084FA F7               [ 1] 1032 	ld	(x), a
-                                   1033 ;	ds18b20.c: 429: for (i = 0; i < 8; i++)
-      0084FB 0F 01            [ 1] 1034 	clr	(0x01, sp)
-      0084FD                       1035 00104$:
-                                   1036 ;	ds18b20.c: 431: DS18B20_DQ_LOW;
-      0084FD AE 50 00         [ 2] 1037 	ldw	x, #0x5000
-      008500 F6               [ 1] 1038 	ld	a, (x)
-      008501 A4 F7            [ 1] 1039 	and	a, #0xf7
-      008503 F7               [ 1] 1040 	ld	(x), a
-                                   1041 ;	ds18b20.c: 432: _delay_us(2);
-      008504 4B 02            [ 1] 1042 	push	#0x02
-      008506 4B 00            [ 1] 1043 	push	#0x00
-      008508 CD 84 6C         [ 4] 1044 	call	__delay_us
-      00850B 5B 02            [ 2] 1045 	addw	sp, #2
-                                   1046 ;	ds18b20.c: 433: if (_data & 0x01)
-      00850D 7B 04            [ 1] 1047 	ld	a, (0x04, sp)
-      00850F 44               [ 1] 1048 	srl	a
-      008510 24 07            [ 1] 1049 	jrnc	00102$
-                                   1050 ;	ds18b20.c: 435: DS18B20_DQ_HIGH;
-      008512 AE 50 00         [ 2] 1051 	ldw	x, #0x5000
-      008515 F6               [ 1] 1052 	ld	a, (x)
-      008516 AA 08            [ 1] 1053 	or	a, #0x08
-      008518 F7               [ 1] 1054 	ld	(x), a
-      008519                       1055 00102$:
-                                   1056 ;	ds18b20.c: 437: _data >>= 1;
-      008519 7B 04            [ 1] 1057 	ld	a, (0x04, sp)
-      00851B 44               [ 1] 1058 	srl	a
-      00851C 6B 04            [ 1] 1059 	ld	(0x04, sp), a
-                                   1060 ;	ds18b20.c: 438: _delay_us(60);
-      00851E 4B 3C            [ 1] 1061 	push	#0x3c
-      008520 4B 00            [ 1] 1062 	push	#0x00
-      008522 CD 84 6C         [ 4] 1063 	call	__delay_us
-      008525 5B 02            [ 2] 1064 	addw	sp, #2
-                                   1065 ;	ds18b20.c: 439: DS18B20_DQ_HIGH;
-      008527 AE 50 00         [ 2] 1066 	ldw	x, #0x5000
-      00852A F6               [ 1] 1067 	ld	a, (x)
-      00852B AA 08            [ 1] 1068 	or	a, #0x08
-      00852D F7               [ 1] 1069 	ld	(x), a
-                                   1070 ;	ds18b20.c: 429: for (i = 0; i < 8; i++)
-      00852E 0C 01            [ 1] 1071 	inc	(0x01, sp)
-      008530 7B 01            [ 1] 1072 	ld	a, (0x01, sp)
-      008532 A1 08            [ 1] 1073 	cp	a, #0x08
-      008534 25 C7            [ 1] 1074 	jrc	00104$
-      008536 84               [ 1] 1075 	pop	a
-      008537 81               [ 4] 1076 	ret
-                                   1077 ;	ds18b20.c: 443: unsigned char DS18B20_ReadByte(void)
-                                   1078 ;	-----------------------------------------
-                                   1079 ;	 function DS18B20_ReadByte
-                                   1080 ;	-----------------------------------------
-      008538                       1081 _DS18B20_ReadByte:
-      008538 52 02            [ 2] 1082 	sub	sp, #2
-                                   1083 ;	ds18b20.c: 445: unsigned char i = 0, _data = 0;
-      00853A 0F 01            [ 1] 1084 	clr	(0x01, sp)
-                                   1085 ;	ds18b20.c: 447: for (i = 0; i < 8; i++)
-      00853C 0F 02            [ 1] 1086 	clr	(0x02, sp)
-      00853E                       1087 00104$:
-                                   1088 ;	ds18b20.c: 449: DS18B20_DQ_OUT;
-      00853E AE 50 02         [ 2] 1089 	ldw	x, #0x5002
-      008541 F6               [ 1] 1090 	ld	a, (x)
-      008542 AA 08            [ 1] 1091 	or	a, #0x08
-      008544 F7               [ 1] 1092 	ld	(x), a
-                                   1093 ;	ds18b20.c: 450: DS18B20_DQ_LOW;
-      008545 AE 50 00         [ 2] 1094 	ldw	x, #0x5000
-      008548 F6               [ 1] 1095 	ld	a, (x)
-      008549 A4 F7            [ 1] 1096 	and	a, #0xf7
-      00854B F7               [ 1] 1097 	ld	(x), a
-                                   1098 ;	ds18b20.c: 451: _delay_us(5);
-      00854C 4B 05            [ 1] 1099 	push	#0x05
-      00854E 4B 00            [ 1] 1100 	push	#0x00
-      008550 CD 84 6C         [ 4] 1101 	call	__delay_us
-      008553 5B 02            [ 2] 1102 	addw	sp, #2
-                                   1103 ;	ds18b20.c: 452: _data >>= 1;
-      008555 04 01            [ 1] 1104 	srl	(0x01, sp)
-                                   1105 ;	ds18b20.c: 453: DS18B20_DQ_HIGH;
-      008557 AE 50 00         [ 2] 1106 	ldw	x, #0x5000
-      00855A F6               [ 1] 1107 	ld	a, (x)
-      00855B AA 08            [ 1] 1108 	or	a, #0x08
-      00855D F7               [ 1] 1109 	ld	(x), a
-                                   1110 ;	ds18b20.c: 454: DS18B20_DQ_IN;
-      00855E AE 50 02         [ 2] 1111 	ldw	x, #0x5002
-      008561 F6               [ 1] 1112 	ld	a, (x)
-      008562 A4 F7            [ 1] 1113 	and	a, #0xf7
-      008564 F7               [ 1] 1114 	ld	(x), a
-                                   1115 ;	ds18b20.c: 455: if (DS18B20_DQ_VALUE)
-      008565 AE 50 01         [ 2] 1116 	ldw	x, #0x5001
-      008568 F6               [ 1] 1117 	ld	a, (x)
-      008569 4D               [ 1] 1118 	tnz	a
-      00856A 27 06            [ 1] 1119 	jreq	00102$
-                                   1120 ;	ds18b20.c: 457: _data |= 0x80;
-      00856C 7B 01            [ 1] 1121 	ld	a, (0x01, sp)
-      00856E AA 80            [ 1] 1122 	or	a, #0x80
-      008570 6B 01            [ 1] 1123 	ld	(0x01, sp), a
-      008572                       1124 00102$:
-                                   1125 ;	ds18b20.c: 459: DS18B20_DQ_OUT; 
-      008572 AE 50 02         [ 2] 1126 	ldw	x, #0x5002
-      008575 F6               [ 1] 1127 	ld	a, (x)
-      008576 AA 08            [ 1] 1128 	or	a, #0x08
-      008578 F7               [ 1] 1129 	ld	(x), a
-                                   1130 ;	ds18b20.c: 460: DS18B20_DQ_HIGH;
-      008579 AE 50 00         [ 2] 1131 	ldw	x, #0x5000
-      00857C F6               [ 1] 1132 	ld	a, (x)
-      00857D AA 08            [ 1] 1133 	or	a, #0x08
-      00857F F7               [ 1] 1134 	ld	(x), a
-                                   1135 ;	ds18b20.c: 461: _delay_us(60);
-      008580 4B 3C            [ 1] 1136 	push	#0x3c
-      008582 4B 00            [ 1] 1137 	push	#0x00
-      008584 CD 84 6C         [ 4] 1138 	call	__delay_us
-      008587 5B 02            [ 2] 1139 	addw	sp, #2
-                                   1140 ;	ds18b20.c: 447: for (i = 0; i < 8; i++)
-      008589 0C 02            [ 1] 1141 	inc	(0x02, sp)
-      00858B 7B 02            [ 1] 1142 	ld	a, (0x02, sp)
-      00858D A1 08            [ 1] 1143 	cp	a, #0x08
-      00858F 25 AD            [ 1] 1144 	jrc	00104$
-                                   1145 ;	ds18b20.c: 464: return _data;
-      008591 7B 01            [ 1] 1146 	ld	a, (0x01, sp)
-      008593 5B 02            [ 2] 1147 	addw	sp, #2
-      008595 81               [ 4] 1148 	ret
-                                   1149 ;	ds18b20.c: 467: float DS18B20_ReadTemperature(void)
-                                   1150 ;	-----------------------------------------
-                                   1151 ;	 function DS18B20_ReadTemperature
-                                   1152 ;	-----------------------------------------
-      008596                       1153 _DS18B20_ReadTemperature:
-      008596 52 0A            [ 2] 1154 	sub	sp, #10
-                                   1155 ;	ds18b20.c: 481: DS18B20_Init();
-      008598 CD 84 9C         [ 4] 1156 	call	_DS18B20_Init
-                                   1157 ;	ds18b20.c: 482: DS18B20_WriteByte(0xcc);
-      00859B 4B CC            [ 1] 1158 	push	#0xcc
-      00859D CD 84 F3         [ 4] 1159 	call	_DS18B20_WriteByte
-      0085A0 84               [ 1] 1160 	pop	a
-                                   1161 ;	ds18b20.c: 483: DS18B20_WriteByte(0x44);
-      0085A1 4B 44            [ 1] 1162 	push	#0x44
-      0085A3 CD 84 F3         [ 4] 1163 	call	_DS18B20_WriteByte
-      0085A6 84               [ 1] 1164 	pop	a
-                                   1165 ;	ds18b20.c: 485: DS18B20_Init();
-      0085A7 CD 84 9C         [ 4] 1166 	call	_DS18B20_Init
-                                   1167 ;	ds18b20.c: 486: DS18B20_WriteByte(0xcc);
-      0085AA 4B CC            [ 1] 1168 	push	#0xcc
-      0085AC CD 84 F3         [ 4] 1169 	call	_DS18B20_WriteByte
-      0085AF 84               [ 1] 1170 	pop	a
-                                   1171 ;	ds18b20.c: 487: DS18B20_WriteByte(0xbe);
-      0085B0 4B BE            [ 1] 1172 	push	#0xbe
-      0085B2 CD 84 F3         [ 4] 1173 	call	_DS18B20_WriteByte
-      0085B5 84               [ 1] 1174 	pop	a
-                                   1175 ;	ds18b20.c: 489: temp = DS18B20_ReadByte();
-      0085B6 CD 85 38         [ 4] 1176 	call	_DS18B20_ReadByte
-                                   1177 ;	ds18b20.c: 490: t = (((temp & 0xf0) >> 4) + (temp & 0x07) * 0.125); 
-      0085B9 95               [ 1] 1178 	ld	xh, a
-      0085BA A4 F0            [ 1] 1179 	and	a, #0xf0
-      0085BC 4E               [ 1] 1180 	swap	a
-      0085BD A4 0F            [ 1] 1181 	and	a, #0x0f
-      0085BF 6B 0A            [ 1] 1182 	ld	(0x0a, sp), a
-      0085C1 0F 09            [ 1] 1183 	clr	(0x09, sp)
-      0085C3 9E               [ 1] 1184 	ld	a, xh
-      0085C4 A4 07            [ 1] 1185 	and	a, #0x07
-      0085C6 88               [ 1] 1186 	push	a
-      0085C7 CD 8E 4C         [ 4] 1187 	call	___uchar2fs
-      0085CA 84               [ 1] 1188 	pop	a
-      0085CB 89               [ 2] 1189 	pushw	x
-      0085CC 90 89            [ 2] 1190 	pushw	y
-      0085CE 5F               [ 1] 1191 	clrw	x
-      0085CF 89               [ 2] 1192 	pushw	x
-      0085D0 4B 00            [ 1] 1193 	push	#0x00
-      0085D2 4B 3E            [ 1] 1194 	push	#0x3e
-      0085D4 CD 87 6A         [ 4] 1195 	call	___fsmul
-      0085D7 5B 08            [ 2] 1196 	addw	sp, #8
-      0085D9 17 05            [ 2] 1197 	ldw	(0x05, sp), y
-      0085DB 89               [ 2] 1198 	pushw	x
-      0085DC 16 0B            [ 2] 1199 	ldw	y, (0x0b, sp)
-      0085DE 90 89            [ 2] 1200 	pushw	y
-      0085E0 CD 8E 3B         [ 4] 1201 	call	___sint2fs
-      0085E3 5B 02            [ 2] 1202 	addw	sp, #2
-      0085E5 1F 05            [ 2] 1203 	ldw	(0x05, sp), x
-      0085E7 1E 07            [ 2] 1204 	ldw	x, (0x07, sp)
-      0085E9 89               [ 2] 1205 	pushw	x
-      0085EA 1E 07            [ 2] 1206 	ldw	x, (0x07, sp)
-      0085EC 89               [ 2] 1207 	pushw	x
-      0085ED 90 89            [ 2] 1208 	pushw	y
-      0085EF CD 8B 79         [ 4] 1209 	call	___fsadd
-                                   1210 ;	ds18b20.c: 494: return t;
-      0085F2 5B 12            [ 2] 1211 	addw	sp, #18
-      0085F4 81               [ 4] 1212 	ret
-                                   1213 ;	ds18b20.c: 500: int main () {
-                                   1214 ;	-----------------------------------------
-                                   1215 ;	 function main
-                                   1216 ;	-----------------------------------------
-      0085F5                       1217 _main:
-      0085F5 52 16            [ 2] 1218 	sub	sp, #22
-                                   1219 ;	ds18b20.c: 504: InitializeSystemClock();
-      0085F7 CD 80 AB         [ 4] 1220 	call	_InitializeSystemClock
-                                   1221 ;	ds18b20.c: 507: PD_DDR = (1 << 3) | (1 << 2); // output mode
-      0085FA 35 0C 50 11      [ 1] 1222 	mov	0x5011+0, #0x0c
-                                   1223 ;	ds18b20.c: 508: PD_CR1 = (1 << 3) | (1 << 2); // push-pull
-      0085FE 35 0C 50 12      [ 1] 1224 	mov	0x5012+0, #0x0c
-                                   1225 ;	ds18b20.c: 509: PD_CR2 = (1 << 3) | (1 << 2); // up to 10MHz speed
-      008602 35 0C 50 13      [ 1] 1226 	mov	0x5013+0, #0x0c
-                                   1227 ;	ds18b20.c: 510: tm1637Init();
-      008606 CD 83 0B         [ 4] 1228 	call	_tm1637Init
-                                   1229 ;	ds18b20.c: 512: InitializeUART();
-      008609 CD 82 98         [ 4] 1230 	call	_InitializeUART
-                                   1231 ;	ds18b20.c: 516: while (1) {
-      00860C                       1232 00114$:
-                                   1233 ;	ds18b20.c: 519: objTemp = DS18B20_ReadTemperature(); 
-      00860C CD 85 96         [ 4] 1234 	call	_DS18B20_ReadTemperature
-      00860F 1F 07            [ 2] 1235 	ldw	(0x07, sp), x
-      008611 17 05            [ 2] 1236 	ldw	(0x05, sp), y
-                                   1237 ;	ds18b20.c: 522: while (objTemp > 1000) {
-      008613 5F               [ 1] 1238 	clrw	x
-      008614 1F 03            [ 2] 1239 	ldw	(0x03, sp), x
-      008616                       1240 00101$:
-      008616 5F               [ 1] 1241 	clrw	x
-      008617 89               [ 2] 1242 	pushw	x
-      008618 4B 7A            [ 1] 1243 	push	#0x7a
-      00861A 4B 44            [ 1] 1244 	push	#0x44
-      00861C 1E 0B            [ 2] 1245 	ldw	x, (0x0b, sp)
-      00861E 89               [ 2] 1246 	pushw	x
-      00861F 1E 0B            [ 2] 1247 	ldw	x, (0x0b, sp)
-      008621 89               [ 2] 1248 	pushw	x
-      008622 CD 8A 6C         [ 4] 1249 	call	___fsgt
-      008625 5B 08            [ 2] 1250 	addw	sp, #8
-      008627 4D               [ 1] 1251 	tnz	a
-      008628 27 1C            [ 1] 1252 	jreq	00127$
-                                   1253 ;	ds18b20.c: 523: vierde+=1;
-      00862A 1E 03            [ 2] 1254 	ldw	x, (0x03, sp)
-      00862C 5C               [ 2] 1255 	incw	x
-      00862D 1F 03            [ 2] 1256 	ldw	(0x03, sp), x
-                                   1257 ;	ds18b20.c: 524: objTemp-=1000;
-      00862F 5F               [ 1] 1258 	clrw	x
-      008630 89               [ 2] 1259 	pushw	x
-      008631 4B 7A            [ 1] 1260 	push	#0x7a
-      008633 4B 44            [ 1] 1261 	push	#0x44
-      008635 1E 0B            [ 2] 1262 	ldw	x, (0x0b, sp)
-      008637 89               [ 2] 1263 	pushw	x
-      008638 1E 0B            [ 2] 1264 	ldw	x, (0x0b, sp)
-      00863A 89               [ 2] 1265 	pushw	x
-      00863B CD 87 47         [ 4] 1266 	call	___fssub
-      00863E 5B 08            [ 2] 1267 	addw	sp, #8
-      008640 1F 07            [ 2] 1268 	ldw	(0x07, sp), x
-      008642 17 05            [ 2] 1269 	ldw	(0x05, sp), y
-      008644 20 D0            [ 2] 1270 	jra	00101$
-                                   1271 ;	ds18b20.c: 526: while (objTemp > 100) {
-      008646                       1272 00127$:
-      008646 16 03            [ 2] 1273 	ldw	y, (0x03, sp)
-      008648 17 13            [ 2] 1274 	ldw	(0x13, sp), y
-      00864A 5F               [ 1] 1275 	clrw	x
-      00864B 1F 09            [ 2] 1276 	ldw	(0x09, sp), x
-      00864D                       1277 00104$:
-      00864D 5F               [ 1] 1278 	clrw	x
-      00864E 89               [ 2] 1279 	pushw	x
-      00864F 4B C8            [ 1] 1280 	push	#0xc8
-      008651 4B 42            [ 1] 1281 	push	#0x42
-      008653 1E 0B            [ 2] 1282 	ldw	x, (0x0b, sp)
-      008655 89               [ 2] 1283 	pushw	x
-      008656 1E 0B            [ 2] 1284 	ldw	x, (0x0b, sp)
-      008658 89               [ 2] 1285 	pushw	x
-      008659 CD 8A 6C         [ 4] 1286 	call	___fsgt
-      00865C 5B 08            [ 2] 1287 	addw	sp, #8
-      00865E 4D               [ 1] 1288 	tnz	a
-      00865F 27 1C            [ 1] 1289 	jreq	00128$
-                                   1290 ;	ds18b20.c: 527: derde+=1;
-      008661 1E 09            [ 2] 1291 	ldw	x, (0x09, sp)
-      008663 5C               [ 2] 1292 	incw	x
-      008664 1F 09            [ 2] 1293 	ldw	(0x09, sp), x
-                                   1294 ;	ds18b20.c: 528: objTemp-=100;
-      008666 5F               [ 1] 1295 	clrw	x
-      008667 89               [ 2] 1296 	pushw	x
-      008668 4B C8            [ 1] 1297 	push	#0xc8
-      00866A 4B 42            [ 1] 1298 	push	#0x42
-      00866C 1E 0B            [ 2] 1299 	ldw	x, (0x0b, sp)
-      00866E 89               [ 2] 1300 	pushw	x
-      00866F 1E 0B            [ 2] 1301 	ldw	x, (0x0b, sp)
-      008671 89               [ 2] 1302 	pushw	x
-      008672 CD 87 47         [ 4] 1303 	call	___fssub
-      008675 5B 08            [ 2] 1304 	addw	sp, #8
-      008677 1F 07            [ 2] 1305 	ldw	(0x07, sp), x
-      008679 17 05            [ 2] 1306 	ldw	(0x05, sp), y
-      00867B 20 D0            [ 2] 1307 	jra	00104$
-                                   1308 ;	ds18b20.c: 530: while (objTemp > 10) {
-      00867D                       1309 00128$:
-      00867D 16 09            [ 2] 1310 	ldw	y, (0x09, sp)
-      00867F 17 11            [ 2] 1311 	ldw	(0x11, sp), y
-      008681 5F               [ 1] 1312 	clrw	x
-      008682 1F 01            [ 2] 1313 	ldw	(0x01, sp), x
-      008684                       1314 00107$:
-      008684 5F               [ 1] 1315 	clrw	x
-      008685 89               [ 2] 1316 	pushw	x
-      008686 4B 20            [ 1] 1317 	push	#0x20
-      008688 4B 41            [ 1] 1318 	push	#0x41
-      00868A 1E 0B            [ 2] 1319 	ldw	x, (0x0b, sp)
-      00868C 89               [ 2] 1320 	pushw	x
-      00868D 1E 0B            [ 2] 1321 	ldw	x, (0x0b, sp)
-      00868F 89               [ 2] 1322 	pushw	x
-      008690 CD 8A 6C         [ 4] 1323 	call	___fsgt
-      008693 5B 08            [ 2] 1324 	addw	sp, #8
-      008695 4D               [ 1] 1325 	tnz	a
-      008696 27 1C            [ 1] 1326 	jreq	00129$
-                                   1327 ;	ds18b20.c: 531: tweede+=1;
-      008698 1E 01            [ 2] 1328 	ldw	x, (0x01, sp)
-      00869A 5C               [ 2] 1329 	incw	x
-      00869B 1F 01            [ 2] 1330 	ldw	(0x01, sp), x
-                                   1331 ;	ds18b20.c: 532: objTemp-=10;
-      00869D 5F               [ 1] 1332 	clrw	x
-      00869E 89               [ 2] 1333 	pushw	x
-      00869F 4B 20            [ 1] 1334 	push	#0x20
-      0086A1 4B 41            [ 1] 1335 	push	#0x41
-      0086A3 1E 0B            [ 2] 1336 	ldw	x, (0x0b, sp)
-      0086A5 89               [ 2] 1337 	pushw	x
-      0086A6 1E 0B            [ 2] 1338 	ldw	x, (0x0b, sp)
-      0086A8 89               [ 2] 1339 	pushw	x
-      0086A9 CD 87 47         [ 4] 1340 	call	___fssub
-      0086AC 5B 08            [ 2] 1341 	addw	sp, #8
-      0086AE 1F 07            [ 2] 1342 	ldw	(0x07, sp), x
-      0086B0 17 05            [ 2] 1343 	ldw	(0x05, sp), y
-      0086B2 20 D0            [ 2] 1344 	jra	00107$
-                                   1345 ;	ds18b20.c: 534: while (objTemp > 0)
-      0086B4                       1346 00129$:
-      0086B4 16 01            [ 2] 1347 	ldw	y, (0x01, sp)
-      0086B6 17 0F            [ 2] 1348 	ldw	(0x0f, sp), y
-      0086B8 5F               [ 1] 1349 	clrw	x
-      0086B9 1F 0B            [ 2] 1350 	ldw	(0x0b, sp), x
-      0086BB                       1351 00110$:
-      0086BB 5F               [ 1] 1352 	clrw	x
-      0086BC 89               [ 2] 1353 	pushw	x
-      0086BD 5F               [ 1] 1354 	clrw	x
-      0086BE 89               [ 2] 1355 	pushw	x
-      0086BF 1E 0B            [ 2] 1356 	ldw	x, (0x0b, sp)
-      0086C1 89               [ 2] 1357 	pushw	x
-      0086C2 1E 0B            [ 2] 1358 	ldw	x, (0x0b, sp)
-      0086C4 89               [ 2] 1359 	pushw	x
-      0086C5 CD 8A 6C         [ 4] 1360 	call	___fsgt
-      0086C8 5B 08            [ 2] 1361 	addw	sp, #8
-      0086CA 4D               [ 1] 1362 	tnz	a
-      0086CB 27 1C            [ 1] 1363 	jreq	00112$
-                                   1364 ;	ds18b20.c: 536: eerste+=1;
-      0086CD 1E 0B            [ 2] 1365 	ldw	x, (0x0b, sp)
-      0086CF 5C               [ 2] 1366 	incw	x
-      0086D0 1F 0B            [ 2] 1367 	ldw	(0x0b, sp), x
-                                   1368 ;	ds18b20.c: 537: objTemp-=1;
-      0086D2 5F               [ 1] 1369 	clrw	x
-      0086D3 89               [ 2] 1370 	pushw	x
-      0086D4 4B 80            [ 1] 1371 	push	#0x80
-      0086D6 4B 3F            [ 1] 1372 	push	#0x3f
-      0086D8 1E 0B            [ 2] 1373 	ldw	x, (0x0b, sp)
-      0086DA 89               [ 2] 1374 	pushw	x
-      0086DB 1E 0B            [ 2] 1375 	ldw	x, (0x0b, sp)
-      0086DD 89               [ 2] 1376 	pushw	x
-      0086DE CD 87 47         [ 4] 1377 	call	___fssub
-      0086E1 5B 08            [ 2] 1378 	addw	sp, #8
-      0086E3 1F 07            [ 2] 1379 	ldw	(0x07, sp), x
-      0086E5 17 05            [ 2] 1380 	ldw	(0x05, sp), y
-      0086E7 20 D2            [ 2] 1381 	jra	00110$
-      0086E9                       1382 00112$:
-                                   1383 ;	ds18b20.c: 540: utemp=vierde*1000+derde*100+tweede*10+eerste;
-      0086E9 1E 13            [ 2] 1384 	ldw	x, (0x13, sp)
-      0086EB 89               [ 2] 1385 	pushw	x
-      0086EC 4B E8            [ 1] 1386 	push	#0xe8
-      0086EE 4B 03            [ 1] 1387 	push	#0x03
-      0086F0 CD 8B 58         [ 4] 1388 	call	__mulint
-      0086F3 5B 04            [ 2] 1389 	addw	sp, #4
-      0086F5 1F 0D            [ 2] 1390 	ldw	(0x0d, sp), x
-      0086F7 1E 11            [ 2] 1391 	ldw	x, (0x11, sp)
-      0086F9 89               [ 2] 1392 	pushw	x
-      0086FA 4B 64            [ 1] 1393 	push	#0x64
-      0086FC 4B 00            [ 1] 1394 	push	#0x00
-      0086FE CD 8B 58         [ 4] 1395 	call	__mulint
-      008701 5B 04            [ 2] 1396 	addw	sp, #4
-      008703 72 FB 0D         [ 2] 1397 	addw	x, (0x0d, sp)
-      008706 1F 15            [ 2] 1398 	ldw	(0x15, sp), x
-      008708 1E 0F            [ 2] 1399 	ldw	x, (0x0f, sp)
-      00870A 89               [ 2] 1400 	pushw	x
-      00870B 4B 0A            [ 1] 1401 	push	#0x0a
-      00870D 4B 00            [ 1] 1402 	push	#0x00
-      00870F CD 8B 58         [ 4] 1403 	call	__mulint
-      008712 5B 04            [ 2] 1404 	addw	sp, #4
-      008714 72 FB 15         [ 2] 1405 	addw	x, (0x15, sp)
-      008717 72 FB 0B         [ 2] 1406 	addw	x, (0x0b, sp)
-      00871A 90 5F            [ 1] 1407 	clrw	y
-      00871C 5D               [ 2] 1408 	tnzw	x
-      00871D 2A 02            [ 1] 1409 	jrpl	00162$
-      00871F 90 5A            [ 2] 1410 	decw	y
-      008721                       1411 00162$:
-                                   1412 ;	ds18b20.c: 543: tm1637DisplayDecimal(utemp, 1); // eg 37:12
-      008721 4B 01            [ 1] 1413 	push	#0x01
-      008723 4B 00            [ 1] 1414 	push	#0x00
-      008725 89               [ 2] 1415 	pushw	x
-      008726 90 89            [ 2] 1416 	pushw	y
-      008728 CD 83 12         [ 4] 1417 	call	_tm1637DisplayDecimal
-      00872B 5B 06            [ 2] 1418 	addw	sp, #6
-                                   1419 ;	ds18b20.c: 546: delayTenMicro();
-      00872D CD 80 A0         [ 4] 1420 	call	_delayTenMicro
-      008730 CC 86 0C         [ 2] 1421 	jp	00114$
-      008733 5B 16            [ 2] 1422 	addw	sp, #22
-      008735 81               [ 4] 1423 	ret
-                                   1424 	.area CODE
-      008736                       1425 _segmentMap:
-      008736 3F                    1426 	.db #0x3F	;  63
-      008737 06                    1427 	.db #0x06	;  6
-      008738 5B                    1428 	.db #0x5B	;  91
-      008739 4F                    1429 	.db #0x4F	;  79	'O'
-      00873A 66                    1430 	.db #0x66	;  102	'f'
-      00873B 6D                    1431 	.db #0x6D	;  109	'm'
-      00873C 7D                    1432 	.db #0x7D	;  125
-      00873D 07                    1433 	.db #0x07	;  7
-      00873E 7F                    1434 	.db #0x7F	;  127
-      00873F 6F                    1435 	.db #0x6F	;  111	'o'
-      008740 77                    1436 	.db #0x77	;  119	'w'
-      008741 7C                    1437 	.db #0x7C	;  124
-      008742 39                    1438 	.db #0x39	;  57	'9'
-      008743 5E                    1439 	.db #0x5E	;  94
-      008744 79                    1440 	.db #0x79	;  121	'y'
-      008745 71                    1441 	.db #0x71	;  113	'q'
-      008746 00                    1442 	.db #0x00	;  0
-                                   1443 	.area INITIALIZER
-                                   1444 	.area CABS (ABS)
+      00848A                        964 __delay_us:
+                                    965 ;	ds18b20.c: 393: i *= 3; 
+      00848A 1E 03            [ 2]  966 	ldw	x, (0x03, sp)
+      00848C 89               [ 2]  967 	pushw	x
+      00848D 4B 03            [ 1]  968 	push	#0x03
+      00848F 4B 00            [ 1]  969 	push	#0x00
+      008491 CD 8B F8         [ 4]  970 	call	__mulint
+      008494 5B 04            [ 2]  971 	addw	sp, #4
+      008496 1F 03            [ 2]  972 	ldw	(0x03, sp), x
+                                    973 ;	ds18b20.c: 394: while(--i);
+      008498 1E 03            [ 2]  974 	ldw	x, (0x03, sp)
+      00849A                        975 00101$:
+      00849A 5A               [ 2]  976 	decw	x
+      00849B 5D               [ 2]  977 	tnzw	x
+      00849C 26 FC            [ 1]  978 	jrne	00101$
+      00849E 81               [ 4]  979 	ret
+                                    980 ;	ds18b20.c: 397: void _delay_ms(unsigned int i)
+                                    981 ;	-----------------------------------------
+                                    982 ;	 function _delay_ms
+                                    983 ;	-----------------------------------------
+      00849F                        984 __delay_ms:
+                                    985 ;	ds18b20.c: 399: while(i--)
+      00849F 1E 03            [ 2]  986 	ldw	x, (0x03, sp)
+      0084A1                        987 00101$:
+      0084A1 90 93            [ 1]  988 	ldw	y, x
+      0084A3 5A               [ 2]  989 	decw	x
+      0084A4 90 5D            [ 2]  990 	tnzw	y
+      0084A6 27 0D            [ 1]  991 	jreq	00104$
+                                    992 ;	ds18b20.c: 401: _delay_us(1000);
+      0084A8 89               [ 2]  993 	pushw	x
+      0084A9 4B E8            [ 1]  994 	push	#0xe8
+      0084AB 4B 03            [ 1]  995 	push	#0x03
+      0084AD CD 84 8A         [ 4]  996 	call	__delay_us
+      0084B0 5B 02            [ 2]  997 	addw	sp, #2
+      0084B2 85               [ 2]  998 	popw	x
+      0084B3 20 EC            [ 2]  999 	jra	00101$
+      0084B5                       1000 00104$:
+      0084B5 81               [ 4] 1001 	ret
+                                   1002 ;	ds18b20.c: 407: void DS18B20_Init(void)
+                                   1003 ;	-----------------------------------------
+                                   1004 ;	 function DS18B20_Init
+                                   1005 ;	-----------------------------------------
+      0084B6                       1006 _DS18B20_Init:
+                                   1007 ;	ds18b20.c: 409: DS18B20_DQ_OUT;   
+      0084B6 AE 50 02         [ 2] 1008 	ldw	x, #0x5002
+      0084B9 F6               [ 1] 1009 	ld	a, (x)
+      0084BA AA 08            [ 1] 1010 	or	a, #0x08
+      0084BC F7               [ 1] 1011 	ld	(x), a
+                                   1012 ;	ds18b20.c: 410: DS18B20_DQ_PUSH_PULL;    
+      0084BD AE 50 03         [ 2] 1013 	ldw	x, #0x5003
+      0084C0 F6               [ 1] 1014 	ld	a, (x)
+      0084C1 AA 08            [ 1] 1015 	or	a, #0x08
+      0084C3 F7               [ 1] 1016 	ld	(x), a
+                                   1017 ;	ds18b20.c: 411: DS18B20_DQ_HIGH;   
+      0084C4 AE 50 00         [ 2] 1018 	ldw	x, #0x5000
+      0084C7 F6               [ 1] 1019 	ld	a, (x)
+      0084C8 AA 08            [ 1] 1020 	or	a, #0x08
+      0084CA F7               [ 1] 1021 	ld	(x), a
+                                   1022 ;	ds18b20.c: 412: _delay_us(10);
+      0084CB 4B 0A            [ 1] 1023 	push	#0x0a
+      0084CD 4B 00            [ 1] 1024 	push	#0x00
+      0084CF CD 84 8A         [ 4] 1025 	call	__delay_us
+      0084D2 5B 02            [ 2] 1026 	addw	sp, #2
+                                   1027 ;	ds18b20.c: 413: DS18B20_DQ_LOW;   
+      0084D4 AE 50 00         [ 2] 1028 	ldw	x, #0x5000
+      0084D7 F6               [ 1] 1029 	ld	a, (x)
+      0084D8 A4 F7            [ 1] 1030 	and	a, #0xf7
+      0084DA F7               [ 1] 1031 	ld	(x), a
+                                   1032 ;	ds18b20.c: 414: _delay_us(600);     //????
+      0084DB 4B 58            [ 1] 1033 	push	#0x58
+      0084DD 4B 02            [ 1] 1034 	push	#0x02
+      0084DF CD 84 8A         [ 4] 1035 	call	__delay_us
+      0084E2 5B 02            [ 2] 1036 	addw	sp, #2
+                                   1037 ;	ds18b20.c: 416: DS18B20_DQ_IN;   
+      0084E4 AE 50 02         [ 2] 1038 	ldw	x, #0x5002
+      0084E7 F6               [ 1] 1039 	ld	a, (x)
+      0084E8 A4 F7            [ 1] 1040 	and	a, #0xf7
+      0084EA F7               [ 1] 1041 	ld	(x), a
+                                   1042 ;	ds18b20.c: 417: DS18B20_DQ_PULL_UP;    
+      0084EB AE 50 03         [ 2] 1043 	ldw	x, #0x5003
+      0084EE F6               [ 1] 1044 	ld	a, (x)
+      0084EF AA 08            [ 1] 1045 	or	a, #0x08
+      0084F1 F7               [ 1] 1046 	ld	(x), a
+                                   1047 ;	ds18b20.c: 418: _delay_us(100);     
+      0084F2 4B 64            [ 1] 1048 	push	#0x64
+      0084F4 4B 00            [ 1] 1049 	push	#0x00
+      0084F6 CD 84 8A         [ 4] 1050 	call	__delay_us
+      0084F9 5B 02            [ 2] 1051 	addw	sp, #2
+                                   1052 ;	ds18b20.c: 420: _delay_us(400);
+      0084FB 4B 90            [ 1] 1053 	push	#0x90
+      0084FD 4B 01            [ 1] 1054 	push	#0x01
+      0084FF CD 84 8A         [ 4] 1055 	call	__delay_us
+      008502 5B 02            [ 2] 1056 	addw	sp, #2
+      008504 81               [ 4] 1057 	ret
+                                   1058 ;	ds18b20.c: 424: void DS18B20_WriteByte(unsigned char _data)
+                                   1059 ;	-----------------------------------------
+                                   1060 ;	 function DS18B20_WriteByte
+                                   1061 ;	-----------------------------------------
+      008505                       1062 _DS18B20_WriteByte:
+      008505 88               [ 1] 1063 	push	a
+                                   1064 ;	ds18b20.c: 428: DS18B20_DQ_OUT;
+      008506 AE 50 02         [ 2] 1065 	ldw	x, #0x5002
+      008509 F6               [ 1] 1066 	ld	a, (x)
+      00850A AA 08            [ 1] 1067 	or	a, #0x08
+      00850C F7               [ 1] 1068 	ld	(x), a
+                                   1069 ;	ds18b20.c: 429: for (i = 0; i < 8; i++)
+      00850D 0F 01            [ 1] 1070 	clr	(0x01, sp)
+      00850F                       1071 00104$:
+                                   1072 ;	ds18b20.c: 431: DS18B20_DQ_LOW;
+      00850F AE 50 00         [ 2] 1073 	ldw	x, #0x5000
+      008512 F6               [ 1] 1074 	ld	a, (x)
+      008513 A4 F7            [ 1] 1075 	and	a, #0xf7
+      008515 F7               [ 1] 1076 	ld	(x), a
+                                   1077 ;	ds18b20.c: 432: _delay_us(2);
+      008516 4B 02            [ 1] 1078 	push	#0x02
+      008518 4B 00            [ 1] 1079 	push	#0x00
+      00851A CD 84 8A         [ 4] 1080 	call	__delay_us
+      00851D 5B 02            [ 2] 1081 	addw	sp, #2
+                                   1082 ;	ds18b20.c: 433: if (_data & 0x01)
+      00851F 7B 04            [ 1] 1083 	ld	a, (0x04, sp)
+      008521 44               [ 1] 1084 	srl	a
+      008522 24 07            [ 1] 1085 	jrnc	00102$
+                                   1086 ;	ds18b20.c: 435: DS18B20_DQ_HIGH;
+      008524 AE 50 00         [ 2] 1087 	ldw	x, #0x5000
+      008527 F6               [ 1] 1088 	ld	a, (x)
+      008528 AA 08            [ 1] 1089 	or	a, #0x08
+      00852A F7               [ 1] 1090 	ld	(x), a
+      00852B                       1091 00102$:
+                                   1092 ;	ds18b20.c: 437: _data >>= 1;
+      00852B 7B 04            [ 1] 1093 	ld	a, (0x04, sp)
+      00852D 44               [ 1] 1094 	srl	a
+      00852E 6B 04            [ 1] 1095 	ld	(0x04, sp), a
+                                   1096 ;	ds18b20.c: 438: _delay_us(60);
+      008530 4B 3C            [ 1] 1097 	push	#0x3c
+      008532 4B 00            [ 1] 1098 	push	#0x00
+      008534 CD 84 8A         [ 4] 1099 	call	__delay_us
+      008537 5B 02            [ 2] 1100 	addw	sp, #2
+                                   1101 ;	ds18b20.c: 439: DS18B20_DQ_HIGH;
+      008539 AE 50 00         [ 2] 1102 	ldw	x, #0x5000
+      00853C F6               [ 1] 1103 	ld	a, (x)
+      00853D AA 08            [ 1] 1104 	or	a, #0x08
+      00853F F7               [ 1] 1105 	ld	(x), a
+                                   1106 ;	ds18b20.c: 429: for (i = 0; i < 8; i++)
+      008540 0C 01            [ 1] 1107 	inc	(0x01, sp)
+      008542 7B 01            [ 1] 1108 	ld	a, (0x01, sp)
+      008544 A1 08            [ 1] 1109 	cp	a, #0x08
+      008546 25 C7            [ 1] 1110 	jrc	00104$
+      008548 84               [ 1] 1111 	pop	a
+      008549 81               [ 4] 1112 	ret
+                                   1113 ;	ds18b20.c: 443: unsigned char DS18B20_ReadByte(void)
+                                   1114 ;	-----------------------------------------
+                                   1115 ;	 function DS18B20_ReadByte
+                                   1116 ;	-----------------------------------------
+      00854A                       1117 _DS18B20_ReadByte:
+      00854A 52 02            [ 2] 1118 	sub	sp, #2
+                                   1119 ;	ds18b20.c: 445: unsigned char i = 0, _data = 0;
+      00854C 0F 02            [ 1] 1120 	clr	(0x02, sp)
+                                   1121 ;	ds18b20.c: 447: for (i = 0; i < 8; i++)
+      00854E 0F 01            [ 1] 1122 	clr	(0x01, sp)
+      008550                       1123 00104$:
+                                   1124 ;	ds18b20.c: 449: DS18B20_DQ_OUT;
+      008550 AE 50 02         [ 2] 1125 	ldw	x, #0x5002
+      008553 F6               [ 1] 1126 	ld	a, (x)
+      008554 AA 08            [ 1] 1127 	or	a, #0x08
+      008556 F7               [ 1] 1128 	ld	(x), a
+                                   1129 ;	ds18b20.c: 450: DS18B20_DQ_LOW;
+      008557 AE 50 00         [ 2] 1130 	ldw	x, #0x5000
+      00855A F6               [ 1] 1131 	ld	a, (x)
+      00855B A4 F7            [ 1] 1132 	and	a, #0xf7
+      00855D F7               [ 1] 1133 	ld	(x), a
+                                   1134 ;	ds18b20.c: 451: _delay_us(5);
+      00855E 4B 05            [ 1] 1135 	push	#0x05
+      008560 4B 00            [ 1] 1136 	push	#0x00
+      008562 CD 84 8A         [ 4] 1137 	call	__delay_us
+      008565 5B 02            [ 2] 1138 	addw	sp, #2
+                                   1139 ;	ds18b20.c: 452: _data >>= 1;
+      008567 04 02            [ 1] 1140 	srl	(0x02, sp)
+                                   1141 ;	ds18b20.c: 453: DS18B20_DQ_HIGH;
+      008569 AE 50 00         [ 2] 1142 	ldw	x, #0x5000
+      00856C F6               [ 1] 1143 	ld	a, (x)
+      00856D AA 08            [ 1] 1144 	or	a, #0x08
+      00856F F7               [ 1] 1145 	ld	(x), a
+                                   1146 ;	ds18b20.c: 454: DS18B20_DQ_IN;
+      008570 AE 50 02         [ 2] 1147 	ldw	x, #0x5002
+      008573 F6               [ 1] 1148 	ld	a, (x)
+      008574 A4 F7            [ 1] 1149 	and	a, #0xf7
+      008576 F7               [ 1] 1150 	ld	(x), a
+                                   1151 ;	ds18b20.c: 455: if (DS18B20_DQ_VALUE)
+      008577 AE 50 01         [ 2] 1152 	ldw	x, #0x5001
+      00857A F6               [ 1] 1153 	ld	a, (x)
+      00857B A5 08            [ 1] 1154 	bcp	a, #0x08
+      00857D 27 06            [ 1] 1155 	jreq	00102$
+                                   1156 ;	ds18b20.c: 457: _data |= 0x80;
+      00857F 7B 02            [ 1] 1157 	ld	a, (0x02, sp)
+      008581 AA 80            [ 1] 1158 	or	a, #0x80
+      008583 6B 02            [ 1] 1159 	ld	(0x02, sp), a
+      008585                       1160 00102$:
+                                   1161 ;	ds18b20.c: 459: DS18B20_DQ_OUT; 
+      008585 AE 50 02         [ 2] 1162 	ldw	x, #0x5002
+      008588 F6               [ 1] 1163 	ld	a, (x)
+      008589 AA 08            [ 1] 1164 	or	a, #0x08
+      00858B F7               [ 1] 1165 	ld	(x), a
+                                   1166 ;	ds18b20.c: 460: DS18B20_DQ_HIGH;
+      00858C AE 50 00         [ 2] 1167 	ldw	x, #0x5000
+      00858F F6               [ 1] 1168 	ld	a, (x)
+      008590 AA 08            [ 1] 1169 	or	a, #0x08
+      008592 F7               [ 1] 1170 	ld	(x), a
+                                   1171 ;	ds18b20.c: 461: _delay_us(60);
+      008593 4B 3C            [ 1] 1172 	push	#0x3c
+      008595 4B 00            [ 1] 1173 	push	#0x00
+      008597 CD 84 8A         [ 4] 1174 	call	__delay_us
+      00859A 5B 02            [ 2] 1175 	addw	sp, #2
+                                   1176 ;	ds18b20.c: 447: for (i = 0; i < 8; i++)
+      00859C 0C 01            [ 1] 1177 	inc	(0x01, sp)
+      00859E 7B 01            [ 1] 1178 	ld	a, (0x01, sp)
+      0085A0 A1 08            [ 1] 1179 	cp	a, #0x08
+      0085A2 25 AC            [ 1] 1180 	jrc	00104$
+                                   1181 ;	ds18b20.c: 464: return _data;
+      0085A4 7B 02            [ 1] 1182 	ld	a, (0x02, sp)
+      0085A6 5B 02            [ 2] 1183 	addw	sp, #2
+      0085A8 81               [ 4] 1184 	ret
+                                   1185 ;	ds18b20.c: 467: float DS18B20_ReadTemperature(void)
+                                   1186 ;	-----------------------------------------
+                                   1187 ;	 function DS18B20_ReadTemperature
+                                   1188 ;	-----------------------------------------
+      0085A9                       1189 _DS18B20_ReadTemperature:
+      0085A9 52 0E            [ 2] 1190 	sub	sp, #14
+                                   1191 ;	ds18b20.c: 481: DS18B20_Init();
+      0085AB CD 84 B6         [ 4] 1192 	call	_DS18B20_Init
+                                   1193 ;	ds18b20.c: 482: DS18B20_WriteByte(0xcc);
+      0085AE 4B CC            [ 1] 1194 	push	#0xcc
+      0085B0 CD 85 05         [ 4] 1195 	call	_DS18B20_WriteByte
+      0085B3 84               [ 1] 1196 	pop	a
+                                   1197 ;	ds18b20.c: 483: DS18B20_WriteByte(0x44);
+      0085B4 4B 44            [ 1] 1198 	push	#0x44
+      0085B6 CD 85 05         [ 4] 1199 	call	_DS18B20_WriteByte
+      0085B9 84               [ 1] 1200 	pop	a
+                                   1201 ;	ds18b20.c: 485: DS18B20_Init();
+      0085BA CD 84 B6         [ 4] 1202 	call	_DS18B20_Init
+                                   1203 ;	ds18b20.c: 486: DS18B20_WriteByte(0xcc);
+      0085BD 4B CC            [ 1] 1204 	push	#0xcc
+      0085BF CD 85 05         [ 4] 1205 	call	_DS18B20_WriteByte
+      0085C2 84               [ 1] 1206 	pop	a
+                                   1207 ;	ds18b20.c: 487: DS18B20_WriteByte(0xbe);
+      0085C3 4B BE            [ 1] 1208 	push	#0xbe
+      0085C5 CD 85 05         [ 4] 1209 	call	_DS18B20_WriteByte
+      0085C8 84               [ 1] 1210 	pop	a
+                                   1211 ;	ds18b20.c: 489: temp = DS18B20_ReadByte();
+      0085C9 CD 85 4A         [ 4] 1212 	call	_DS18B20_ReadByte
+                                   1213 ;	ds18b20.c: 490: t = (((temp & 0xf0) >> 4) + (temp & 0x07) * 0.125); 
+      0085CC 95               [ 1] 1214 	ld	xh, a
+      0085CD A4 F0            [ 1] 1215 	and	a, #0xf0
+      0085CF 4E               [ 1] 1216 	swap	a
+      0085D0 A4 0F            [ 1] 1217 	and	a, #0x0f
+      0085D2 6B 0E            [ 1] 1218 	ld	(0x0e, sp), a
+      0085D4 0F 0D            [ 1] 1219 	clr	(0x0d, sp)
+      0085D6 9E               [ 1] 1220 	ld	a, xh
+      0085D7 A4 07            [ 1] 1221 	and	a, #0x07
+      0085D9 88               [ 1] 1222 	push	a
+      0085DA CD 8F EB         [ 4] 1223 	call	___uchar2fs
+      0085DD 84               [ 1] 1224 	pop	a
+      0085DE 89               [ 2] 1225 	pushw	x
+      0085DF 90 89            [ 2] 1226 	pushw	y
+      0085E1 5F               [ 1] 1227 	clrw	x
+      0085E2 89               [ 2] 1228 	pushw	x
+      0085E3 4B 00            [ 1] 1229 	push	#0x00
+      0085E5 4B 3E            [ 1] 1230 	push	#0x3e
+      0085E7 CD 87 BB         [ 4] 1231 	call	___fsmul
+      0085EA 5B 08            [ 2] 1232 	addw	sp, #8
+      0085EC 17 09            [ 2] 1233 	ldw	(0x09, sp), y
+      0085EE 89               [ 2] 1234 	pushw	x
+      0085EF 16 0F            [ 2] 1235 	ldw	y, (0x0f, sp)
+      0085F1 90 89            [ 2] 1236 	pushw	y
+      0085F3 CD 8F DA         [ 4] 1237 	call	___sint2fs
+      0085F6 5B 02            [ 2] 1238 	addw	sp, #2
+      0085F8 1F 09            [ 2] 1239 	ldw	(0x09, sp), x
+      0085FA 1E 0B            [ 2] 1240 	ldw	x, (0x0b, sp)
+      0085FC 89               [ 2] 1241 	pushw	x
+      0085FD 1E 0B            [ 2] 1242 	ldw	x, (0x0b, sp)
+      0085FF 89               [ 2] 1243 	pushw	x
+      008600 90 89            [ 2] 1244 	pushw	y
+      008602 CD 8C 4E         [ 4] 1245 	call	___fsadd
+      008605 5B 08            [ 2] 1246 	addw	sp, #8
+      008607 1F 03            [ 2] 1247 	ldw	(0x03, sp), x
+      008609 17 01            [ 2] 1248 	ldw	(0x01, sp), y
+                                   1249 ;	ds18b20.c: 491: temp = DS18B20_ReadByte();
+      00860B CD 85 4A         [ 4] 1250 	call	_DS18B20_ReadByte
+                                   1251 ;	ds18b20.c: 492: t += ((temp & 0x0f) << 4);
+      00860E A4 0F            [ 1] 1252 	and	a, #0x0f
+      008610 5F               [ 1] 1253 	clrw	x
+      008611 97               [ 1] 1254 	ld	xl, a
+      008612 58               [ 2] 1255 	sllw	x
+      008613 58               [ 2] 1256 	sllw	x
+      008614 58               [ 2] 1257 	sllw	x
+      008615 58               [ 2] 1258 	sllw	x
+      008616 89               [ 2] 1259 	pushw	x
+      008617 CD 8F DA         [ 4] 1260 	call	___sint2fs
+      00861A 5B 02            [ 2] 1261 	addw	sp, #2
+      00861C 89               [ 2] 1262 	pushw	x
+      00861D 90 89            [ 2] 1263 	pushw	y
+      00861F 1E 07            [ 2] 1264 	ldw	x, (0x07, sp)
+      008621 89               [ 2] 1265 	pushw	x
+      008622 1E 07            [ 2] 1266 	ldw	x, (0x07, sp)
+      008624 89               [ 2] 1267 	pushw	x
+      008625 CD 8C 4E         [ 4] 1268 	call	___fsadd
+      008628 5B 08            [ 2] 1269 	addw	sp, #8
+                                   1270 ;	ds18b20.c: 493: return t;
+      00862A 5B 0E            [ 2] 1271 	addw	sp, #14
+      00862C 81               [ 4] 1272 	ret
+                                   1273 ;	ds18b20.c: 499: int main () {
+                                   1274 ;	-----------------------------------------
+                                   1275 ;	 function main
+                                   1276 ;	-----------------------------------------
+      00862D                       1277 _main:
+      00862D 52 16            [ 2] 1278 	sub	sp, #22
+                                   1279 ;	ds18b20.c: 503: InitializeSystemClock();
+      00862F CD 80 A8         [ 4] 1280 	call	_InitializeSystemClock
+                                   1281 ;	ds18b20.c: 506: PD_DDR = (1 << 3) | (1 << 2); // output mode
+      008632 AE 50 11         [ 2] 1282 	ldw	x, #0x5011
+      008635 A6 0C            [ 1] 1283 	ld	a, #0x0c
+      008637 F7               [ 1] 1284 	ld	(x), a
+                                   1285 ;	ds18b20.c: 507: PD_CR1 = (1 << 3) | (1 << 2); // push-pull
+      008638 AE 50 12         [ 2] 1286 	ldw	x, #0x5012
+      00863B A6 0C            [ 1] 1287 	ld	a, #0x0c
+      00863D F7               [ 1] 1288 	ld	(x), a
+                                   1289 ;	ds18b20.c: 508: PD_CR2 = (1 << 3) | (1 << 2); // up to 10MHz speed
+      00863E AE 50 13         [ 2] 1290 	ldw	x, #0x5013
+      008641 A6 0C            [ 1] 1291 	ld	a, #0x0c
+      008643 F7               [ 1] 1292 	ld	(x), a
+                                   1293 ;	ds18b20.c: 509: tm1637Init();
+      008644 CD 83 21         [ 4] 1294 	call	_tm1637Init
+                                   1295 ;	ds18b20.c: 511: InitializeUART();
+      008647 CD 82 A8         [ 4] 1296 	call	_InitializeUART
+                                   1297 ;	ds18b20.c: 515: while (1) {
+      00864A                       1298 00114$:
+                                   1299 ;	ds18b20.c: 518: objTemp = DS18B20_ReadTemperature() * 100; 
+      00864A CD 85 A9         [ 4] 1300 	call	_DS18B20_ReadTemperature
+      00864D 89               [ 2] 1301 	pushw	x
+      00864E 90 89            [ 2] 1302 	pushw	y
+      008650 5F               [ 1] 1303 	clrw	x
+      008651 89               [ 2] 1304 	pushw	x
+      008652 4B C8            [ 1] 1305 	push	#0xc8
+      008654 4B 42            [ 1] 1306 	push	#0x42
+      008656 CD 87 BB         [ 4] 1307 	call	___fsmul
+      008659 5B 08            [ 2] 1308 	addw	sp, #8
+      00865B 1F 09            [ 2] 1309 	ldw	(0x09, sp), x
+      00865D 17 07            [ 2] 1310 	ldw	(0x07, sp), y
+                                   1311 ;	ds18b20.c: 521: while (objTemp > 1000) {
+      00865F 5F               [ 1] 1312 	clrw	x
+      008660 1F 0B            [ 2] 1313 	ldw	(0x0b, sp), x
+      008662                       1314 00101$:
+      008662 5F               [ 1] 1315 	clrw	x
+      008663 89               [ 2] 1316 	pushw	x
+      008664 4B 7A            [ 1] 1317 	push	#0x7a
+      008666 4B 44            [ 1] 1318 	push	#0x44
+      008668 1E 0D            [ 2] 1319 	ldw	x, (0x0d, sp)
+      00866A 89               [ 2] 1320 	pushw	x
+      00866B 1E 0D            [ 2] 1321 	ldw	x, (0x0d, sp)
+      00866D 89               [ 2] 1322 	pushw	x
+      00866E CD 8A F1         [ 4] 1323 	call	___fsgt
+      008671 5B 08            [ 2] 1324 	addw	sp, #8
+      008673 4D               [ 1] 1325 	tnz	a
+      008674 27 1C            [ 1] 1326 	jreq	00127$
+                                   1327 ;	ds18b20.c: 522: vierde+=1;
+      008676 1E 0B            [ 2] 1328 	ldw	x, (0x0b, sp)
+      008678 5C               [ 2] 1329 	incw	x
+      008679 1F 0B            [ 2] 1330 	ldw	(0x0b, sp), x
+                                   1331 ;	ds18b20.c: 523: objTemp-=1000;
+      00867B 5F               [ 1] 1332 	clrw	x
+      00867C 89               [ 2] 1333 	pushw	x
+      00867D 4B 7A            [ 1] 1334 	push	#0x7a
+      00867F 4B 44            [ 1] 1335 	push	#0x44
+      008681 1E 0D            [ 2] 1336 	ldw	x, (0x0d, sp)
+      008683 89               [ 2] 1337 	pushw	x
+      008684 1E 0D            [ 2] 1338 	ldw	x, (0x0d, sp)
+      008686 89               [ 2] 1339 	pushw	x
+      008687 CD 87 93         [ 4] 1340 	call	___fssub
+      00868A 5B 08            [ 2] 1341 	addw	sp, #8
+      00868C 1F 09            [ 2] 1342 	ldw	(0x09, sp), x
+      00868E 17 07            [ 2] 1343 	ldw	(0x07, sp), y
+      008690 20 D0            [ 2] 1344 	jra	00101$
+                                   1345 ;	ds18b20.c: 525: while (objTemp > 100) {
+      008692                       1346 00127$:
+      008692 16 0B            [ 2] 1347 	ldw	y, (0x0b, sp)
+      008694 17 15            [ 2] 1348 	ldw	(0x15, sp), y
+      008696 5F               [ 1] 1349 	clrw	x
+      008697 1F 03            [ 2] 1350 	ldw	(0x03, sp), x
+      008699                       1351 00104$:
+      008699 5F               [ 1] 1352 	clrw	x
+      00869A 89               [ 2] 1353 	pushw	x
+      00869B 4B C8            [ 1] 1354 	push	#0xc8
+      00869D 4B 42            [ 1] 1355 	push	#0x42
+      00869F 1E 0D            [ 2] 1356 	ldw	x, (0x0d, sp)
+      0086A1 89               [ 2] 1357 	pushw	x
+      0086A2 1E 0D            [ 2] 1358 	ldw	x, (0x0d, sp)
+      0086A4 89               [ 2] 1359 	pushw	x
+      0086A5 CD 8A F1         [ 4] 1360 	call	___fsgt
+      0086A8 5B 08            [ 2] 1361 	addw	sp, #8
+      0086AA 4D               [ 1] 1362 	tnz	a
+      0086AB 27 1C            [ 1] 1363 	jreq	00128$
+                                   1364 ;	ds18b20.c: 526: derde+=1;
+      0086AD 1E 03            [ 2] 1365 	ldw	x, (0x03, sp)
+      0086AF 5C               [ 2] 1366 	incw	x
+      0086B0 1F 03            [ 2] 1367 	ldw	(0x03, sp), x
+                                   1368 ;	ds18b20.c: 527: objTemp-=100;
+      0086B2 5F               [ 1] 1369 	clrw	x
+      0086B3 89               [ 2] 1370 	pushw	x
+      0086B4 4B C8            [ 1] 1371 	push	#0xc8
+      0086B6 4B 42            [ 1] 1372 	push	#0x42
+      0086B8 1E 0D            [ 2] 1373 	ldw	x, (0x0d, sp)
+      0086BA 89               [ 2] 1374 	pushw	x
+      0086BB 1E 0D            [ 2] 1375 	ldw	x, (0x0d, sp)
+      0086BD 89               [ 2] 1376 	pushw	x
+      0086BE CD 87 93         [ 4] 1377 	call	___fssub
+      0086C1 5B 08            [ 2] 1378 	addw	sp, #8
+      0086C3 1F 09            [ 2] 1379 	ldw	(0x09, sp), x
+      0086C5 17 07            [ 2] 1380 	ldw	(0x07, sp), y
+      0086C7 20 D0            [ 2] 1381 	jra	00104$
+                                   1382 ;	ds18b20.c: 529: while (objTemp > 10) {
+      0086C9                       1383 00128$:
+      0086C9 16 03            [ 2] 1384 	ldw	y, (0x03, sp)
+      0086CB 17 13            [ 2] 1385 	ldw	(0x13, sp), y
+      0086CD 5F               [ 1] 1386 	clrw	x
+      0086CE 1F 01            [ 2] 1387 	ldw	(0x01, sp), x
+      0086D0                       1388 00107$:
+      0086D0 5F               [ 1] 1389 	clrw	x
+      0086D1 89               [ 2] 1390 	pushw	x
+      0086D2 4B 20            [ 1] 1391 	push	#0x20
+      0086D4 4B 41            [ 1] 1392 	push	#0x41
+      0086D6 1E 0D            [ 2] 1393 	ldw	x, (0x0d, sp)
+      0086D8 89               [ 2] 1394 	pushw	x
+      0086D9 1E 0D            [ 2] 1395 	ldw	x, (0x0d, sp)
+      0086DB 89               [ 2] 1396 	pushw	x
+      0086DC CD 8A F1         [ 4] 1397 	call	___fsgt
+      0086DF 5B 08            [ 2] 1398 	addw	sp, #8
+      0086E1 4D               [ 1] 1399 	tnz	a
+      0086E2 27 1C            [ 1] 1400 	jreq	00129$
+                                   1401 ;	ds18b20.c: 530: tweede+=1;
+      0086E4 1E 01            [ 2] 1402 	ldw	x, (0x01, sp)
+      0086E6 5C               [ 2] 1403 	incw	x
+      0086E7 1F 01            [ 2] 1404 	ldw	(0x01, sp), x
+                                   1405 ;	ds18b20.c: 531: objTemp-=10;
+      0086E9 5F               [ 1] 1406 	clrw	x
+      0086EA 89               [ 2] 1407 	pushw	x
+      0086EB 4B 20            [ 1] 1408 	push	#0x20
+      0086ED 4B 41            [ 1] 1409 	push	#0x41
+      0086EF 1E 0D            [ 2] 1410 	ldw	x, (0x0d, sp)
+      0086F1 89               [ 2] 1411 	pushw	x
+      0086F2 1E 0D            [ 2] 1412 	ldw	x, (0x0d, sp)
+      0086F4 89               [ 2] 1413 	pushw	x
+      0086F5 CD 87 93         [ 4] 1414 	call	___fssub
+      0086F8 5B 08            [ 2] 1415 	addw	sp, #8
+      0086FA 1F 09            [ 2] 1416 	ldw	(0x09, sp), x
+      0086FC 17 07            [ 2] 1417 	ldw	(0x07, sp), y
+      0086FE 20 D0            [ 2] 1418 	jra	00107$
+                                   1419 ;	ds18b20.c: 533: while (objTemp > 0)
+      008700                       1420 00129$:
+      008700 16 01            [ 2] 1421 	ldw	y, (0x01, sp)
+      008702 17 11            [ 2] 1422 	ldw	(0x11, sp), y
+      008704 5F               [ 1] 1423 	clrw	x
+      008705 1F 05            [ 2] 1424 	ldw	(0x05, sp), x
+      008707                       1425 00110$:
+      008707 5F               [ 1] 1426 	clrw	x
+      008708 89               [ 2] 1427 	pushw	x
+      008709 5F               [ 1] 1428 	clrw	x
+      00870A 89               [ 2] 1429 	pushw	x
+      00870B 1E 0D            [ 2] 1430 	ldw	x, (0x0d, sp)
+      00870D 89               [ 2] 1431 	pushw	x
+      00870E 1E 0D            [ 2] 1432 	ldw	x, (0x0d, sp)
+      008710 89               [ 2] 1433 	pushw	x
+      008711 CD 8A F1         [ 4] 1434 	call	___fsgt
+      008714 5B 08            [ 2] 1435 	addw	sp, #8
+      008716 4D               [ 1] 1436 	tnz	a
+      008717 27 1C            [ 1] 1437 	jreq	00112$
+                                   1438 ;	ds18b20.c: 535: eerste+=1;
+      008719 1E 05            [ 2] 1439 	ldw	x, (0x05, sp)
+      00871B 5C               [ 2] 1440 	incw	x
+      00871C 1F 05            [ 2] 1441 	ldw	(0x05, sp), x
+                                   1442 ;	ds18b20.c: 536: objTemp-=1;
+      00871E 5F               [ 1] 1443 	clrw	x
+      00871F 89               [ 2] 1444 	pushw	x
+      008720 4B 80            [ 1] 1445 	push	#0x80
+      008722 4B 3F            [ 1] 1446 	push	#0x3f
+      008724 1E 0D            [ 2] 1447 	ldw	x, (0x0d, sp)
+      008726 89               [ 2] 1448 	pushw	x
+      008727 1E 0D            [ 2] 1449 	ldw	x, (0x0d, sp)
+      008729 89               [ 2] 1450 	pushw	x
+      00872A CD 87 93         [ 4] 1451 	call	___fssub
+      00872D 5B 08            [ 2] 1452 	addw	sp, #8
+      00872F 1F 09            [ 2] 1453 	ldw	(0x09, sp), x
+      008731 17 07            [ 2] 1454 	ldw	(0x07, sp), y
+      008733 20 D2            [ 2] 1455 	jra	00110$
+      008735                       1456 00112$:
+                                   1457 ;	ds18b20.c: 539: utemp=vierde*1000+derde*100+tweede*10+eerste;
+      008735 1E 15            [ 2] 1458 	ldw	x, (0x15, sp)
+      008737 89               [ 2] 1459 	pushw	x
+      008738 4B E8            [ 1] 1460 	push	#0xe8
+      00873A 4B 03            [ 1] 1461 	push	#0x03
+      00873C CD 8B F8         [ 4] 1462 	call	__mulint
+      00873F 5B 04            [ 2] 1463 	addw	sp, #4
+      008741 1F 0F            [ 2] 1464 	ldw	(0x0f, sp), x
+      008743 1E 13            [ 2] 1465 	ldw	x, (0x13, sp)
+      008745 89               [ 2] 1466 	pushw	x
+      008746 4B 64            [ 1] 1467 	push	#0x64
+      008748 4B 00            [ 1] 1468 	push	#0x00
+      00874A CD 8B F8         [ 4] 1469 	call	__mulint
+      00874D 5B 04            [ 2] 1470 	addw	sp, #4
+      00874F 72 FB 0F         [ 2] 1471 	addw	x, (0x0f, sp)
+      008752 1F 0D            [ 2] 1472 	ldw	(0x0d, sp), x
+      008754 1E 11            [ 2] 1473 	ldw	x, (0x11, sp)
+      008756 89               [ 2] 1474 	pushw	x
+      008757 4B 0A            [ 1] 1475 	push	#0x0a
+      008759 4B 00            [ 1] 1476 	push	#0x00
+      00875B CD 8B F8         [ 4] 1477 	call	__mulint
+      00875E 5B 04            [ 2] 1478 	addw	sp, #4
+      008760 72 FB 0D         [ 2] 1479 	addw	x, (0x0d, sp)
+      008763 72 FB 05         [ 2] 1480 	addw	x, (0x05, sp)
+      008766 90 5F            [ 1] 1481 	clrw	y
+      008768 5D               [ 2] 1482 	tnzw	x
+      008769 2A 02            [ 1] 1483 	jrpl	00162$
+      00876B 90 5A            [ 2] 1484 	decw	y
+      00876D                       1485 00162$:
+                                   1486 ;	ds18b20.c: 542: tm1637DisplayDecimal(utemp, 1); // eg 37:12
+      00876D 4B 01            [ 1] 1487 	push	#0x01
+      00876F 4B 00            [ 1] 1488 	push	#0x00
+      008771 89               [ 2] 1489 	pushw	x
+      008772 90 89            [ 2] 1490 	pushw	y
+      008774 CD 83 28         [ 4] 1491 	call	_tm1637DisplayDecimal
+      008777 5B 06            [ 2] 1492 	addw	sp, #6
+                                   1493 ;	ds18b20.c: 545: delayTenMicro();
+      008779 CD 80 A0         [ 4] 1494 	call	_delayTenMicro
+      00877C CC 86 4A         [ 2] 1495 	jp	00114$
+      00877F 5B 16            [ 2] 1496 	addw	sp, #22
+      008781 81               [ 4] 1497 	ret
+                                   1498 	.area CODE
+      008782                       1499 _segmentMap:
+      008782 3F                    1500 	.db #0x3F	;  63
+      008783 06                    1501 	.db #0x06	;  6
+      008784 5B                    1502 	.db #0x5B	;  91
+      008785 4F                    1503 	.db #0x4F	;  79	'O'
+      008786 66                    1504 	.db #0x66	;  102	'f'
+      008787 6D                    1505 	.db #0x6D	;  109	'm'
+      008788 7D                    1506 	.db #0x7D	;  125
+      008789 07                    1507 	.db #0x07	;  7
+      00878A 7F                    1508 	.db #0x7F	;  127
+      00878B 6F                    1509 	.db #0x6F	;  111	'o'
+      00878C 77                    1510 	.db #0x77	;  119	'w'
+      00878D 7C                    1511 	.db #0x7C	;  124
+      00878E 39                    1512 	.db #0x39	;  57	'9'
+      00878F 5E                    1513 	.db #0x5E	;  94
+      008790 79                    1514 	.db #0x79	;  121	'y'
+      008791 71                    1515 	.db #0x71	;  113	'q'
+      008792 00                    1516 	.db #0x00	;  0
+                                   1517 	.area INITIALIZER
+                                   1518 	.area CABS (ABS)

@@ -25,7 +25,7 @@
 #define DS18B20_DQ_FLOATING     PA_CR1 &=  ~(1<<3)  //??
 #define DS18B20_DQ_PUSH_PULL    PA_CR1 |= (1<<3)   //??
 #define DS18B20_DQ_OPEN_DRAIN   PA_CR1 &= ~(1<<3)   //??
-#define DS18B20_DQ_VALUE        PA_IDR       //DQ?
+#define DS18B20_DQ_VALUE        PA_IDR & (1<<3)      //DQ?
 
 
 
@@ -488,9 +488,8 @@ float DS18B20_ReadTemperature(void)
 
 	temp = DS18B20_ReadByte();
 	t = (((temp & 0xf0) >> 4) + (temp & 0x07) * 0.125); 
-//	temp = DS18B20_ReadByte();
-//	t += ((temp & 0x0f) << 4);
-//t = 49;
+	temp = DS18B20_ReadByte();
+	t += ((temp & 0x0f) << 4);
 	return t;
 }
 
@@ -516,7 +515,7 @@ int main () {
 	while (1) {
 
 
-		objTemp = DS18B20_ReadTemperature(); 
+		objTemp = DS18B20_ReadTemperature() * 100; //multiply with 100 to get everything on the 4 digit display 
 		eerste=0;tweede=0;derde=0;vierde=0;
 		//make measurement suitable for display
 		while (objTemp > 1000) {
